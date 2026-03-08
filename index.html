@@ -67,8 +67,6 @@
             color: var(--white); text-decoration: none; letter-spacing: 0.03em;
         }
 
-        .logo em { font-style: normal; color: var(--white); }
-
         .nav-links { display: flex; align-items: center; gap: 0; }
 
         .nav-links a {
@@ -129,7 +127,6 @@
             pointer-events: all;
         }
 
-        /* Close X button inside the drawer, top-right */
         .drawer-close {
             position: absolute;
             top: 22px; right: 24px;
@@ -184,7 +181,6 @@
             border-color: var(--gold); padding-left: 32px;
         }
 
-        /* Hamburger bars */
         .mob-btn .bar {
             display: block; width: 22px; height: 1.5px;
             background: var(--white);
@@ -205,7 +201,6 @@
             overflow: hidden;
         }
 
-        /* Top portion: pure image */
         .hero-bg {
             position: absolute; inset: 0;
             background-image: url('https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1800&q=80&auto=format');
@@ -213,7 +208,6 @@
             z-index: 0;
         }
 
-        /* Subtle top vignette so nav reads cleanly */
         .hero-overlay {
             position: absolute; inset: 0; z-index: 1;
             background: linear-gradient(
@@ -226,7 +220,6 @@
             );
         }
 
-        /* Text panel sits at the bottom ~52% of viewport */
         .hero-panel {
             position: absolute;
             bottom: 0; left: 0; right: 0;
@@ -283,6 +276,10 @@
         .btn-gold { background: var(--gold); color: var(--white); border-color: var(--gold); }
         .btn-gold:hover { background: #a08848; border-color: #a08848; }
 
+        /* NEW: green CTA button */
+        .btn-green { background: var(--green); color: var(--white); border-color: var(--green); }
+        .btn-green:hover { background: #174a35; border-color: #174a35; }
+
         /* ─── SECTION LABEL ─── */
         .sec-label {
             display: inline-flex; align-items: center; gap: 12px;
@@ -292,6 +289,38 @@
 
         .sec-label::after { content: ''; display: block; width: 32px; height: 1px; background: var(--taupe); }
 
+        /* ─── STATS STRIP ─── */
+        .stats-strip {
+            background: var(--green);
+            padding: 0;
+        }
+
+        .stats-inner {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            border-left: 1px solid rgba(255,255,255,0.12);
+        }
+
+        .stat-box {
+            padding: 44px 36px;
+            border-right: 1px solid rgba(255,255,255,0.12);
+            border-top: 1px solid rgba(255,255,255,0.12);
+            border-bottom: 1px solid rgba(255,255,255,0.12);
+            transition: background 0.3s;
+        }
+
+        .stat-box:hover { background: rgba(255,255,255,0.06); }
+
+        .stat-num {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.6rem; font-weight: 500;
+            color: var(--white); line-height: 1; margin-bottom: 6px;
+        }
+
+        .stat-label {
+            font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+            color: rgba(255,255,255,0.6); font-weight: 400;
+        }
+
         /* ─── ABOUT ─── */
         .about { background: var(--white); }
 
@@ -300,11 +329,20 @@
         .about-text h2 { font-size: 2.15rem; margin-top: 8px; margin-bottom: 20px; }
         .about-text p { color: var(--muted); font-weight: 300; font-size: 0.97rem; margin-bottom: 14px; line-height: 1.85; }
 
+        /* Green sub-headings */
         .about-text .sub-head {
             font-family: 'DM Sans', sans-serif;
             font-size: 10.5px; font-weight: 500;
             letter-spacing: 0.16em; text-transform: uppercase;
             color: var(--green); margin: 24px 0 10px;
+        }
+
+        /* Green section divider accent */
+        .green-divider {
+            width: 48px; height: 3px;
+            background: var(--green);
+            margin: 20px 0 28px;
+            border-radius: 2px;
         }
 
         .about-visual { position: relative; }
@@ -320,7 +358,7 @@
             position: absolute; inset: 0;
             background-image: url('https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80&auto=format');
             background-size: cover; background-position: center;
-            mix-blend-mode: luminosity; opacity: 0.45;
+            opacity: 1;
         }
 
         .about-badge {
@@ -357,7 +395,7 @@
         .svc::after {
             content: ''; position: absolute;
             bottom: 0; left: 0; width: 0; height: 2px;
-            background: var(--gold); transition: width 0.4s ease;
+            background: var(--green); transition: width 0.4s ease;
         }
 
         .svc:hover::after { width: 100%; }
@@ -370,6 +408,18 @@
         }
 
         .svc h3 { font-size: 1.3rem; margin-bottom: 10px; }
+
+        /* Green underline on service heading */
+        .svc h3::after {
+            content: '';
+            display: block;
+            width: 32px; height: 2px;
+            background: var(--green);
+            margin-top: 8px;
+            transition: width 0.3s ease;
+        }
+
+        .svc:hover h3::after { width: 56px; }
 
         .svc > p {
             color: var(--muted); font-size: 0.93rem; font-weight: 300;
@@ -399,7 +449,34 @@
             display: flex; align-items: flex-start; gap: 10px;
         }
 
-        .svc-body li::before { content: '–'; color: var(--taupe); flex-shrink: 0; }
+        .svc-body li::before { content: '–'; color: var(--green); flex-shrink: 0; }
+
+        /* ─── IMAGE BANNER between services and industries ─── */
+        .img-banner {
+            position: relative; height: 420px; overflow: hidden;
+        }
+
+        .img-banner img {
+            width: 100%; height: 100%; object-fit: cover;
+            display: block;
+        }
+
+        .img-banner-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(to right, rgba(11,31,51,0.88) 0%, rgba(11,31,51,0.3) 60%, transparent 100%);
+            display: flex; align-items: center;
+        }
+
+        .img-banner-text { padding: 0 80px; max-width: 580px; }
+
+        .img-banner-text h2 {
+            color: var(--white); font-size: 2.2rem; margin-bottom: 16px;
+        }
+
+        .img-banner-text p {
+            color: rgba(255,255,255,0.62); font-weight: 300; font-size: 0.97rem;
+            line-height: 1.8; margin-bottom: 28px;
+        }
 
         /* ─── INDUSTRIES ─── */
         .industries { background: var(--navy); position: relative; overflow: hidden; }
@@ -407,7 +484,7 @@
         .industries::before {
             content: ''; position: absolute; top: -80px; right: -80px;
             width: 440px; height: 440px;
-            background: radial-gradient(circle, rgba(32,93,68,0.16) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(32,93,68,0.22) 0%, transparent 70%);
             pointer-events: none;
         }
 
@@ -427,14 +504,18 @@
             transition: background 0.3s;
         }
 
-        .ind:hover { background: rgba(255,255,255,0.04); }
+        .ind:hover { background: rgba(32,93,68,0.18); }
 
         .ind i {
             display: block; font-size: 1.2rem; color: var(--taupe);
             margin-bottom: 14px; transition: color 0.28s;
         }
 
-        .ind:hover i { color: var(--gold); }
+        .ind:hover i { color: var(--green); }
+
+        /* Green left border on hover */
+        .ind { border-left: 2px solid transparent; transition: background 0.3s, border-color 0.3s; }
+        .ind:hover { border-left-color: var(--green); }
 
         .ind h3 {
             font-family: 'DM Sans', sans-serif;
@@ -442,6 +523,35 @@
         }
 
         .ind p { font-size: 0.78rem; color: rgba(184,175,163,0.55); font-weight: 300; }
+
+        /* ─── IMAGE ROW between industries and why ─── */
+        .img-row {
+            display: grid; grid-template-columns: 1fr 1fr 1fr;
+            height: 320px; overflow: hidden;
+        }
+
+        .img-row-item {
+            position: relative; overflow: hidden;
+        }
+
+        .img-row-item img {
+            width: 100%; height: 100%; object-fit: cover;
+            display: block; transition: transform 0.6s ease;
+        }
+
+        .img-row-item:hover img { transform: scale(1.05); }
+
+        .img-row-item-cap {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            background: linear-gradient(to top, rgba(32,93,68,0.9) 0%, transparent 100%);
+            padding: 28px 22px 20px;
+            font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+            color: rgba(255,255,255,0.8); font-weight: 500;
+            opacity: 0; transform: translateY(8px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .img-row-item:hover .img-row-item-cap { opacity: 1; transform: translateY(0); }
 
         /* ─── WHY US ─── */
         .why { background: var(--white); }
@@ -454,15 +564,76 @@
             width: 42px; height: 42px;
             background: var(--taupe-light); border-radius: 2px;
             display: flex; align-items: center; justify-content: center;
-            font-size: 0.95rem; color: var(--navy); margin-bottom: 16px;
+            font-size: 0.95rem; color: var(--green); margin-bottom: 16px;
+            transition: background 0.3s;
         }
+
+        .why-item:hover .why-icon { background: var(--green); color: var(--white); }
 
         .why-item h3 {
             font-family: 'DM Sans', sans-serif;
             font-size: 0.97rem; font-weight: 500; margin-bottom: 9px;
+            color: var(--navy);
         }
 
+        /* Green accent line on why items */
+        .why-item h3::after {
+            content: '';
+            display: block;
+            width: 24px; height: 2px;
+            background: var(--green);
+            margin-top: 6px;
+            transition: width 0.3s;
+        }
+        .why-item:hover h3::after { width: 40px; }
+
         .why-item p { font-size: 0.88rem; color: var(--muted); font-weight: 300; line-height: 1.8; }
+
+        /* ─── TEAM IMAGE STRIP ─── */
+        .team-strip {
+            background: var(--ivory);
+            padding: 80px 0;
+        }
+
+        .team-header { text-align: center; margin-bottom: 50px; }
+        .team-header h2 { font-size: 2rem; margin-bottom: 10px; }
+        .team-header p { color: var(--muted); font-weight: 300; font-size: 0.95rem; }
+
+        .team-imgs {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
+        }
+
+        .team-img-wrap {
+            position: relative; overflow: hidden; aspect-ratio: 3/4;
+        }
+
+        .team-img-wrap img {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .team-img-wrap:hover img { transform: scale(1.04); }
+
+        .team-img-overlay {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            background: linear-gradient(to top, rgba(32,93,68,0.95) 0%, transparent 70%);
+            padding: 40px 24px 24px;
+            transform: translateY(20px); opacity: 0;
+            transition: transform 0.35s ease, opacity 0.35s ease;
+        }
+
+        .team-img-wrap:hover .team-img-overlay { transform: translateY(0); opacity: 1; }
+
+        .team-img-overlay strong {
+            display: block; color: var(--white);
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem; font-weight: 500; margin-bottom: 4px;
+        }
+
+        .team-img-overlay span {
+            font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+            color: rgba(255,255,255,0.65);
+        }
 
         /* ─── PRICING ─── */
         .pricing { background: var(--ivory); }
@@ -483,7 +654,7 @@
         }
 
         .p-tab:last-child { border-right: none; }
-        .p-tab.active { background: var(--navy); color: var(--white); }
+        .p-tab.active { background: var(--green); color: var(--white); }
 
         .p-plans { display: none; }
         .p-plans.active { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; }
@@ -552,7 +723,7 @@
         }
 
         .plan-btn-line { border: 1px solid rgba(11,31,51,0.22); color: var(--navy); background: transparent; }
-        .plan-btn-line:hover { background: var(--navy); color: var(--white); border-color: var(--navy); }
+        .plan-btn-line:hover { background: var(--green); color: var(--white); border-color: var(--green); }
 
         .plan-btn-gold { background: var(--gold); color: var(--white); border: 1px solid var(--gold); }
         .plan-btn-gold:hover { background: #9e8448; border-color: #9e8448; }
@@ -565,6 +736,39 @@
 
         .custom-box h3 { font-size: 1.9rem; margin-bottom: 16px; }
         .custom-box p { color: var(--muted); font-weight: 300; max-width: 460px; margin: 0 auto 32px; line-height: 1.8; font-size: 0.97rem; }
+
+        /* ─── GREEN CALLOUT STRIP ─── */
+        .green-callout {
+            background: var(--green);
+            padding: 64px 0;
+            position: relative; overflow: hidden;
+        }
+
+        .green-callout::before {
+            content: '';
+            position: absolute; top: -60px; right: -60px;
+            width: 320px; height: 320px;
+            background: radial-gradient(circle, rgba(255,255,255,0.07) 0%, transparent 70%);
+        }
+
+        .green-callout-inner {
+            display: flex; justify-content: space-between; align-items: center;
+            gap: 40px;
+        }
+
+        .green-callout h2 {
+            color: var(--white); font-size: 2rem; max-width: 480px;
+        }
+
+        .green-callout h2 em { font-style: italic; color: rgba(255,255,255,0.55); }
+
+        .green-callout .cta-group { display: flex; gap: 14px; flex-shrink: 0; }
+
+        .btn-white { background: var(--white); color: var(--green); border-color: var(--white); }
+        .btn-white:hover { background: transparent; color: var(--white); border-color: rgba(255,255,255,0.6); }
+
+        .btn-ghost-white { background: transparent; color: var(--white); border-color: rgba(255,255,255,0.4); }
+        .btn-ghost-white:hover { background: rgba(255,255,255,0.1); border-color: var(--white); }
 
         /* ─── CONSULTATION ─── */
         .consult { background: var(--white); }
@@ -593,7 +797,7 @@
             display: flex; gap: 12px; align-items: flex-start;
         }
 
-        .consult-perks li i { color: var(--taupe); font-size: 0.75rem; margin-top: 4px; }
+        .consult-perks li i { color: var(--green); font-size: 0.75rem; margin-top: 4px; }
 
         .consult-right {
             background: var(--ivory); padding: 64px 50px;
@@ -614,9 +818,9 @@
         .c-item { display: flex; gap: 14px; margin-bottom: 18px; }
 
         .c-icon {
-            width: 38px; height: 38px; background: var(--taupe-light);
+            width: 38px; height: 38px; background: var(--green);
             border-radius: 2px; display: flex; align-items: center; justify-content: center;
-            font-size: 0.82rem; color: var(--navy); flex-shrink: 0;
+            font-size: 0.82rem; color: var(--white); flex-shrink: 0;
         }
 
         .c-item-text span {
@@ -646,7 +850,7 @@
         }
 
         .fg input:focus, .fg textarea:focus {
-            outline: none; border-color: var(--taupe); background: var(--white);
+            outline: none; border-color: var(--green); background: var(--white);
         }
 
         /* ─── FOOTER ─── */
@@ -666,6 +870,13 @@
 
         .foot-brand > p { font-size: 0.855rem; font-weight: 300; line-height: 1.8; margin-bottom: 22px; }
 
+        /* Green accent bar in footer brand */
+        .foot-green-bar {
+            width: 32px; height: 2px;
+            background: var(--green);
+            margin-bottom: 14px;
+        }
+
         .soc { display: flex; gap: 7px; }
 
         .soc a {
@@ -676,12 +887,15 @@
             transition: all 0.22s;
         }
 
-        .soc a:hover { border-color: var(--taupe); color: var(--white); }
+        .soc a:hover { border-color: var(--green); color: var(--white); background: rgba(32,93,68,0.2); }
 
         .foot-col h4 {
             font-family: 'DM Sans', sans-serif;
             font-size: 10px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase;
             color: var(--white); margin-bottom: 18px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--green);
+            display: inline-block;
         }
 
         .foot-col ul { list-style: none; }
@@ -739,11 +953,17 @@
             .inds { grid-template-columns: repeat(2,1fr); }
             .why-grid { grid-template-columns: repeat(2,1fr); }
             .foot-grid { grid-template-columns: 1fr 1fr; }
+            .stats-inner { grid-template-columns: repeat(2,1fr); }
+            .green-callout-inner { flex-direction: column; text-align: center; }
+            .green-callout .cta-group { justify-content: center; }
         }
 
         @media (max-width: 860px) {
             .about-grid, .consult-inner, .contact-grid { grid-template-columns: 1fr; }
             .svcs, .p-plans.active { grid-template-columns: 1fr; }
+            .img-row { grid-template-columns: 1fr; height: auto; }
+            .img-row-item { height: 240px; }
+            .team-imgs { grid-template-columns: 1fr; }
         }
 
         @media (max-width: 768px) {
@@ -759,6 +979,10 @@
             .hero-actions .btn { width: 100%; text-align: center; }
             .foot-grid { grid-template-columns: 1fr; gap: 36px; }
             .foot-bottom { flex-direction: column; gap: 8px; text-align: center; }
+            .stats-inner { grid-template-columns: repeat(2,1fr); }
+            .img-banner { height: 320px; }
+            .img-banner-text { padding: 0 32px; }
+            .img-banner-text h2 { font-size: 1.5rem; }
         }
     </style>
 </head>
@@ -816,18 +1040,43 @@
     </div>
 </section>
 
+<!-- STATS STRIP (green) -->
+<div class="stats-strip">
+    <div class="container" style="padding:0 28px">
+        <div class="stats-inner">
+            <div class="stat-box f-up">
+                <div class="stat-num">500+</div>
+                <div class="stat-label">Clients Served</div>
+            </div>
+            <div class="stat-box f-up" style="transition-delay:0.07s">
+                <div class="stat-num">8+</div>
+                <div class="stat-label">Years Experience</div>
+            </div>
+            <div class="stat-box f-up" style="transition-delay:0.14s">
+                <div class="stat-num">98%</div>
+                <div class="stat-label">Client Retention</div>
+            </div>
+            <div class="stat-box f-up" style="transition-delay:0.21s">
+                <div class="stat-num">12</div>
+                <div class="stat-label">Industries Served</div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- ABOUT -->
 <section class="about" id="about">
     <div class="container">
         <div class="about-grid">
             <div class="f-up">
                 <span class="sec-label">About Admincog</span>
-                <h2>Your trusted partner<br>for business growth</h2><br>
+                <h2>Your trusted partner<br>for business growth</h2>
+                <div class="green-divider"></div>
                 <p>Admincog is a premier business solutions provider dedicated to empowering businesses of all sizes with exceptional administrative support, technological expertise, and strategic marketing solutions.</p><br>
                 <p>Founded with a vision to simplify business operations, we leverage cutting-edge technology and industry best practices to deliver customised solutions that drive growth and profitability.</p><br>
-                <h2>Our Mission</h2><br>
+                <p class="sub-head">Our Mission</p>
                 <p>To provide comprehensive business solutions that allow entrepreneurs and companies to focus on what they do best — growing their business and serving their customers.</p>
-                <a href="#services" class="btn btn-primary" style="margin-top:28px">Explore Services</a>
+                <a href="#services" class="btn btn-green" style="margin-top:28px">Explore Services</a>
             </div>
             <div class="f-up" style="transition-delay:0.14s">
                 <div class="about-visual">
@@ -923,6 +1172,19 @@
     </div>
 </section>
 
+<!-- IMAGE BANNER -->
+<div class="img-banner">
+    <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=1800&q=80&auto=format" alt="Team collaboration">
+    <div class="img-banner-overlay">
+        <div class="img-banner-text f-up">
+            <span class="sec-label" style="color:rgba(255,255,255,0.55)">Our Approach</span>
+            <h2>We don't just support your business — we help it thrive</h2>
+            <p>Every engagement begins with deep understanding. We embed ourselves in your goals, challenges, and culture before crafting solutions.</p>
+            <a href="#contact" class="btn btn-white">Start a Conversation</a>
+        </div>
+    </div>
+</div>
+
 <!-- INDUSTRIES -->
 <section class="industries" id="industries">
     <div class="container">
@@ -943,6 +1205,22 @@
         </div>
     </div>
 </section>
+
+<!-- IMAGE ROW (three photos) -->
+<div class="img-row">
+    <div class="img-row-item">
+        <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800&q=80&auto=format" alt="Digital strategy">
+        <div class="img-row-item-cap">Digital Strategy</div>
+    </div>
+    <div class="img-row-item">
+        <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80&auto=format" alt="Team meeting">
+        <div class="img-row-item-cap">Team Collaboration</div>
+    </div>
+    <div class="img-row-item">
+        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80&auto=format" alt="Business growth">
+        <div class="img-row-item-cap">Business Growth</div>
+    </div>
+</div>
 
 <!-- WHY US -->
 <section class="why" id="why">
@@ -986,6 +1264,20 @@
         </div>
     </div>
 </section>
+
+
+<!-- GREEN CALLOUT STRIP -->
+<div class="green-callout">
+    <div class="container">
+        <div class="green-callout-inner f-up">
+            <h2>Ready to simplify operations<br><em>and accelerate growth?</em></h2>
+            <div class="cta-group">
+                <a href="#pricing" class="btn btn-white">View Pricing</a>
+                <a href="#contact" class="btn btn-ghost-white">Talk to Us</a>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- PRICING -->
 <section class="pricing" id="pricing">
@@ -1099,7 +1391,7 @@
                     <span class="sec-label" style="justify-content:center;margin-bottom:18px">Tailored Engagement</span>
                     <h3>Custom Package</h3>
                     <p>Have unique requirements? We build bespoke solutions aligned precisely to your business — nothing more, nothing less.</p>
-                    <a href="#contact" class="btn btn-primary">Request a Custom Quote</a>
+                    <a href="#contact" class="btn btn-green">Request a Custom Quote</a>
                 </div>
             </div>
         </div>
@@ -1124,7 +1416,7 @@
             <div class="consult-right">
                 <h3>Choose a Time</h3>
                 <p>Pick a slot that works for you and we'll take it from there.</p>
-                <a href="#" class="btn btn-primary" onclick="openCal(event)">View Available Times</a>
+                <a href="#" class="btn btn-green" onclick="openCal(event)">View Available Times</a>
             </div>
         </div>
     </div>
@@ -1136,15 +1428,20 @@
         <div class="contact-grid">
             <div class="f-up">
                 <span class="sec-label">Reach Out</span>
-                <h2>Get in Touch</h2><br>
+                <h2>Get in Touch</h2>
+                <div class="green-divider"></div>
                 <p>Ready to take the next step? Our team is here to help you find the right solution and get started.</p><br>
                 <div class="c-item">
                     <div class="c-icon"><i class="fas fa-envelope"></i></div>
-                    <div class="c-item-text"><span>Email</span><strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="563f3830391637323b3f383539317835393b">[email&#160;protected]</a></strong></div>
+                    <div class="c-item-text"><span>Email</span><strong>hello@admincog.com</strong></div>
                 </div>
                 <div class="c-item">
                     <div class="c-icon"><i class="fas fa-phone"></i></div>
                     <div class="c-item-text"><span>Phone</span><strong>+1 (555) 123-4567</strong></div>
+                </div>
+                <!-- Office image -->
+                <div style="margin-top:32px;border-radius:2px;overflow:hidden;height:200px;">
+                    <img src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=700&q=80&auto=format" alt="Office" style="width:100%;height:100%;object-fit:cover;display:block;">
                 </div>
             </div>
             <div class="c-form f-up" style="transition-delay:0.12s">
@@ -1155,7 +1452,7 @@
                     </div>
                     <div class="fg"><label>Email Address</label><input type="email" required></div>
                     <div class="fg"><label>Message</label><textarea rows="5" required></textarea></div>
-                    <button type="submit" class="btn btn-primary" style="width:100%;border:none;cursor:pointer">Send Message</button>
+                    <button type="submit" class="btn btn-green" style="width:100%;border:none;cursor:pointer">Send Message</button>
                 </form>
             </div>
         </div>
@@ -1168,6 +1465,7 @@
         <div class="foot-grid">
             <div class="foot-brand">
                 <a href="#" class="logo foot-logo">Admincog</a>
+                <div class="foot-green-bar"></div>
                 <p>Professional business solutions that help you focus on what matters most — growing your business.</p>
                 <div class="soc">
                     <a href="#"><i class="fab fa-linkedin-in"></i></a>
@@ -1197,7 +1495,7 @@
             <div class="foot-col">
                 <h4>Contact</h4>
                 <ul>
-                    <li><a href="/cdn-cgi/l/email-protection#f59c9b939ab59491989c9b969a92db969a98"><span class="__cf_email__" data-cfemail="10797e767f5071747d797e737f773e737f7d">[email&#160;protected]</span></a></li>
+                    <li><a href="mailto:hello@admincog.com">hello@admincog.com</a></li>
                     <li><a href="tel:+15551234567">+1 (555) 123-4567</a></li>
                 </ul>
             </div>
