@@ -1,1600 +1,1688 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admincog — Corporate Services</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --navy:        #0b1f33;
-            --green:       #205d44;
-            --taupe:       #b8afa3;
-            --taupe-light: #ede8e2;
-            --ivory:       #faf9f6;
-            --gold:        #b89b5e;
-            --text:        #2b2b2b;
-            --muted:       #7a7269;
-            --white:       #ffffff;
-            --border:      rgba(184,175,163,0.28);
-        }
-
-        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-        html { scroll-behavior: smooth; }
-
-        body {
-            font-family: 'DM Sans', sans-serif;
-            font-weight: 300;
-            color: var(--text);
-            background: var(--ivory);
-            line-height: 1.75;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        h1, h2, h3 {
-            font-family: 'Playfair Display', serif;
-            font-weight: 500;
-            line-height: 1.2;
-            color: var(--navy);
-        }
-
-        .container { max-width: 1160px; margin: 0 auto; padding: 0 28px; }
-        section { padding: 100px 0; }
-
-        /* ─── NAV ─── */
-        nav {
-            position: fixed; top: 0; left: 0; width: 100%;
-            z-index: 1000;
-            transition: background 0.4s, box-shadow 0.4s;
-        }
-
-        nav.scrolled {
-            background: rgba(11,31,51,0.97);
-            backdrop-filter: blur(14px);
-            box-shadow: 0 1px 0 rgba(255,255,255,0.07);
-        }
-
-        .nav-inner {
-            max-width: 1160px; margin: 0 auto;
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 22px 28px;
-        }
-
-        .logo {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.2rem; font-weight: 700;
-            color: var(--white); text-decoration: none; letter-spacing: 0.03em;
-        }
-
-        .nav-links { display: flex; align-items: center; gap: 0; }
-
-        .nav-links a {
-            color: rgba(255,255,255,0.82);
-            text-decoration: none;
-            font-size: 12px; font-weight: 600;
-            letter-spacing: 0.1em; text-transform: uppercase;
-            padding: 8px 14px;
-            transition: color 0.22s;
-        }
-
-        .nav-links a:hover { color: var(--white); }
-
-        .nav-cta {
-            margin-left: 14px !important;
-            padding: 9px 22px !important;
-            border: 1px solid rgba(184,155,94,0.5);
-            border-radius: 2px;
-            color: var(--gold) !important;
-            transition: all 0.22s !important;
-        }
-
-        .nav-cta:hover { background: var(--gold) !important; color: var(--white) !important; border-color: var(--gold) !important; }
-
-        .mob-btn {
-            display: none;
-            background: none; border: none;
-            cursor: pointer;
-            width: 36px; height: 36px;
-            padding: 0;
-            align-items: center; justify-content: center;
-            flex-direction: column; gap: 5px;
-            flex-shrink: 0; z-index: 1001; position: relative;
-        }
-
-        /* ─── MOBILE DRAWER ─── */
-        .mob-drawer {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(11,31,51,0.99);
-            backdrop-filter: blur(16px);
-            z-index: 999;
-            padding: 0 28px 44px;
-            flex-direction: column;
-            justify-content: center;
-            gap: 0;
-            transform: translateY(-100%);
-            transition: transform 0.38s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease;
-            opacity: 0;
-            pointer-events: none;
-            overflow-y: auto;
-        }
-
-        .mob-drawer.open {
-            transform: translateY(0);
-            opacity: 1;
-            pointer-events: all;
-        }
-
-        .drawer-close {
-            position: absolute;
-            top: 22px; right: 24px;
-            background: none; border: none;
-            cursor: pointer;
-            width: 36px; height: 36px;
-            display: flex; align-items: center; justify-content: center;
-            color: rgba(255,255,255,0.55);
-            font-size: 1.1rem;
-            transition: color 0.2s;
-        }
-
-        .drawer-close:hover { color: var(--white); }
-
-        .mob-drawer a {
-            display: block;
-            padding: 18px 0;
-            font-size: 1.5rem;
-            font-family: 'Playfair Display', serif;
-            font-weight: 500;
-            color: rgba(255,255,255,0.72);
-            text-decoration: none;
-            border-bottom: 1px solid rgba(255,255,255,0.07);
-            transition: color 0.2s, padding-left 0.2s;
-            letter-spacing: 0.01em;
-        }
-
-        .mob-drawer a:hover { color: var(--white); padding-left: 10px; }
-        .mob-drawer a:first-of-type { border-top: 1px solid rgba(255,255,255,0.07); }
-
-        .mob-drawer .mob-cta {
-            margin-top: 32px;
-            display: block;
-            padding: 15px 32px;
-            background: transparent;
-            border: 1px solid rgba(184,155,94,0.5);
-            border-radius: 2px;
-            color: var(--gold);
-            font-family: 'DM Sans', sans-serif;
-            font-size: 11.5px;
-            font-weight: 500;
-            letter-spacing: 0.14em;
-            text-transform: uppercase;
-            text-align: center;
-            text-decoration: none;
-            transition: all 0.25s;
-            width: 100%;
-        }
-
-        .mob-drawer .mob-cta:hover {
-            background: var(--gold); color: var(--white);
-            border-color: var(--gold); padding-left: 32px;
-        }
-
-        .mob-btn .bar {
-            display: block; width: 22px; height: 1.5px;
-            background: var(--white);
-            transition: transform 0.3s ease, opacity 0.3s ease, width 0.3s ease;
-            transform-origin: center;
-            flex-shrink: 0;
-        }
-
-        .mob-btn.active .bar:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
-        .mob-btn.active .bar:nth-child(2) { opacity: 0; width: 0; }
-        .mob-btn.active .bar:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
-
-        /* ─── HERO ─── */
-        .hero {
-            position: relative;
-            height: 100vh; min-height: 700px;
-            display: flex; flex-direction: column;
-            overflow: hidden;
-        }
-
-        .hero-bg {
-            position: absolute; inset: 0;
-            background-image: url('https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1800&q=80&auto=format');
-            background-size: cover; background-position: center 40%;
-            z-index: 0;
-        }
-
-        .hero-overlay {
-            position: absolute; inset: 0; z-index: 1;
-            background: linear-gradient(
-                to bottom,
-                rgba(11,31,51,0.45) 0%,
-                rgba(11,31,51,0.0) 38%,
-                rgba(11,31,51,0.0) 52%,
-                rgba(11,31,51,0.72) 72%,
-                rgba(11,31,51,0.0) 72%
-            );
-        }
-
-        .hero-panel {
-            position: absolute;
-            bottom: 0; left: 0; right: 0;
-            z-index: 2;
-            background: linear-gradient(to top, rgba(11,31,51,1) 0%, rgba(11,31,51,0.97) 60%, rgba(11,31,51,0.82) 82%, transparent 100%);
-            padding: 96px 0 60px;
-        }
-
-        .hero-content { max-width: 740px; }
-
-        .hero-tag {
-            display: inline-flex; align-items: center; gap: 12px;
-            font-size: 11px; font-weight: 400; letter-spacing: 0.18em; text-transform: uppercase;
-            color: var(--taupe); margin-bottom: 22px;
-        }
-
-        .hero-tag::before { content: ''; display: block; width: 28px; height: 1px; background: var(--gold); }
-
-        .hero h1 {
-            font-size: clamp(2.2rem, 4.2vw, 3.5rem);
-            font-weight: 500; color: var(--white);
-            letter-spacing: -0.015em; margin-bottom: 18px; line-height: 1.15;
-        }
-
-        .hero h1 em { font-style: italic; color: rgba(255,255,255,0.52); }
-
-        .hero-p {
-            font-size: 0.97rem; color: rgba(255,255,255,0.58);
-            max-width: 500px; margin-bottom: 36px; font-weight: 300; line-height: 1.85;
-        }
-
-        .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
-
-        /* ─── BUTTONS ─── */
-        .btn {
-            display: inline-block;
-            padding: 13px 32px;
-            font-family: 'DM Sans', sans-serif;
-            font-size: 11.5px; font-weight: 400;
-            letter-spacing: 0.12em; text-transform: uppercase;
-            text-decoration: none; cursor: pointer;
-            border-radius: 2px; transition: all 0.25s; border: 1px solid transparent;
-        }
-
-        .btn-primary { background: var(--taupe); color: var(--navy); border-color: var(--taupe); font-weight: 600;}
-        .btn-primary:hover { background: var(--green); border-color: var(--green); color: var(--white);}
-
-        .btn-ghost { background: transparent; color: var(--white); border-color: rgba(255,255,255,0.35); }
-        .btn-ghost:hover { border-color: var(--white); background: rgba(255,255,255,0.07); }
-
-        .btn-outline-dark { background: transparent; color: var(--navy); border-color: rgba(11,31,51,0.22); }
-        .btn-outline-dark:hover { background: var(--navy); color: var(--white); border-color: var(--navy); }
-
-        .btn-gold { background: var(--gold); color: var(--white); border-color: var(--gold); }
-        .btn-gold:hover { background: #a08848; border-color: #a08848; }
-
-        /* NEW: green CTA button */
-        .btn-green { background: var(--green); color: var(--white); border-color: var(--green); }
-        .btn-green:hover { background: #174a35; border-color: #174a35; }
-
-        /* ─── SECTION LABEL ─── */
-        .sec-label {
-            display: inline-flex; align-items: center; gap: 12px;
-            font-size: 10.5px; font-weight: 400; letter-spacing: 0.2em; text-transform: uppercase;
-            color: var(--taupe); margin-bottom: 14px;
-        }
-
-        .sec-label::after { content: ''; display: block; width: 32px; height: 1px; background: var(--taupe); }
-
-        /* ─── STATS STRIP ─── */
-        .stats-strip {
-            background: var(--green);
-            padding: 0;
-        }
-
-        .stats-inner {
-            display: grid; grid-template-columns: repeat(4, 1fr);
-            border-left: 1px solid rgba(255,255,255,0.12);
-        }
-
-        .stat-box {
-            padding: 44px 36px;
-            border-right: 1px solid rgba(255,255,255,0.12);
-            border-top: 1px solid rgba(255,255,255,0.12);
-            border-bottom: 1px solid rgba(255,255,255,0.12);
-            transition: background 0.3s;
-        }
-
-        .stat-box:hover { background: rgba(255,255,255,0.06); }
-
-        .stat-num {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.6rem; font-weight: 500;
-            color: var(--white); line-height: 1; margin-bottom: 6px;
-        }
-
-        .stat-label {
-            font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
-            color: rgba(255,255,255,0.6); font-weight: 400;
-        }
-
-        /* ─── ABOUT ─── */
-        .about { background: var(--white); }
-
-        .about-grid { display: grid; grid-template-columns: 5fr 4fr; gap: 80px; align-items: center; }
-
-        .about-text h2 { font-size: 2.15rem; margin-top: 8px; margin-bottom: 20px; }
-        .about-text p { color: var(--muted); font-weight: 300; font-size: 0.97rem; margin-bottom: 14px; line-height: 1.85; }
-
-        /* Green sub-headings */
-        .about-text .sub-head {
-            font-family: 'DM Sans', sans-serif;
-            font-size: 10.5px; font-weight: 500;
-            letter-spacing: 0.16em; text-transform: uppercase;
-            color: var(--green); margin: 24px 0 10px;
-        }
-
-        /* Green section divider accent */
-        .green-divider {
-            width: 48px; height: 3px;
-            background: var(--green);
-            margin: 20px 0 28px;
-            border-radius: 2px;
-        }
-
-        .about-visual { position: relative; }
-
-        .about-img {
-            border-radius: 2px; overflow: hidden; aspect-ratio: 4/5;
-            background: linear-gradient(155deg, var(--navy) 0%, var(--green) 100%);
-            position: relative;
-        }
-
-        .about-img::after {
-            content: '';
-            position: absolute; inset: 0;
-            background-image: url('https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80&auto=format');
-            background-size: cover; background-position: center;
-            opacity: 1;
-        }
-
-        .about-badge {
-            position: absolute; bottom: -22px; left: -22px;
-            background: var(--navy); color: var(--white);
-            padding: 22px 26px; border-radius: 2px;
-        }
-
-        .about-badge strong {
-            display: block;
-            font-family: 'Playfair Display', serif;
-            font-size: 2.2rem; font-weight: 500; line-height: 1; margin-bottom: 4px;
-        }
-
-        .about-badge span { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--taupe); }
-
-        /* ─── SERVICES ─── */
-        .services { background: var(--ivory); }
-
-        .sec-header { margin-bottom: 60px; }
-        .sec-header h2 { font-size: 2.15rem; }
-        .sec-header p { margin-top: 10px; color: var(--muted); font-weight: 300; font-size: 0.97rem; }
-        .sec-header.center { text-align: center; }
-        .sec-header.center .sec-label { justify-content: center; }
-
-        .svcs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; }
-
-        .svc {
-            background: var(--white); padding: 44px 38px;
-            position: relative; overflow: hidden;
-            transition: background 0.3s;
-        }
-
-        .svc::after {
-            content: ''; position: absolute;
-            bottom: 0; left: 0; width: 0; height: 2px;
-            background: var(--green); transition: width 0.4s ease;
-        }
-
-        .svc:hover::after { width: 100%; }
-        .svc:hover { background: #f5f3ef; }
-
-        .svc-n {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.8rem; font-weight: 400;
-            color: var(--taupe-light); line-height: 1; margin-bottom: 18px;
-        }
-
-        .svc h3 { font-size: 1.3rem; margin-bottom: 10px; }
-
-        /* Green underline on service heading */
-        .svc h3::after {
-            content: '';
-            display: block;
-            width: 32px; height: 2px;
-            background: var(--green);
-            margin-top: 8px;
-            transition: width 0.3s ease;
-        }
-
-        .svc:hover h3::after { width: 56px; }
-
-        .svc > p {
-            color: var(--muted); font-size: 0.93rem; font-weight: 300;
-            margin-bottom: 22px; line-height: 1.8;
-        }
-
-        .svc-more {
-            display: inline-flex; align-items: center; gap: 8px;
-            font-size: 11px; font-weight: 400;
-            letter-spacing: 0.1em; text-transform: uppercase;
-            color: var(--green); cursor: pointer; transition: gap 0.2s;
-        }
-
-        .svc-more:hover { gap: 14px; }
-        .svc-more i { font-size: 8px; transition: transform 0.3s; }
-
-        .svc-body { max-height: 0; overflow: hidden; transition: max-height 0.45s ease; }
-        .svc-body.open { max-height: 600px; }
-
-        .svc-body ul {
-            list-style: none; margin-top: 20px; padding-top: 20px;
-            border-top: 1px solid var(--border);
-        }
-
-        .svc-body li {
-            font-size: 0.875rem; color: var(--muted); padding: 5px 0; font-weight: 300;
-            display: flex; align-items: flex-start; gap: 10px;
-        }
-
-        .svc-body li::before { content: '–'; color: var(--green); flex-shrink: 0; }
-
-        /* ─── IMAGE BANNER between services and industries ─── */
-        .img-banner {
-            position: relative; height: 420px; overflow: hidden;
-        }
-
-        .img-banner img {
-            width: 100%; height: 100%; object-fit: cover;
-            display: block;
-        }
-
-        .img-banner-overlay {
-            position: absolute; inset: 0;
-            background: linear-gradient(to right, rgba(11,31,51,0.88) 0%, rgba(11,31,51,0.3) 60%, transparent 100%);
-            display: flex; align-items: center;
-        }
-
-        .img-banner-text { padding: 0 80px; max-width: 580px; }
-
-        .img-banner-text h2 {
-            color: var(--white); font-size: 2.2rem; margin-bottom: 16px;
-        }
-
-        .img-banner-text p {
-            color: rgba(255,255,255,0.62); font-weight: 300; font-size: 0.97rem;
-            line-height: 1.8; margin-bottom: 28px;
-        }
-
-        /* ─── INDUSTRIES ─── */
-        .industries { background: var(--navy); position: relative; overflow: hidden; }
-
-        .industries::before {
-            content: ''; position: absolute; top: -80px; right: -80px;
-            width: 440px; height: 440px;
-            background: radial-gradient(circle, rgba(32,93,68,0.22) 0%, transparent 70%);
-            pointer-events: none;
-        }
-
-        .industries .sec-label { color: var(--taupe); }
-        .industries .sec-label::after { background: var(--taupe); }
-        .industries h2 { color: var(--white); }
-        .industries .sec-header p { color: rgba(184,175,163,0.65); }
-
-        .inds {
-            display: grid; grid-template-columns: repeat(4, 1fr);
-            border: 1px solid rgba(255,255,255,0.07);
-            gap: 1px; background: rgba(255,255,255,0.07);
-        }
-
-        .ind {
-            padding: 34px 26px; background: var(--navy);
-            transition: background 0.3s;
-        }
-
-        .ind:hover { background: rgba(32,93,68,0.18); }
-
-        .ind i {
-            display: block; font-size: 1.2rem; color: var(--taupe);
-            margin-bottom: 14px; transition: color 0.28s;
-        }
-
-        .ind:hover i { color: var(--green); }
-
-        /* Green left border on hover */
-        .ind { border-left: 2px solid transparent; transition: background 0.3s, border-color 0.3s; }
-        .ind:hover { border-left-color: var(--green); }
-
-        .ind h3 {
-            font-family: 'DM Sans', sans-serif;
-            font-size: 0.875rem; font-weight: 500; color: var(--white); margin-bottom: 5px;
-        }
-
-        .ind p { font-size: 0.78rem; color: rgba(184,175,163,0.55); font-weight: 300; }
-
-        /* ─── IMAGE ROW between industries and why ─── */
-        .img-row {
-            display: grid; grid-template-columns: 1fr 1fr 1fr;
-            height: 320px; overflow: hidden;
-        }
-
-        .img-row-item {
-            position: relative; overflow: hidden;
-        }
-
-        .img-row-item img {
-            width: 100%; height: 100%; object-fit: cover;
-            display: block; transition: transform 0.6s ease;
-        }
-
-        .img-row-item:hover img { transform: scale(1.05); }
-
-        .img-row-item-cap {
-            position: absolute; bottom: 0; left: 0; right: 0;
-            background: linear-gradient(to top, rgba(32,93,68,0.9) 0%, transparent 100%);
-            padding: 28px 22px 20px;
-            font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
-            color: rgba(255,255,255,0.8); font-weight: 500;
-            opacity: 0; transform: translateY(8px);
-            transition: opacity 0.3s ease, transform 0.3s ease;
-        }
-
-        .img-row-item:hover .img-row-item-cap { opacity: 1; transform: translateY(0); }
-
-        /* ─── WHY US ─── */
-        .why { background: var(--white); }
-
-        .why-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 44px 52px; }
-
-        .why-item {}
-
-        .why-icon {
-            width: 42px; height: 42px;
-            background: var(--taupe-light); border-radius: 2px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 0.95rem; color: var(--green); margin-bottom: 16px;
-            transition: background 0.3s;
-        }
-
-        .why-item:hover .why-icon { background: var(--green); color: var(--white); }
-
-        .why-item h3 {
-            font-family: 'DM Sans', sans-serif;
-            font-size: 0.97rem; font-weight: 500; margin-bottom: 9px;
-            color: var(--navy);
-        }
-
-        /* Green accent line on why items */
-        .why-item h3::after {
-            content: '';
-            display: block;
-            width: 24px; height: 2px;
-            background: var(--green);
-            margin-top: 6px;
-            transition: width 0.3s;
-        }
-        .why-item:hover h3::after { width: 40px; }
-
-        .why-item p { font-size: 0.88rem; color: var(--muted); font-weight: 300; line-height: 1.8; }
-
-        /* ─── TEAM IMAGE STRIP ─── */
-        .team-strip {
-            background: var(--ivory);
-            padding: 80px 0;
-        }
-
-        .team-header { text-align: center; margin-bottom: 50px; }
-        .team-header h2 { font-size: 2rem; margin-bottom: 10px; }
-        .team-header p { color: var(--muted); font-weight: 300; font-size: 0.95rem; }
-
-        .team-imgs {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
-        }
-
-        .team-img-wrap {
-            position: relative; overflow: hidden; aspect-ratio: 3/4;
-        }
-
-        .team-img-wrap img {
-            width: 100%; height: 100%; object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .team-img-wrap:hover img { transform: scale(1.04); }
-
-        .team-img-overlay {
-            position: absolute; bottom: 0; left: 0; right: 0;
-            background: linear-gradient(to top, rgba(32,93,68,0.95) 0%, transparent 70%);
-            padding: 40px 24px 24px;
-            transform: translateY(20px); opacity: 0;
-            transition: transform 0.35s ease, opacity 0.35s ease;
-        }
-
-        .team-img-wrap:hover .team-img-overlay { transform: translateY(0); opacity: 1; }
-
-        .team-img-overlay strong {
-            display: block; color: var(--white);
-            font-family: 'Playfair Display', serif;
-            font-size: 1.1rem; font-weight: 500; margin-bottom: 4px;
-        }
-
-        .team-img-overlay span {
-            font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
-            color: rgba(255,255,255,0.65);
-        }
-
-        /* ─── PRICING ─── */
-        .pricing { background: var(--ivory); }
-
-        .p-tabs {
-            display: flex; width: fit-content; margin: 0 auto 52px;
-            border: 1px solid var(--border); border-radius: 2px; overflow: hidden;
-        }
-
-        .p-tab {
-            padding: 11px 30px;
-            font-family: 'DM Sans', sans-serif;
-            font-size: 11px; font-weight: 400;
-            letter-spacing: 0.1em; text-transform: uppercase;
-            background: transparent; color: var(--muted);
-            border: none; border-right: 1px solid var(--border);
-            cursor: pointer; transition: all 0.2s;
-        }
-
-        .p-tab:last-child { border-right: none; }
-        .p-tab.active { background: var(--green); color: var(--white); }
-
-        .p-plans { display: none; }
-        .p-plans.active { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; }
-
-        .plan {
-            background: var(--white); padding: 40px 34px;
-            position: relative; overflow: hidden; transition: box-shadow 0.3s;
-        }
-
-        .plan:hover { box-shadow: 0 18px 50px rgba(11,31,51,0.09); z-index: 1; }
-
-        .plan.feat { background: var(--navy); }
-
-        .plan-name {
-            font-family: 'DM Sans', sans-serif;
-            font-size: 10.5px; font-weight: 500;
-            letter-spacing: 0.12em; text-transform: uppercase;
-            color: var(--muted); margin-bottom: 18px;
-        }
-
-        .plan.feat .plan-name { color: var(--taupe); }
-
-        .p-price {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.8rem; font-weight: 500; color: var(--navy); line-height: 1;
-        }
-
-        .plan.feat .p-price { color: var(--white); }
-
-        .p-period { font-size: 0.82rem; color: var(--muted); font-weight: 300; margin-left: 3px; }
-        .plan.feat .p-period { color: var(--taupe); }
-
-        .p-desc {
-            margin: 14px 0 24px; font-size: 0.855rem; color: var(--muted); font-weight: 300;
-            padding-bottom: 24px; border-bottom: 1px solid var(--border); line-height: 1.75;
-        }
-
-        .plan.feat .p-desc { color: rgba(255,255,255,0.45); border-bottom-color: rgba(255,255,255,0.09); }
-
-        .p-feats { list-style: none; margin-bottom: 32px; }
-
-        .p-feats li {
-            font-size: 0.855rem; font-weight: 300; color: var(--text);
-            padding: 8px 0; display: flex; gap: 11px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .plan.feat .p-feats li { color: rgba(255,255,255,0.72); border-bottom-color: rgba(255,255,255,0.07); }
-
-        .p-feats li::before { content: '✓'; color: var(--green); font-weight: 500; flex-shrink: 0; }
-        .plan.feat .p-feats li::before { color: var(--gold); }
-
-        .p-badge {
-            position: absolute; top: 18px; right: 18px;
-            font-size: 8.5px; letter-spacing: 0.14em; text-transform: uppercase;
-            color: var(--gold); border: 1px solid rgba(184,155,94,0.4);
-            padding: 4px 9px; border-radius: 1px;
-        }
-
-        .plan-btn {
-            display: block; text-align: center; text-decoration: none;
-            padding: 12px; font-size: 11px;
-            letter-spacing: 0.12em; text-transform: uppercase;
-            border-radius: 2px; transition: all 0.24s;
-            font-family: 'DM Sans', sans-serif; font-weight: 400; cursor: pointer;
-        }
-
-        .plan-btn-line { border: 1px solid rgba(11,31,51,0.22); color: var(--navy); background: transparent; }
-        .plan-btn-line:hover { background: var(--green); color: var(--white); border-color: var(--green); }
-
-        .plan-btn-gold { background: var(--gold); color: var(--white); border: 1px solid var(--gold); }
-        .plan-btn-gold:hover { background: #9e8448; border-color: #9e8448; }
-
-        .custom-wrap { grid-column: 1/-1 !important; }
-
-        .custom-box {
-            background: var(--white); padding: 80px 52px; text-align: center;
-        }
-
-        .custom-box h3 { font-size: 1.9rem; margin-bottom: 16px; }
-        .custom-box p { color: var(--muted); font-weight: 300; max-width: 460px; margin: 0 auto 32px; line-height: 1.8; font-size: 0.97rem; }
-
-        /* ─── GREEN CALLOUT STRIP ─── */
-        .green-callout {
-            background: var(--green);
-            padding: 64px 0;
-            position: relative; overflow: hidden;
-        }
-
-        .green-callout::before {
-            content: '';
-            position: absolute; top: -60px; right: -60px;
-            width: 320px; height: 320px;
-            background: radial-gradient(circle, rgba(255,255,255,0.07) 0%, transparent 70%);
-        }
-
-        .green-callout-inner {
-            display: flex; justify-content: space-between; align-items: center;
-            gap: 40px;
-        }
-
-        .green-callout h2 {
-            color: var(--white); font-size: 2rem; max-width: 480px;
-        }
-
-        .green-callout h2 em { font-style: italic; color: rgba(255,255,255,0.55); }
-
-        .green-callout .cta-group { display: flex; gap: 14px; flex-shrink: 0; }
-
-        .btn-white { background: var(--white); color: var(--green); border-color: var(--white); }
-        .btn-white:hover { background: transparent; color: var(--white); border-color: rgba(255,255,255,0.6); }
-
-        .btn-ghost-white { background: transparent; color: var(--white); border-color: rgba(255,255,255,0.4); }
-        .btn-ghost-white:hover { background: rgba(255,255,255,0.1); border-color: var(--white); }
-
-        /* ─── CONSULTATION ─── */
-        .consult { background: var(--white); }
-
-        .consult-inner {
-            display: grid; grid-template-columns: 1fr 1fr;
-            border: 1px solid var(--border);
-        }
-
-        .consult-left {
-            background: var(--navy); padding: 64px 50px;
-            display: flex; flex-direction: column; justify-content: center;
-        }
-
-        .consult-left .sec-label { color: var(--taupe); margin-bottom: 18px; }
-        .consult-left .sec-label::after { background: var(--taupe); }
-        .consult-left h2 { color: var(--white); font-size: 2rem; margin-bottom: 18px; }
-        .consult-left > p { color: rgba(255,255,255,0.52); font-weight: 300; font-size: 0.93rem; line-height: 1.85; margin-bottom: 34px; }
-
-        .consult-perks { list-style: none; margin-bottom: 0; }
-
-        .consult-perks li {
-            font-size: 0.875rem; font-weight: 300;
-            color: rgba(255,255,255,0.65);
-            padding: 9px 0; border-bottom: 1px solid rgba(255,255,255,0.07);
-            display: flex; gap: 12px; align-items: flex-start;
-        }
-
-        .consult-perks li i { color: var(--green); font-size: 0.75rem; margin-top: 4px; }
-
-        .consult-right {
-            background: var(--ivory); padding: 64px 50px;
-            display: flex; flex-direction: column; justify-content: center;
-        }
-
-        .consult-right h3 { font-size: 1.5rem; margin-bottom: 10px; }
-        .consult-right p { color: var(--muted); font-weight: 300; font-size: 0.93rem; margin-bottom: 30px; }
-
-        /* ─── CONTACT ─── */
-        .contact { background: var(--ivory); }
-
-        .contact-grid { display: grid; grid-template-columns: 2fr 3fr; gap: 80px; align-items: start; }
-
-        .contact-left h2 { font-size: 2rem; margin-top: 8px; margin-bottom: 14px; }
-        .contact-left > p { color: var(--muted); font-weight: 300; font-size: 0.95rem; line-height: 1.85; margin-bottom: 32px; }
-
-        .c-item { display: flex; gap: 14px; margin-bottom: 18px; }
-
-        .c-icon {
-            width: 38px; height: 38px; background: var(--green);
-            border-radius: 2px; display: flex; align-items: center; justify-content: center;
-            font-size: 0.82rem; color: var(--white); flex-shrink: 0;
-        }
-
-        .c-item-text span {
-            display: block; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase;
-            color: var(--taupe); margin-bottom: 3px;
-        }
-
-        .c-item-text strong { font-size: 0.88rem; font-weight: 400; color: var(--text); }
-
-        .c-form { background: var(--white); padding: 50px 42px; }
-
-        .f-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-
-        .fg { margin-bottom: 20px; }
-
-        .fg label {
-            display: block; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
-            color: var(--muted); margin-bottom: 8px; font-weight: 400;
-        }
-
-        .fg input, .fg textarea {
-            width: 100%; padding: 12px 15px;
-            border: 1px solid var(--border); border-radius: 2px;
-            background: var(--ivory); color: var(--text);
-            font-family: 'DM Sans', sans-serif; font-weight: 300; font-size: 0.9rem;
-            transition: border-color 0.2s, background 0.2s;
-        }
-
-        .fg input:focus, .fg textarea:focus {
-            outline: none; border-color: var(--green); background: var(--white);
-        }
-
-        /* ─── FOOTER ─── */
-        footer {
-            background: var(--navy);
-            color: rgba(255,255,255,0.5);
-            padding: 68px 0 30px;
-        }
-
-        .foot-grid {
-            display: grid; grid-template-columns: 2.2fr 1fr 1fr 1.4fr;
-            gap: 52px; padding-bottom: 52px;
-            border-bottom: 1px solid rgba(255,255,255,0.07); margin-bottom: 28px;
-        }
-
-        .foot-logo { display: block; margin-bottom: 14px; }
-
-        .foot-brand > p { font-size: 0.855rem; font-weight: 300; line-height: 1.8; margin-bottom: 22px; }
-
-        /* Green accent bar in footer brand */
-        .foot-green-bar {
-            width: 32px; height: 2px;
-            background: var(--green);
-            margin-bottom: 14px;
-        }
-
-        .soc { display: flex; gap: 7px; }
-
-        .soc a {
-            width: 33px; height: 33px;
-            border: 1px solid rgba(255,255,255,0.12); border-radius: 2px;
-            display: flex; align-items: center; justify-content: center;
-            color: rgba(255,255,255,0.45); text-decoration: none; font-size: 0.75rem;
-            transition: all 0.22s;
-        }
-
-        .soc a:hover { border-color: var(--green); color: var(--white); background: rgba(32,93,68,0.2); }
-
-        .foot-col h4 {
-            font-family: 'DM Sans', sans-serif;
-            font-size: 10px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase;
-            color: var(--white); margin-bottom: 18px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid var(--green);
-            display: inline-block;
-        }
-
-        .foot-col ul { list-style: none; }
-        .foot-col li { margin-bottom: 9px; }
-
-        .foot-col a {
-            color: rgba(255,255,255,0.42); text-decoration: none;
-            font-size: 0.855rem; font-weight: 300; transition: color 0.2s;
-        }
-
-        .foot-col a:hover { color: var(--white); }
-
-        .foot-bottom {
-            display: flex; justify-content: space-between; align-items: center;
-            font-size: 0.78rem; font-weight: 300;
-        }
-
-        /* ─── MODAL ─── */
-        .overlay {
-            position: fixed; inset: 0;
-            background: rgba(11,31,51,0.88); backdrop-filter: blur(5px);
-            display: none; justify-content: center; align-items: center; z-index: 9999;
-        }
-
-        .overlay.open { display: flex; }
-
-        .modal {
-            background: var(--white); border-radius: 2px;
-            max-width: 860px; width: 90%; max-height: 88vh;
-            overflow-y: auto; padding: 42px; position: relative;
-        }
-
-        .modal h2 { text-align: center; margin-bottom: 26px; }
-
-        .m-close {
-            position: absolute; top: 16px; right: 18px;
-            background: none; border: none; font-size: 1rem;
-            color: var(--muted); cursor: pointer; transition: color 0.2s;
-        }
-
-        .m-close:hover { color: var(--text); }
-
-        .cal-frame { width: 100%; height: 560px; border: none; }
-
-        /* ─── FADE-UP ─── */
-        .f-up {
-            opacity: 0; transform: translateY(22px);
-            transition: opacity 0.55s ease, transform 0.55s ease;
-        }
-
-        .f-up.vis { opacity: 1; transform: none; }
-
-        /* ─── RESPONSIVE ─── */
-        @media (max-width: 1024px) {
-            .inds { grid-template-columns: repeat(2,1fr); }
-            .why-grid { grid-template-columns: repeat(2,1fr); }
-            .foot-grid { grid-template-columns: 1fr 1fr; }
-            .stats-inner { grid-template-columns: repeat(2,1fr); }
-            .green-callout-inner { flex-direction: column; text-align: center; }
-            .green-callout .cta-group { justify-content: center; }
-        }
-
-        @media (max-width: 860px) {
-            .about-grid, .consult-inner, .contact-grid { grid-template-columns: 1fr; }
-            .svcs, .p-plans.active { grid-template-columns: 1fr; }
-            .img-row { grid-template-columns: 1fr; height: auto; }
-            .img-row-item { height: 240px; }
-            .team-imgs { grid-template-columns: 1fr; }
-        }
-
-        @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .mob-btn { display: flex; }
-            .mob-drawer { display: flex; }
-            section { padding: 70px 0; }
-            .hero h1 { font-size: 2rem; }
-            .hero-panel { padding: 100px 0 48px; }
-            .why-grid { grid-template-columns: 1fr; }
-            .inds { grid-template-columns: repeat(2,1fr); }
-            .hero-actions { flex-direction: column; align-items: flex-start; }
-            .hero-actions .btn { width: 100%; text-align: center; }
-            .foot-grid { grid-template-columns: 1fr; gap: 36px; }
-            .foot-bottom { flex-direction: column; gap: 8px; text-align: center; }
-            .stats-inner { grid-template-columns: repeat(2,1fr); }
-            .img-banner { height: 320px; }
-            .img-banner-text { padding: 0 32px; }
-            .img-banner-text h2 { font-size: 1.5rem; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admincog Corporate Services — AI-Powered Virtual Assistants</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=Space+Mono&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.383.0/umd/lucide.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #0d0f14;
+    --ink-2: #1c1f28;
+    --ink-3: #2d3142;
+    --smoke: #f4f3ef;
+    --smoke-2: #eae9e3;
+    --mist: #c8c6bd;
+    --accent: #c8a96e;
+    --accent-2: #3a5a8c;
+    --white: #fafaf8;
+    --fs-hero: clamp(3rem, 7vw, 6.5rem);
+    --fs-h2: clamp(2rem, 4vw, 3.2rem);
+    --fs-h3: clamp(1.1rem, 2vw, 1.4rem);
+    --fs-body: 1rem;
+    --fs-sm: 0.85rem;
+    --radius: 2px;
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--smoke);
+    color: var(--ink);
+    overflow-x: hidden;
+    font-size: var(--fs-body);
+    line-height: 1.6;
+    font-weight: 400;
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--smoke); }
+  ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+
+  /* ── CURSOR DOT ── */
+  .cursor-dot {
+    width: 8px; height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.15s var(--ease), opacity 0.3s;
+    transform: translate(-50%, -50%);
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1px solid var(--accent);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9998;
+    transition: transform 0.4s var(--ease), opacity 0.3s;
+    transform: translate(-50%, -50%);
+    opacity: 0.5;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.4rem 4rem;
+    transition: background 0.4s, backdrop-filter 0.4s, padding 0.3s;
+  }
+  nav.scrolled {
+    background: rgba(13, 15, 20, 0.92);
+    backdrop-filter: blur(18px);
+    padding: 1rem 4rem;
+  }
+  .nav-logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.35rem;
+    color: var(--white);
+    letter-spacing: -0.01em;
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--accent); }
+  .nav-links { display: flex; gap: 2.4rem; list-style: none; }
+  .nav-links a {
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(250,250,248,0.65);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+  .nav-cta {
+    background: var(--accent);
+    color: var(--ink) !important;
+    padding: 0.5rem 1.4rem;
+    border-radius: var(--radius);
+    font-weight: 600 !important;
+    transition: background 0.2s, transform 0.2s !important;
+  }
+  .nav-cta:hover { background: #d4b87a !important; transform: translateY(-1px); }
+
+  .nav-hamburger {
+    display: none;
+    flex-direction: column; gap: 5px; cursor: pointer;
+    background: none; border: none; padding: 4px;
+  }
+  .nav-hamburger span {
+    display: block; width: 24px; height: 1.5px;
+    background: var(--white); transition: 0.3s;
+  }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    background: var(--ink);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    padding: 0 4rem;
+  }
+  .hero-bg-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(200,169,110,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(200,169,110,0.06) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+  }
+  .hero-bg-circle {
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(58,90,140,0.18) 0%, transparent 70%);
+    right: -100px; top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+  .hero-content { position: relative; z-index: 2; padding-top: 6rem; }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 0.7rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.8rem;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: block; width: 32px; height: 1px;
+    background: var(--accent);
+  }
+  .hero-h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: var(--fs-hero);
+    line-height: 1.05;
+    color: var(--white);
+    letter-spacing: -0.02em;
+    margin-bottom: 1.6rem;
+  }
+  .hero-h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .hero-sub {
+    font-size: 1.1rem;
+    color: rgba(250,250,248,0.55);
+    line-height: 1.7;
+    max-width: 460px;
+    margin-bottom: 2.8rem;
+    font-weight: 300;
+  }
+  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    background: var(--accent);
+    color: var(--ink);
+    font-weight: 600;
+    font-size: 0.88rem;
+    letter-spacing: 0.04em;
+    padding: 0.9rem 2rem;
+    border-radius: var(--radius);
+    text-decoration: none;
+    transition: transform 0.2s var(--ease), box-shadow 0.2s;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(200,169,110,0.3); }
+  .btn-ghost {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    border: 1px solid rgba(250,250,248,0.2);
+    color: var(--white);
+    font-weight: 500;
+    font-size: 0.88rem;
+    letter-spacing: 0.04em;
+    padding: 0.9rem 2rem;
+    border-radius: var(--radius);
+    text-decoration: none;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .btn-ghost:hover { border-color: var(--accent); background: rgba(200,169,110,0.05); }
+
+  .hero-right {
+    position: relative; z-index: 2;
+    display: flex; justify-content: flex-end; align-items: center;
+    padding-top: 6rem;
+  }
+  .hero-stats-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 6px;
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 380px;
+    backdrop-filter: blur(8px);
+  }
+  .stat-row {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 1.6rem; margin-bottom: 1.6rem;
+  }
+  .stat-item { }
+  .stat-number {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2.6rem;
+    color: var(--white);
+    line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+  .stat-number span { color: var(--accent); }
+  .stat-label {
+    font-size: 0.78rem;
+    color: rgba(250,250,248,0.45);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .stat-divider {
+    height: 1px; background: rgba(255,255,255,0.07);
+    margin: 1.6rem 0;
+  }
+  .startup-badge {
+    display: flex; align-items: center; gap: 0.8rem;
+  }
+  .badge-icon {
+    width: 36px; height: 36px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+  .badge-text { font-size: 0.8rem; color: rgba(250,250,248,0.6); line-height: 1.4; }
+  .badge-text strong { color: var(--white); display: block; font-size: 0.82rem; }
+
+  .hero-scroll-hint {
+    position: absolute;
+    bottom: 2.5rem; left: 50%;
+    transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    color: rgba(250,250,248,0.3);
+    font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  .scroll-line {
+    width: 1px; height: 50px;
+    background: linear-gradient(to bottom, rgba(200,169,110,0.6), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 1; transform: scaleY(1); }
+    50% { opacity: 0.3; transform: scaleY(0.6); }
+  }
+
+  /* ── MARQUEE ── */
+  .marquee-wrap {
+    background: var(--ink-2);
+    border-top: 1px solid rgba(200,169,110,0.15);
+    border-bottom: 1px solid rgba(200,169,110,0.15);
+    padding: 1rem 0;
+    overflow: hidden;
+  }
+  .marquee-track {
+    display: flex; gap: 4rem;
+    animation: marquee 30s linear infinite;
+    white-space: nowrap;
+  }
+  .marquee-track:hover { animation-play-state: paused; }
+  .marquee-item {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(200,169,110,0.6);
+    display: flex; align-items: center; gap: 1.5rem;
+    flex-shrink: 0;
+  }
+  .marquee-item::after { content: '◆'; font-size: 0.5rem; color: var(--accent); }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ── SECTIONS SHARED ── */
+  section { padding: 7rem 4rem; }
+  .section-eyebrow {
+    display: inline-flex; align-items: center; gap: 0.7rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.2rem;
+  }
+  .section-eyebrow::before {
+    content: '';
+    display: block; width: 24px; height: 1px;
+    background: var(--accent);
+  }
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: var(--fs-h2);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .section-title em { font-style: italic; color: var(--accent); }
+
+  /* reveal animation */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* ── ABOUT ── */
+  #about { background: var(--smoke); }
+  .about-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 6rem; align-items: center;
+    max-width: 1200px; margin: 0 auto;
+  }
+  .about-text-block { }
+  .about-text-block p {
+    color: #4a4e5c;
+    line-height: 1.8;
+    font-size: 1.05rem;
+    margin-bottom: 1.5rem;
+    font-weight: 300;
+  }
+  .about-text-block p:last-child { margin-bottom: 0; }
+  .about-visual {
+    position: relative;
+  }
+  .about-card {
+    background: var(--ink);
+    color: var(--white);
+    padding: 3rem;
+    border-radius: 4px;
+    position: relative;
+  }
+  .about-card::before {
+    content: '';
+    position: absolute;
+    top: -8px; left: -8px;
+    right: 8px; bottom: 8px;
+    border: 1px solid var(--accent);
+    border-radius: 4px;
+    z-index: -1;
+  }
+  .founder-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.7rem;
+    margin-bottom: 0.3rem;
+  }
+  .founder-title {
+    font-size: 0.8rem;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+  .founder-bio {
+    font-size: 0.9rem;
+    color: rgba(250,250,248,0.65);
+    line-height: 1.7;
+    font-weight: 300;
+  }
+  .founder-tags {
+    display: flex; flex-wrap: wrap; gap: 0.5rem;
+    margin-top: 1.5rem;
+  }
+  .founder-tags span {
+    font-size: 0.72rem;
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 0.05em;
+    border: 1px solid rgba(200,169,110,0.3);
+    color: var(--accent);
+    padding: 0.25rem 0.7rem;
+    border-radius: 2px;
+  }
+
+  /* ── SERVICES ── */
+  #services { background: var(--ink); }
+  #services .section-title { color: var(--white); }
+  .services-intro {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 4rem; align-items: end;
+    margin-bottom: 4rem;
+    max-width: 1200px; margin: 0 auto 4rem;
+  }
+  .services-sub {
+    font-size: 1rem; color: rgba(250,250,248,0.5);
+    line-height: 1.7; font-weight: 300;
+    align-self: flex-end;
+  }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.06);
+    max-width: 1200px; margin: 0 auto;
+  }
+  .service-card {
+    background: var(--ink-2);
+    padding: 2.5rem;
+    transition: background 0.3s;
+    cursor: default;
+    position: relative;
+    overflow: hidden;
+  }
+  .service-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 100%; height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s var(--ease);
+  }
+  .service-card:hover { background: var(--ink-3); }
+  .service-card:hover::after { transform: scaleX(1); }
+  .service-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: rgba(200,169,110,0.4);
+    letter-spacing: 0.1em;
+    margin-bottom: 1.2rem;
+  }
+  .service-icon {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
+  .service-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.25rem;
+    color: var(--white);
+    margin-bottom: 0.8rem;
+    line-height: 1.2;
+  }
+  .service-desc {
+    font-size: 0.88rem;
+    color: rgba(250,250,248,0.45);
+    line-height: 1.7;
+    font-weight: 300;
+  }
+  /* Wider services row */
+  .services-wide {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-top: none;
+    max-width: 1200px; margin: 0 auto;
+  }
+
+  /* ── INDUSTRIES ── */
+  #industries { background: var(--smoke-2); }
+  .industries-layout {
+    display: grid; grid-template-columns: 320px 1fr;
+    gap: 5rem;
+    max-width: 1200px; margin: 0 auto;
+    align-items: start;
+  }
+  .industries-nav { position: sticky; top: 7rem; }
+  .ind-tab {
+    display: flex; align-items: center; gap: 1rem;
+    padding: 1rem 1.2rem;
+    cursor: pointer;
+    border-left: 2px solid transparent;
+    transition: all 0.2s;
+    font-size: 0.92rem;
+    color: #666;
+    background: none; border-right: none; border-top: none; border-bottom: none;
+    width: 100%; text-align: left;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .ind-tab.active {
+    border-left-color: var(--accent);
+    color: var(--ink);
+    font-weight: 600;
+    background: rgba(200,169,110,0.05);
+  }
+  .ind-tab:hover:not(.active) {
+    border-left-color: var(--mist);
+    color: var(--ink);
+  }
+  .ind-tab-icon { font-size: 1.2rem; }
+  .industries-content { }
+  .ind-panel { display: none; }
+  .ind-panel.active { display: block; }
+  .ind-panel h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    color: var(--ink);
+  }
+  .ind-list { list-style: none; }
+  .ind-list li {
+    display: flex; gap: 0.8rem;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    font-size: 0.92rem;
+    color: #4a4e5c;
+    line-height: 1.5;
+  }
+  .ind-list li::before {
+    content: '→';
+    color: var(--accent);
+    flex-shrink: 0;
+    margin-top: 0.05rem;
+  }
+
+  /* ── WHY US ── */
+  #why { background: var(--ink); overflow: hidden; }
+  #why .section-title { color: var(--white); }
+  .why-layout {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 5rem; align-items: start;
+  }
+  .why-sticky { position: sticky; top: 7rem; }
+  .why-sub {
+    color: rgba(250,250,248,0.5);
+    font-size: 1rem;
+    line-height: 1.7;
+    font-weight: 300;
+    margin-top: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+  .why-price-note {
+    background: rgba(200,169,110,0.08);
+    border: 1px solid rgba(200,169,110,0.2);
+    border-radius: 4px;
+    padding: 1.5rem;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .price-big {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2.5rem;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .price-context { font-size: 0.82rem; color: rgba(250,250,248,0.5); line-height: 1.5; }
+  .price-context strong { color: var(--white); font-size: 0.9rem; }
+  .why-reasons { }
+  .why-item {
+    padding: 2rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    display: grid; grid-template-columns: 48px 1fr;
+    gap: 1.2rem; align-items: start;
+  }
+  .why-item:first-child { padding-top: 0; }
+  .why-num-box {
+    width: 40px; height: 40px;
+    border: 1px solid rgba(200,169,110,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .why-item-title {
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 0.4rem;
+    font-size: 1rem;
+  }
+  .why-item-desc {
+    font-size: 0.88rem;
+    color: rgba(250,250,248,0.45);
+    line-height: 1.65;
+    font-weight: 300;
+  }
+
+  /* ── PRICING ── */
+  #pricing { background: var(--smoke); }
+  .pricing-header { text-align: center; max-width: 600px; margin: 0 auto 4rem; }
+  .pricing-header .section-eyebrow { justify-content: center; }
+  .pricing-header .section-eyebrow::before { display: none; }
+  .pricing-header p {
+    color: #666; font-size: 1rem;
+    line-height: 1.7; font-weight: 300;
+    margin-top: 1rem;
+  }
+  .pricing-cards {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    max-width: 1050px; margin: 0 auto;
+  }
+  .pricing-card {
+    background: var(--white);
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 4px;
+    padding: 2.5rem;
+    transition: transform 0.3s var(--ease), box-shadow 0.3s;
+    position: relative;
+  }
+  .pricing-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.08);
+  }
+  .pricing-card.featured {
+    background: var(--ink);
+    border-color: transparent;
+  }
+  .pricing-card.featured .pricing-rate,
+  .pricing-card.featured .pricing-name,
+  .pricing-card.featured .pricing-desc { color: var(--white) !important; }
+  .pricing-card.featured .pricing-feature { color: rgba(250,250,248,0.7) !important; border-color: rgba(255,255,255,0.08) !important; }
+  .pricing-card.featured .pricing-feature::before { color: var(--accent) !important; }
+  .featured-label {
+    position: absolute;
+    top: -1px; right: 1.5rem;
+    background: var(--accent);
+    color: var(--ink);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.8rem;
+    border-radius: 0 0 3px 3px;
+  }
+  .pricing-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.3rem;
+    color: var(--ink);
+    margin-bottom: 0.3rem;
+  }
+  .pricing-desc { font-size: 0.8rem; color: #888; margin-bottom: 1.5rem; }
+  .pricing-rate {
+    font-family: 'DM Serif Display', serif;
+    font-size: 3rem;
+    color: var(--ink);
+    line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+  .pricing-rate sub {
+    font-size: 1rem; font-family: 'DM Sans', sans-serif;
+    vertical-align: baseline; color: #888;
+  }
+  .pricing-per { font-size: 0.78rem; color: #888; margin-bottom: 1.8rem; }
+  .pricing-divider { height: 1px; background: rgba(0,0,0,0.07); margin-bottom: 1.5rem; }
+  .pricing-features { list-style: none; margin-bottom: 2rem; }
+  .pricing-feature {
+    font-size: 0.87rem;
+    color: #4a4e5c;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    display: flex; gap: 0.6rem;
+  }
+  .pricing-feature { list-style: none; }
+  .pricing-feature::before { display: none; }
+  
+  .btn-pricing {
+    display: block; text-align: center;
+    padding: 0.85rem;
+    border-radius: var(--radius);
+    font-size: 0.88rem; font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .btn-pricing-light {
+    border: 1.5px solid var(--ink);
+    color: var(--ink);
+  }
+  .btn-pricing-light:hover { background: var(--ink); color: var(--white); }
+  .btn-pricing-gold {
+    background: var(--accent);
+    color: var(--ink);
+  }
+  .btn-pricing-gold:hover { box-shadow: 0 4px 16px rgba(200,169,110,0.4); transform: translateY(-1px); }
+  .pricing-note {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 0.82rem;
+    color: #888;
+  }
+
+  /* ── TESTIMONIALS ── */
+  #testimonials { background: var(--smoke-2); }
+  .testi-header { max-width: 1200px; margin: 0 auto 3.5rem; }
+  .testi-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    max-width: 1200px; margin: 0 auto;
+  }
+  .testi-card {
+    background: var(--white);
+    border: 1px solid rgba(0,0,0,0.06);
+    border-radius: 4px;
+    padding: 2rem;
+    transition: transform 0.3s var(--ease);
+  }
+  .testi-card:hover { transform: translateY(-3px); }
+  .testi-stars { display: flex; gap: 3px; margin-bottom: 1rem; }
+  .testi-stars svg { width: 14px; height: 14px; fill: var(--accent); stroke: var(--accent); stroke-width: 1; }
+  .testi-quote {
+    font-size: 0.92rem;
+    color: #4a4e5c;
+    line-height: 1.75;
+    font-weight: 300;
+    margin-bottom: 1.5rem;
+    font-style: italic;
+  }
+  .testi-author {
+    display: flex; align-items: center; gap: 0.8rem;
+  }
+  .testi-avatar {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: var(--ink);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .testi-avatar svg { width: 18px; height: 18px; stroke: var(--accent); stroke-width: 1.5; fill: none; }
+  .testi-name { font-weight: 600; font-size: 0.85rem; }
+  .testi-role { font-size: 0.75rem; color: #888; margin-top: 0.1rem; }
+
+  /* ── NEWS ── */
+  #news { background: var(--ink); }
+  #news .section-title { color: var(--white); }
+  .news-wrap { max-width: 1200px; margin: 0 auto; }
+  .news-card {
+    display: grid; grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 2rem;
+    padding: 2rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .news-meta {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .news-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.4rem;
+    color: var(--white);
+    line-height: 1.3;
+    margin-bottom: 0.5rem;
+  }
+  .news-excerpt { font-size: 0.88rem; color: rgba(250,250,248,0.45); font-weight: 300; line-height: 1.6; }
+  .news-link {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-size: 0.82rem; font-weight: 600;
+    color: var(--accent);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: gap 0.2s;
+  }
+  .news-link:hover { gap: 0.9rem; }
+
+  /* ── CONTACT ── */
+  #contact { background: var(--smoke); }
+  .contact-layout {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    max-width: 1100px; margin: 0 auto;
+    align-items: start;
+  }
+  .contact-info .section-title { margin-bottom: 1rem; }
+  .contact-text {
+    color: #666; font-size: 1rem; line-height: 1.7;
+    font-weight: 300; margin-bottom: 2.5rem;
+  }
+  .contact-details { }
+  .contact-detail {
+    display: flex; gap: 1rem;
+    margin-bottom: 1.2rem; align-items: flex-start;
+  }
+  .cd-icon {
+    width: 36px; height: 36px;
+    background: var(--ink);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.9rem; flex-shrink: 0;
+  }
+  .cd-text { font-size: 0.9rem; color: #4a4e5c; line-height: 1.5; }
+  .cd-text strong { display: block; color: var(--ink); margin-bottom: 0.1rem; font-size: 0.8rem; letter-spacing: 0.05em; text-transform: uppercase; }
+  .cd-text a { color: #4a4e5c; text-decoration: none; }
+  .cd-text a:hover { color: var(--accent); }
+
+  .contact-form { }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+  .form-field { margin-bottom: 1rem; }
+  .form-field label {
+    display: block;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+  }
+  .form-field input,
+  .form-field textarea {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    background: var(--white);
+    border: 1.5px solid rgba(0,0,0,0.1);
+    border-radius: var(--radius);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.92rem;
+    color: var(--ink);
+    transition: border-color 0.2s;
+    outline: none;
+    -webkit-appearance: none;
+  }
+  .form-field input:focus,
+  .form-field textarea:focus { border-color: var(--accent); }
+  .form-field textarea { resize: vertical; min-height: 120px; }
+  .form-submit {
+    width: 100%;
+    padding: 1rem;
+    background: var(--ink);
+    color: var(--white);
+    border: none;
+    border-radius: var(--radius);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .form-submit:hover { background: var(--ink-3); transform: translateY(-1px); }
+  .form-success {
+    display: none;
+    text-align: center;
+    padding: 2rem;
+    background: rgba(200,169,110,0.08);
+    border: 1px solid rgba(200,169,110,0.2);
+    border-radius: 4px;
+    color: var(--ink);
+  }
+  .form-success h4 { font-family: 'DM Serif Display', serif; font-size: 1.4rem; margin-bottom: 0.5rem; }
+  .form-success p { font-size: 0.9rem; color: #666; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--ink-2);
+    padding: 3rem 4rem 2rem;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  .footer-top {
+    display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 3rem;
+  }
+  .footer-brand { }
+  .footer-logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.3rem;
+    color: var(--white);
+    margin-bottom: 1rem;
+    display: block;
+  }
+  .footer-logo span { color: var(--accent); }
+  .footer-tagline {
+    font-size: 0.85rem;
+    color: rgba(250,250,248,0.4);
+    line-height: 1.6;
+    font-weight: 300;
+    margin-bottom: 1.2rem;
+  }
+  .footer-col h5 {
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(250,250,248,0.4);
+    margin-bottom: 1.2rem;
+    font-weight: 600;
+  }
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: 0.6rem; }
+  .footer-col ul li a {
+    font-size: 0.87rem;
+    color: rgba(250,250,248,0.55);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-col ul li a:hover { color: var(--accent); }
+  .footer-bottom {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  .footer-copy { font-size: 0.8rem; color: rgba(250,250,248,0.3); }
+  .footer-legal { display: flex; gap: 1.5rem; }
+  .footer-legal a {
+    font-size: 0.78rem;
+    color: rgba(250,250,248,0.3);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-legal a:hover { color: var(--accent); }
+
+  /* ── ICONS ── */
+  .icon { display: inline-flex; align-items: center; justify-content: center; }
+  .icon svg { width: 1.1em; height: 1.1em; stroke-width: 1.5; }
+  .service-icon svg { width: 28px; height: 28px; stroke: var(--accent); stroke-width: 1.5; fill: none; }
+  .badge-icon svg { width: 18px; height: 18px; stroke: var(--ink); stroke-width: 2; fill: none; }
+  .cd-icon svg { width: 16px; height: 16px; stroke: var(--white); stroke-width: 2; fill: none; }
+  .ind-tab-icon svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 1.5; fill: none; }
+  .why-num-box svg { width: 16px; height: 16px; stroke: var(--accent); stroke-width: 1.5; fill: none; }
+  .nav-cta-icon svg { width: 14px; height: 14px; stroke: var(--ink); stroke-width: 2.5; fill: none; }
+  .hero-eyebrow svg { width: 14px; height: 14px; stroke: var(--accent); stroke-width: 2; fill: none; }
+  .section-eyebrow svg { width: 12px; height: 12px; stroke: var(--accent); stroke-width: 2; fill: none; }
+  .news-icon svg { width: 18px; height: 18px; stroke: var(--accent); stroke-width: 1.5; fill: none; }
+  .testi-avatar svg { width: 18px; height: 18px; stroke: var(--accent); stroke-width: 1.5; fill: none; }
+  .pricing-feature svg { width: 14px; height: 14px; stroke: var(--accent); stroke-width: 2.5; fill: none; flex-shrink: 0; margin-top: 2px; }
+  .pricing-card.featured .pricing-feature svg { stroke: var(--accent); }
+  .footer-social svg { width: 18px; height: 18px; stroke: rgba(250,250,248,0.5); stroke-width: 1.5; fill: none; transition: stroke 0.2s; }
+  .footer-social:hover svg { stroke: var(--accent); }
+
+
+  @media (max-width: 1024px) {
+    nav { padding: 1.2rem 2rem; }
+    nav.scrolled { padding: 0.9rem 2rem; }
+    .nav-links { display: none; }
+    .nav-hamburger { display: flex; }
+    section { padding: 5rem 2rem; }
+    #hero { grid-template-columns: 1fr; padding: 0 2rem; }
+    .hero-right { display: none; }
+    .hero-content { padding-top: 8rem; padding-bottom: 4rem; }
+    .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .services-grid { grid-template-columns: 1fr 1fr; }
+    .services-wide { grid-template-columns: 1fr; }
+    .industries-layout { grid-template-columns: 1fr; gap: 2rem; }
+    .industries-nav { position: static; }
+    .why-layout { grid-template-columns: 1fr; gap: 3rem; }
+    .why-sticky { position: static; }
+    .pricing-cards { grid-template-columns: 1fr; max-width: 400px; }
+    .testi-grid { grid-template-columns: 1fr; }
+    .contact-layout { grid-template-columns: 1fr; gap: 3rem; }
+    .footer-top { grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+    .footer-legal { flex-wrap: wrap; justify-content: center; }
+    .cursor-dot, .cursor-ring { display: none; }
+  }
+  @media (max-width: 640px) {
+    .hero-h1 { font-size: 2.6rem; }
+    .services-grid { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+    .footer-top { grid-template-columns: 1fr; }
+  }
+
+  /* Mobile nav overlay */
+  .mobile-nav {
+    position: fixed; inset: 0;
+    background: var(--ink);
+    z-index: 200;
+    display: none;
+    flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 2rem;
+  }
+  .mobile-nav.open { display: flex; }
+  .mobile-nav a {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2rem;
+    color: var(--white);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .mobile-nav a:hover { color: var(--accent); }
+  .mobile-nav-close {
+    position: absolute; top: 1.5rem; right: 2rem;
+    background: none; border: none; cursor: pointer;
+    font-size: 1.5rem; color: var(--white);
+  }
+</style>
 </head>
 <body>
 
-<!-- NAV -->
-<nav id="nav">
-    <div class="nav-inner">
-        <a href="#" class="logo">Admincog</a>
-        <div class="nav-links">
-            <a href="#about">About</a>
-            <a href="#services">Services</a>
-            <a href="#industries">Industries</a>
-            <a href="#why">Why Us</a>
-            <a href="#pricing">Pricing</a>
-            <a href="#contact" class="nav-cta">Get in Touch</a>
-        </div>
-        <button class="mob-btn" id="mob-btn" aria-label="Toggle menu">
-            <span class="bar"></span>
-            <span class="bar"></span>
-            <span class="bar"></span>
-        </button>
-    </div>
-</nav>
+<!-- Custom cursor -->
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
 
-<!-- MOBILE DRAWER -->
-<div class="mob-drawer" id="mob-drawer">
-    <button class="drawer-close" onclick="closeDrwr()" aria-label="Close menu">
-        <i class="fas fa-times"></i>
-    </button>
-    <a href="#about" onclick="closeDrwr()">About</a>
-    <a href="#services" onclick="closeDrwr()">Services</a>
-    <a href="#industries" onclick="closeDrwr()">Industries</a>
-    <a href="#why" onclick="closeDrwr()">Why Us</a>
-    <a href="#pricing" onclick="closeDrwr()">Pricing</a>
-    <a href="#contact" class="mob-cta" onclick="closeDrwr()">Get in Touch</a>
+<!-- Mobile nav overlay -->
+<div class="mobile-nav" id="mobileNav">
+  <button class="mobile-nav-close" id="mobileClose">✕</button>
+  <a href="#hero" onclick="closeMobileNav()">Home</a>
+  <a href="#about" onclick="closeMobileNav()">About</a>
+  <a href="#services" onclick="closeMobileNav()">Services</a>
+  <a href="#industries" onclick="closeMobileNav()">Industries</a>
+  <a href="#pricing" onclick="closeMobileNav()">Pricing</a>
+  <a href="#contact" onclick="closeMobileNav()">Contact</a>
 </div>
 
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">Admin<span>cog</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#industries">Industries</a></li>
+    <li><a href="#why">Why Us</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#contact" class="nav-cta">Get Started</a></li>
+  </ul>
+  <button class="nav-hamburger" id="hamburger" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
 <!-- HERO -->
-<section class="hero">
-    <div class="hero-bg"></div>
-    <div class="hero-overlay"></div>
-    <div class="hero-panel">
-        <div class="container">
-            <div class="hero-content">
-                <span class="hero-tag">Corporate Services &amp; Virtual Solutions</span>
-                <h1>Where strategy meets<br><em>operational excellence</em></h1>
-                <p class="hero-p">Professional virtual assistance, web solutions, and marketing expertise — built for businesses ready to scale with intention.</p>
-                <div class="hero-actions">
-                    <a href="#services" class="btn btn-primary">Explore Services</a>
-                    <a href="#contact" class="btn btn-ghost">Book a Consultation</a>
-                </div>
-            </div>
-        </div>
+<section id="hero">
+  <div class="hero-bg-grid"></div>
+  <div class="hero-bg-circle"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow"><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span> Certified by Startup India</div>
+    <h1 class="hero-h1">Your business,<br><em>expertly</em><br>supported.</h1>
+    <p class="hero-sub">AI-powered virtual assistant services for businesses worldwide. From admin support to digital marketing — one trusted partner for it all.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">Get Free Evaluation →</a>
+      <a href="#services" class="btn-ghost">Explore Services</a>
     </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-stats-card">
+      <div class="stat-row">
+        <div class="stat-item">
+          <div class="stat-number">20<span>+</span></div>
+          <div class="stat-label">Years Experience</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">5<span>+</span></div>
+          <div class="stat-label">Industries Served</div>
+        </div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-item">
+          <div class="stat-number">$10</div>
+          <div class="stat-label">per hour</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">3<span>x</span></div>
+          <div class="stat-label">Cheaper than US VAs</div>
+        </div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="startup-badge">
+        <div class="badge-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-width="2" stroke-linejoin="round"/></svg></div>
+        <div class="badge-text">
+          <strong>Startup India Certified</strong>
+          Government-recognized for quality & innovation in business services.
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-scroll-hint">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
 </section>
 
-<!-- STATS STRIP (green) -->
-<div class="stats-strip">
-    <div class="container" style="padding:0 28px">
-        <div class="stats-inner">
-            <div class="stat-box f-up">
-                <div class="stat-num">500+</div>
-                <div class="stat-label">Clients Served</div>
-            </div>
-            <div class="stat-box f-up" style="transition-delay:0.07s">
-                <div class="stat-num">8+</div>
-                <div class="stat-label">Years Experience</div>
-            </div>
-            <div class="stat-box f-up" style="transition-delay:0.14s">
-                <div class="stat-num">98%</div>
-                <div class="stat-label">Client Retention</div>
-            </div>
-            <div class="stat-box f-up" style="transition-delay:0.21s">
-                <div class="stat-num">12</div>
-                <div class="stat-label">Industries Served</div>
-            </div>
-        </div>
-    </div>
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="marquee-item">Virtual Assistance</span>
+    <span class="marquee-item">Social Media Management</span>
+    <span class="marquee-item">Data Entry</span>
+    <span class="marquee-item">Bookkeeping</span>
+    <span class="marquee-item">Research</span>
+    <span class="marquee-item">Web Development</span>
+    <span class="marquee-item">Digital Marketing</span>
+    <span class="marquee-item">Customer Service</span>
+    <span class="marquee-item">Pitch Decks</span>
+    <span class="marquee-item">App Development</span>
+    <span class="marquee-item">Virtual Assistance</span>
+    <span class="marquee-item">Social Media Management</span>
+    <span class="marquee-item">Data Entry</span>
+    <span class="marquee-item">Bookkeeping</span>
+    <span class="marquee-item">Research</span>
+    <span class="marquee-item">Web Development</span>
+    <span class="marquee-item">Digital Marketing</span>
+    <span class="marquee-item">Customer Service</span>
+    <span class="marquee-item">Pitch Decks</span>
+    <span class="marquee-item">App Development</span>
+  </div>
 </div>
 
 <!-- ABOUT -->
-<section class="about" id="about">
-    <div class="container">
-        <div class="about-grid">
-            <div class="f-up">
-                <span class="sec-label">About Admincog</span>
-                <h2>Your trusted partner<br>for business growth</h2>
-                <div class="green-divider"></div>
-                <p>Admincog is a premier business solutions provider dedicated to empowering businesses of all sizes with exceptional administrative support, technological expertise, and strategic marketing solutions.</p><br>
-                <p>Founded with a vision to simplify business operations, we leverage cutting-edge technology and industry best practices to deliver customised solutions that drive growth and profitability.</p><br>
-                <p class="sub-head">Our Mission</p>
-                <p>To provide comprehensive business solutions that allow entrepreneurs and companies to focus on what they do best — growing their business and serving their customers.</p>
-                <a href="#services" class="btn btn-green" style="margin-top:28px">Explore Services</a>
-            </div>
-            <div class="f-up" style="transition-delay:0.14s">
-                <div class="about-visual">
-                    <div class="about-img"></div>
-                    <div class="about-badge">
-                        <strong>500+</strong>
-                        <span>Clients Served</span>
-                    </div>
-                </div>
-            </div>
-        </div>
+<section id="about">
+  <div class="about-grid">
+    <div class="about-text-block">
+      <div class="section-eyebrow reveal">About Us</div>
+      <h2 class="section-title reveal reveal-delay-1">Your trusted partner in<br><em>virtual admin</em> support.</h2>
+      <br>
+      <p class="reveal reveal-delay-2">At Admincog Corporate Services, we expertly support your business operations through comprehensive virtual administrative assistance. Our passionate team of professionals is committed to delivering high-quality, tailored services designed around your unique needs.</p>
+      <p class="reveal reveal-delay-3">We recognize the challenges businesses face in managing daily administrative tasks while pursuing strategic objectives. That's why we provide reliable, efficient, and scalable virtual admin solutions — so you can focus on what matters most: growing your business.</p>
+      <p class="reveal reveal-delay-4">Our mission is to revolutionize how businesses handle administrative tasks — optimizing productivity, reducing overhead costs, and promoting sustainable growth for companies of every size.</p>
     </div>
+    <div class="about-visual reveal reveal-delay-2">
+      <div class="about-card">
+        <div class="founder-name">Septinda Jeevaa</div>
+        <div class="founder-title">Founder & CEO, Admincog</div>
+        <p class="founder-bio">With over 20 years of cross-industry experience and a decade specializing in administrative support, Septinda founded Admincog with a clear vision — to empower businesses through efficient, scalable, and impactful virtual solutions. Her leadership has earned Admincog recognition and certification by Startup India.</p>
+        <div class="founder-tags">
+          <span>20+ Yrs Experience</span>
+          <span>Startup India Certified</span>
+          <span>Cross-Industry Expert</span>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
 <!-- SERVICES -->
-<section class="services" id="services">
-    <div class="container">
-        <div class="sec-header center f-up">
-            <span class="sec-label" style="justify-content:center">What We Offer</span>
-            <h2>Our Services</h2>
-            <p>Comprehensive solutions for the modern business</p>
-        </div>
-        <div class="svcs">
-            <div class="svc f-up">
-                <div class="svc-n">01</div>
-                <h3>Virtual Assistant Services</h3>
-                <p>Professional administrative support tailored to your exact business needs — from inbox management to travel logistics.</p>
-                <span class="svc-more" onclick="toggleSvc(this)">Details <i class="fas fa-arrow-right"></i></span>
-                <div class="svc-body">
-                    <ul>
-                        <li>Email and calendar management</li>
-                        <li>Customer support and communication</li>
-                        <li>Data entry and document preparation</li>
-                        <li>Research and report compilation</li>
-                        <li>Meeting coordination and minutes</li>
-                        <li>Travel arrangements and logistics</li>
-                        <li>Social media management and monitoring</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="svc f-up" style="transition-delay:0.1s">
-                <div class="svc-n">02</div>
-                <h3>Web &amp; App Development</h3>
-                <p>Custom digital experiences that engage your audience, reflect your brand identity, and convert visitors into long-term clients.</p>
-                <span class="svc-more" onclick="toggleSvc(this)">Details <i class="fas fa-arrow-right"></i></span>
-                <div class="svc-body">
-                    <ul>
-                        <li>Responsive website design and development</li>
-                        <li>E-commerce platform implementation</li>
-                        <li>Custom web application development</li>
-                        <li>Mobile app development (iOS and Android)</li>
-                        <li>CMS implementation and customisation</li>
-                        <li>Website maintenance and support</li>
-                        <li>Performance optimisation and security</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="svc f-up" style="transition-delay:0.05s">
-                <div class="svc-n">03</div>
-                <h3>Digital Marketing</h3>
-                <p>Data-driven strategies to reach your audience, build brand awareness, and deliver measurable results across every channel.</p>
-                <span class="svc-more" onclick="toggleSvc(this)">Details <i class="fas fa-arrow-right"></i></span>
-                <div class="svc-body">
-                    <ul>
-                        <li>SEO strategy and implementation</li>
-                        <li>Social media marketing and management</li>
-                        <li>Pay-per-click (PPC) advertising</li>
-                        <li>Content marketing and creation</li>
-                        <li>Email marketing campaigns</li>
-                        <li>Analytics and performance reporting</li>
-                        <li>Conversion rate optimisation</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="svc f-up" style="transition-delay:0.15s">
-                <div class="svc-n">04</div>
-                <h3>Pitch Deck Development</h3>
-                <p>Visually striking, strategically crafted presentations that clearly communicate your value proposition to investors and partners.</p>
-                <span class="svc-more" onclick="toggleSvc(this)">Details <i class="fas fa-arrow-right"></i></span>
-                <div class="svc-body">
-                    <ul>
-                        <li>Investor pitch deck creation</li>
-                        <li>Sales and marketing presentations</li>
-                        <li>Business plan visualisation</li>
-                        <li>Data visualisation and infographics</li>
-                        <li>Slide design and layout optimisation</li>
-                        <li>Storytelling and content development</li>
-                        <li>Pitch coaching and presentation training</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+<section id="services">
+  <div class="services-intro">
+    <div>
+      <div class="section-eyebrow reveal">What We Do</div>
+      <h2 class="section-title reveal reveal-delay-1">A full suite of<br><em>business services.</em></h2>
     </div>
+    <p class="services-sub reveal reveal-delay-2">One partner for virtual assistance, web development, and digital marketing. Consolidate your operations, eliminate coordination overhead, and scale with confidence.</p>
+  </div>
+  <div class="services-grid reveal">
+    <div class="service-card">
+      <div class="service-num">01</div>
+      <span class="service-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span>
+      <div class="service-name">Administrative Support</div>
+      <p class="service-desc">Scheduling, email management, calendar coordination, document handling, and customer inquiry management — handled with precision.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-num">02</div>
+      <span class="service-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg></span>
+      <div class="service-name">Social Media Management</div>
+      <p class="service-desc">Content creation, scheduling, audience engagement, and analytics across all platforms to grow your digital presence.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-num">03</div>
+      <span class="service-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 3h18v18H3z" rx="2"/><path d="M3 9h18M9 21V9"/></svg></span>
+      <div class="service-name">Data Entry & Analysis</div>
+      <p class="service-desc">Accurate data entry, cleansing, and analysis that transforms raw information into actionable business intelligence.</p>
+    </div>
+  </div>
+  <div class="services-wide reveal reveal-delay-1">
+    <div class="service-card">
+      <div class="service-num">04</div>
+      <span class="service-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M2 17l10 5 10-5M2 12l10 5 10-5M12 2L2 7l10 5 10-5-10-5z"/></svg></span>
+      <div class="service-name">Bookkeeping</div>
+      <p class="service-desc">Invoice management, account reconciliation, expense tracking, and financial reporting to keep your books clean and current.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-num">05</div>
+      <span class="service-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></span>
+      <div class="service-name">Research</div>
+      <p class="service-desc">Market research, competitor analysis, product research, and industry insights to support informed decision-making at every level.</p>
+    </div>
+  </div>
+  <div class="services-grid reveal reveal-delay-2" style="border-top:none;">
+    <div class="service-card">
+      <div class="service-num">06</div>
+      <span class="service-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+      <div class="service-name">Customer Service</div>
+      <p class="service-desc">Inquiry management, order fulfillment support, and returns handling to keep your customers satisfied and coming back.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-num">07</div>
+      <span class="service-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></span>
+      <div class="service-name">Web Development</div>
+      <p class="service-desc">Visually compelling, functionally robust websites and mobile applications that reflect your brand and drive conversions.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-num">08</div>
+      <span class="service-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span>
+      <div class="service-name">Digital Marketing</div>
+      <p class="service-desc">SEO, content strategy, paid campaigns, and performance analytics crafted to increase visibility and drive measurable growth.</p>
+    </div>
+  </div>
 </section>
-
-<!-- IMAGE BANNER -->
-<div class="img-banner">
-    <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=1800&q=80&auto=format" alt="Team collaboration">
-    <div class="img-banner-overlay">
-        <div class="img-banner-text f-up">
-            <span class="sec-label" style="color:rgba(255,255,255,0.55)">Our Approach</span>
-            <h2>We don't just support your business — we help it thrive</h2>
-            <p>Every engagement begins with deep understanding. We embed ourselves in your goals, challenges, and culture before crafting solutions.</p>
-            <a href="#contact" class="btn btn-white">Start a Conversation</a>
-        </div>
-    </div>
-</div>
 
 <!-- INDUSTRIES -->
-<section class="industries" id="industries">
-    <div class="container">
-        <div class="sec-header f-up" style="margin-bottom:52px">
-            <span class="sec-label">Sectors We Support</span>
-            <h2>Industries We Serve</h2>
-            <p>Tailored solutions for diverse business sectors</p>
-        </div>
-        <div class="inds f-up">
-            <div class="ind"><i class="fas fa-briefcase"></i><h3>SMBs</h3><p>Support for growing enterprises</p></div>
-            <div class="ind"><i class="fas fa-stethoscope"></i><h3>Healthcare</h3><p>Solutions for medical practices</p></div>
-            <div class="ind"><i class="fas fa-graduation-cap"></i><h3>Education</h3><p>Support for institutions</p></div>
-            <div class="ind"><i class="fas fa-shopping-bag"></i><h3>E-commerce</h3><p>Solutions for online retail</p></div>
-            <div class="ind"><i class="fas fa-balance-scale"></i><h3>Legal</h3><p>Support for law firms</p></div>
-            <div class="ind"><i class="fas fa-chart-bar"></i><h3>Finance</h3><p>Financial services solutions</p></div>
-            <div class="ind"><i class="fas fa-building"></i><h3>Real Estate</h3><p>Agents &amp; property managers</p></div>
-            <div class="ind"><i class="fas fa-microchip"></i><h3>Technology</h3><p>Support for tech companies</p></div>
-        </div>
+<section id="industries">
+  <div class="industries-layout">
+    <div class="industries-nav">
+      <div class="section-eyebrow reveal">Industries</div>
+      <h2 class="section-title reveal reveal-delay-1" style="font-size:2rem;">Tailored for<br><em>your sector.</em></h2>
+      <br>
+      <button class="ind-tab active" data-panel="healthcare">
+        <span class="ind-tab-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span> Healthcare
+      </button>
+      <button class="ind-tab" data-panel="finance">
+        <span class="ind-tab-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></span> Banking & Financial
+      </button>
+      <button class="ind-tab" data-panel="realestate">
+        <span class="ind-tab-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span> Real Estate
+      </button>
+      <button class="ind-tab" data-panel="ecommerce">
+        <span class="ind-tab-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></span> e-Commerce
+      </button>
+      <button class="ind-tab" data-panel="smb">
+        <span class="ind-tab-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></span> Small & Medium Business
+      </button>
     </div>
+    <div class="industries-content reveal reveal-delay-2">
+      <div class="ind-panel active" id="panel-healthcare">
+        <h3>Healthcare</h3>
+        <ul class="ind-list">
+          <li>Schedule appointments and manage calendars for healthcare professionals.</li>
+          <li>Handle patient inquiries, appointment reminders, and follow-ups.</li>
+          <li>Assist with medical billing, coding, and insurance claims processing.</li>
+          <li>Maintain electronic health records (EHR) and ensure compliance with healthcare regulations.</li>
+        </ul>
+      </div>
+      <div class="ind-panel" id="panel-finance">
+        <h3>Banking & Financial Services</h3>
+        <ul class="ind-list">
+          <li>Assist with bookkeeping, invoicing, and expense tracking.</li>
+          <li>Manage accounts payable and receivable.</li>
+          <li>Conduct market research and competitive analysis.</li>
+          <li>Prepare financial reports and presentations for clients and stakeholders.</li>
+        </ul>
+      </div>
+      <div class="ind-panel" id="panel-realestate">
+        <h3>Real Estate</h3>
+        <ul class="ind-list">
+          <li>Manage property listings, schedule showings, and coordinate open houses.</li>
+          <li>Assist with lead generation and follow-up with potential buyers or renters.</li>
+          <li>Handle administrative tasks related to property management and rental agreements.</li>
+          <li>Conduct market research and compile property data for analysis.</li>
+        </ul>
+      </div>
+      <div class="ind-panel" id="panel-ecommerce">
+        <h3>e-Commerce</h3>
+        <ul class="ind-list">
+          <li>Manage online store operations, product listings, inventory, and order processing.</li>
+          <li>Provide customer support via email, live chat, and social media.</li>
+          <li>Assist with website maintenance, content updates, and SEO optimization.</li>
+          <li>Monitor sales performance, analyze data, and identify growth opportunities.</li>
+        </ul>
+      </div>
+      <div class="ind-panel" id="panel-smb">
+        <h3>Small & Medium Businesses</h3>
+        <ul class="ind-list">
+          <li>Provide general administrative support including email, calendar, and document preparation.</li>
+          <li>Assist with customer service inquiries, order processing, and invoicing.</li>
+          <li>Manage social media, update website content, and create marketing materials.</li>
+          <li>Conduct research, data entry, and other operational tasks to support your business.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
 </section>
-
-<!-- IMAGE ROW (three photos) -->
-<div class="img-row">
-    <div class="img-row-item">
-        <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800&q=80&auto=format" alt="Digital strategy">
-        <div class="img-row-item-cap">Digital Strategy</div>
-    </div>
-    <div class="img-row-item">
-        <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80&auto=format" alt="Team meeting">
-        <div class="img-row-item-cap">Team Collaboration</div>
-    </div>
-    <div class="img-row-item">
-        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80&auto=format" alt="Business growth">
-        <div class="img-row-item-cap">Business Growth</div>
-    </div>
-</div>
 
 <!-- WHY US -->
-<section class="why" id="why">
-    <div class="container">
-        <div class="sec-header f-up">
-            <span class="sec-label">Our Advantage</span>
-            <h2>Why Choose Admincog</h2>
-            <p>The benefits of building with a dedicated, experienced team</p>
+<section id="why">
+  <div class="why-layout">
+    <div class="why-sticky">
+      <div class="section-eyebrow reveal">Why Admincog</div>
+      <h2 class="section-title reveal reveal-delay-1">One shop.<br><em>Everything</em><br>you need.</h2>
+      <p class="why-sub reveal reveal-delay-2">Say goodbye to coordinating multiple service providers. Access VA services, web development, and digital marketing under one roof — with a team that understands your business holistically.</p>
+      <div class="why-price-note reveal reveal-delay-3">
+        <div class="price-big">$10</div>
+        <div class="price-context">
+          <strong>Per hour vs. competitors' $16–$35/hr</strong>
+          Exceptional quality at a fraction of the market rate. Plus a 7-day results guarantee.
         </div>
-        <div class="why-grid">
-            <div class="why-item f-up">
-                <div class="why-icon"><i class="fas fa-award"></i></div>
-                <h3>Expertise &amp; Experience</h3>
-                <p>Skilled professionals with years of cross-industry experience, delivering high-quality solutions every time.</p>
-            </div>
-            <div class="why-item f-up" style="transition-delay:0.08s">
-                <div class="why-icon"><i class="fas fa-bolt"></i></div>
-                <h3>Quick Turnaround</h3>
-                <p>Efficiency is core to how we work — solutions delivered on time without compromising quality.</p>
-            </div>
-            <div class="why-item f-up" style="transition-delay:0.16s">
-                <div class="why-icon"><i class="fas fa-lock"></i></div>
-                <h3>Confidentiality</h3>
-                <p>Strict protocols protect your sensitive information at every stage of every engagement.</p>
-            </div>
-            <div class="why-item f-up" style="transition-delay:0.04s">
-                <div class="why-icon"><i class="fas fa-users"></i></div>
-                <h3>Dedicated Team</h3>
-                <p>Each client receives a dedicated team who knows your business and is invested in your success.</p>
-            </div>
-            <div class="why-item f-up" style="transition-delay:0.12s">
-                <div class="why-icon"><i class="fas fa-sliders-h"></i></div>
-                <h3>Tailored Solutions</h3>
-                <p>No cookie-cutter approaches. Everything is built specifically around your goals and challenges.</p>
-            </div>
-            <div class="why-item f-up" style="transition-delay:0.2s">
-                <div class="why-icon"><i class="fas fa-chart-line"></i></div>
-                <h3>Measurable Results</h3>
-                <p>Tangible outcomes tracked with regular reporting so you always know the impact of your investment.</p>
-            </div>
-        </div>
+      </div>
     </div>
+    <div class="why-reasons">
+      <div class="why-item reveal">
+        <div class="why-num-box">01</div>
+        <div>
+          <div class="why-item-title">Efficiency & Convenience</div>
+          <p class="why-item-desc">Access a full range of business services from one trusted partner, streamlining your operations and saving valuable time and coordination effort.</p>
+        </div>
+      </div>
+      <div class="why-item reveal reveal-delay-1">
+        <div class="why-num-box">02</div>
+        <div>
+          <div class="why-item-title">Expertise Across Domains</div>
+          <p class="why-item-desc">Our team brings deep expertise in virtual assistance, web development, and digital marketing — delivering exceptional results across every engagement.</p>
+        </div>
+      </div>
+      <div class="why-item reveal reveal-delay-2">
+        <div class="why-num-box">03</div>
+        <div>
+          <div class="why-item-title">Tailored Solutions</div>
+          <p class="why-item-desc">Every business is unique. We take a personalized approach to align our services with your specific goals, budget, and timeline — startup or enterprise.</p>
+        </div>
+      </div>
+      <div class="why-item reveal reveal-delay-3">
+        <div class="why-num-box">04</div>
+        <div>
+          <div class="why-item-title">Seamless Integration</div>
+          <p class="why-item-desc">Our integrated teams collaborate cohesively, ensuring synergy between your online presence, brand marketing, and back-office operations.</p>
+        </div>
+      </div>
+      <div class="why-item reveal">
+        <div class="why-num-box">05</div>
+        <div>
+          <div class="why-item-title">Consistent Quality</div>
+          <p class="why-item-desc">We uphold the highest standards of professionalism and reliability in every task — from the smallest data entry job to complex multi-month projects.</p>
+        </div>
+      </div>
+      <div class="why-item reveal reveal-delay-1">
+        <div class="why-num-box">06</div>
+        <div>
+          <div class="why-item-title">Cost-Effective at Scale</div>
+          <p class="why-item-desc">Competitive pricing and flexible packages deliver maximum value for your investment. Consolidate vendors, reduce overhead, and reinvest in growth.</p>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
-
-
-<!-- GREEN CALLOUT STRIP -->
-<div class="green-callout">
-    <div class="container">
-        <div class="green-callout-inner f-up">
-            <h2>Ready to simplify operations<br><em>and accelerate growth?</em></h2>
-            <div class="cta-group">
-                <a href="#pricing" class="btn btn-white">View Pricing</a>
-                <a href="#contact" class="btn btn-ghost-white">Talk to Us</a>
-            </div>
-        </div>
-    </div>
-</div>
 
 <!-- PRICING -->
-<section class="pricing" id="pricing">
-    <div class="container">
-        <div class="sec-header center f-up">
-            <span class="sec-label" style="justify-content:center">Investment</span>
-            <h2>Plans &amp; Pricing</h2>
-            <p>Flexible options designed for every stage of growth</p>
-        </div>
-        <div class="p-tabs">
-            <button class="p-tab active" onclick="switchPlan('elite',this)">Elite</button>
-            <button class="p-tab" onclick="switchPlan('foundational',this)">Foundational</button>
-            <button class="p-tab" onclick="switchPlan('flexible',this)">Flexible</button>
-        </div>
-
-        <div class="p-plans active" id="elite">
-            <div class="plan f-up">
-                <p class="plan-name">Elite Standard</p>
-                <div><span class="p-price">$999</span><span class="p-period">/month</span></div>
-                <p class="p-desc">Comprehensive support for growing businesses</p>
-                <ul class="p-feats">
-                    <li>40 hrs dedicated VA support</li>
-                    <li>Priority email &amp; task management</li>
-                    <li>Basic social media management</li>
-                    <li>Monthly performance reports</li>
-                    <li>24/7 email support</li>
-                </ul>
-                <a href="#contact" class="plan-btn plan-btn-line">Get Started</a>
-            </div>
-            <div class="plan feat f-up" style="transition-delay:0.1s">
-                <span class="p-badge">Most Popular</span>
-                <p class="plan-name">Elite Pro</p>
-                <div><span class="p-price">$1,499</span><span class="p-period">/month</span></div>
-                <p class="p-desc">Advanced support for established businesses</p>
-                <ul class="p-feats">
-                    <li>60 hrs dedicated VA support</li>
-                    <li>Advanced email &amp; task management</li>
-                    <li>Full social media management</li>
-                    <li>Bi-weekly performance reports</li>
-                    <li>24/7 priority support</li>
-                    <li>Basic website maintenance</li>
-                </ul>
-                <a href="#contact" class="plan-btn plan-btn-gold">Get Started</a>
-            </div>
-            <div class="plan f-up" style="transition-delay:0.2s">
-                <p class="plan-name">Elite Enterprise</p>
-                <div><span class="p-price">$2,299</span><span class="p-period">/month</span></div>
-                <p class="p-desc">Premium support for high-demand businesses</p>
-                <ul class="p-feats">
-                    <li>100 hrs dedicated VA support</li>
-                    <li>Complete business administration</li>
-                    <li>Full social media &amp; content strategy</li>
-                    <li>Weekly performance reports</li>
-                    <li>24/7 VIP + dedicated manager</li>
-                    <li>Full website maintenance</li>
-                    <li>CRM management &amp; optimisation</li>
-                </ul>
-                <a href="#contact" class="plan-btn plan-btn-line">Get Started</a>
-            </div>
-        </div>
-
-        <div class="p-plans" id="foundational">
-            <div class="plan f-up">
-                <p class="plan-name">Foundation Basic</p>
-                <div><span class="p-price">$499</span><span class="p-period">/month</span></div>
-                <p class="p-desc">Essential support for startups</p>
-                <ul class="p-feats">
-                    <li>20 hrs VA support</li>
-                    <li>Basic email management</li>
-                    <li>Calendar organisation</li>
-                    <li>Monthly reports</li>
-                    <li>Business hours support</li>
-                </ul>
-                <a href="#contact" class="plan-btn plan-btn-line">Get Started</a>
-            </div>
-            <div class="plan feat f-up" style="transition-delay:0.1s">
-                <span class="p-badge">Most Popular</span>
-                <p class="plan-name">Foundation Plus</p>
-                <div><span class="p-price">$699</span><span class="p-period">/month</span></div>
-                <p class="p-desc">Enhanced support for growing startups</p>
-                <ul class="p-feats">
-                    <li>30 hrs VA support</li>
-                    <li>Full email &amp; task management</li>
-                    <li>Calendar &amp; meeting coordination</li>
-                    <li>Bi-weekly reports</li>
-                    <li>Extended hours support</li>
-                    <li>Basic research assistance</li>
-                </ul>
-                <a href="#contact" class="plan-btn plan-btn-gold">Get Started</a>
-            </div>
-            <div class="plan f-up" style="transition-delay:0.2s">
-                <p class="plan-name">Foundation Pro</p>
-                <div><span class="p-price">$899</span><span class="p-period">/month</span></div>
-                <p class="p-desc">Comprehensive support for established startups</p>
-                <ul class="p-feats">
-                    <li>40 hrs VA support</li>
-                    <li>Complete business administration</li>
-                    <li>Full calendar &amp; travel coordination</li>
-                    <li>Weekly detailed reports</li>
-                    <li>24/7 email support</li>
-                    <li>Full research assistance</li>
-                    <li>Basic social media management</li>
-                </ul>
-                <a href="#contact" class="plan-btn plan-btn-line">Get Started</a>
-            </div>
-        </div>
-
-        <div class="p-plans" id="flexible">
-            <div class="custom-wrap">
-                <div class="custom-box f-up">
-                    <span class="sec-label" style="justify-content:center;margin-bottom:18px">Tailored Engagement</span>
-                    <h3>Custom Package</h3>
-                    <p>Have unique requirements? We build bespoke solutions aligned precisely to your business — nothing more, nothing less.</p>
-                    <a href="#contact" class="btn btn-green">Request a Custom Quote</a>
-                </div>
-            </div>
-        </div>
+<section id="pricing">
+  <div class="pricing-header">
+    <div class="section-eyebrow">Plans & Pricing</div>
+    <h2 class="section-title">Transparent,<br><em>flexible</em> pricing.</h2>
+    <p>All plans include AI co-pilot integration and a 7-day results guarantee. Scale up or down as your business needs evolve.</p>
+  </div>
+  <div class="pricing-cards">
+    <div class="pricing-card reveal">
+      <div class="pricing-name">Starter</div>
+      <div class="pricing-desc">Ideal for solopreneurs & small teams</div>
+      <div class="pricing-rate">$440<sub>/mo</sub></div>
+      <div class="pricing-per">40 hours · $11/hour</div>
+      <div class="pricing-divider"></div>
+      <ul class="pricing-features">
+        <li class="pricing-feature"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>40 hours per month</li>
+        <li class="pricing-feature"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>India core hours coverage</li>
+        <li class="pricing-feature"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Admin & email support</li>
+        <li class="pricing-feature"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Monthly progress report</li>
+        <li class="pricing-feature"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Email & chat support</li>
+      </ul>
+      <a href="#contact" class="btn-pricing btn-pricing-light">Get Started</a>
     </div>
+    <div class="pricing-card featured reveal reveal-delay-1">
+      <div class="featured-label">Most Popular</div>
+      <div class="pricing-name">Growth</div>
+      <div class="pricing-desc">For growing businesses needing consistent support</div>
+      <div class="pricing-rate">$880<sub>/mo</sub></div>
+      <div class="pricing-per">80 hours · $11/hour</div>
+      <div class="pricing-divider"></div>
+      <ul class="pricing-features">
+        <li class="pricing-feature"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>80 hours per month</li>
+        <li class="pricing-feature"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>India core hours coverage</li>
+        <li class="pricing-feature"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>All Starter features</li>
+        <li class="pricing-feature"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Dedicated VA pod</li>
+        <li class="pricing-feature"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>7-day results guarantee</li>
+        <li class="pricing-feature"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Priority response SLA</li>
+      </ul>
+      <a href="#contact" class="btn-pricing btn-pricing-gold">Get Started</a>
+    </div>
+    <div class="pricing-card reveal reveal-delay-2">
+      <div class="pricing-name">Enterprise</div>
+      <div class="pricing-desc">For teams requiring full-time dedicated support</div>
+      <div class="pricing-rate">$1,760<sub>/mo</sub></div>
+      <div class="pricing-per">160 hours · $11/hour</div>
+      <div class="pricing-divider"></div>
+      <ul class="pricing-features">
+        <li class="pricing-feature"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>160 hours per month</li>
+        <li class="pricing-feature"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>US/EU timezone overlap</li>
+        <li class="pricing-feature"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>All Growth features</li>
+        <li class="pricing-feature"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Backup pod coverage</li>
+        <li class="pricing-feature"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>AI co-pilot integration</li>
+        <li class="pricing-feature"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Dedicated account manager</li>
+      </ul>
+      <a href="#contact" class="btn-pricing btn-pricing-light">Get Started</a>
+    </div>
+  </div>
+  <p class="pricing-note">Custom packages available for unique needs. Add-ons: Research SLA (+15%), Backup Pod (+10%), AI Co-Pilot (+12%).</p>
 </section>
 
-<!-- CONSULTATION -->
-<section class="consult" id="calendar">
-    <div class="container">
-        <div class="consult-inner f-up">
-            <div class="consult-left">
-                <span class="sec-label">Free Strategy Session</span>
-                <h2>Book a Consultation</h2>
-                <p>Schedule a complimentary 30-minute session with a specialist. No commitment required — just clarity.</p>
-                <ul class="consult-perks">
-                    <li><i class="fas fa-check"></i> Understand your specific business challenges</li>
-                    <li><i class="fas fa-check"></i> Explore solutions tailored to your goals</li>
-                    <li><i class="fas fa-check"></i> Receive a clear roadmap with zero obligation</li>
-                    <li><i class="fas fa-check"></i> Meet your dedicated point of contact</li>
-                </ul>
-            </div>
-            <div class="consult-right">
-                <h3>Choose a Time</h3>
-                <p>Pick a slot that works for you and we'll take it from there.</p>
-                <a href="#" class="btn btn-green" onclick="openCal(event)">View Available Times</a>
-            </div>
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="testi-header">
+    <div class="section-eyebrow reveal">Client Voices</div>
+    <h2 class="section-title reveal reveal-delay-1">Trusted by businesses<br><em>worldwide.</em></h2>
+  </div>
+  <div class="testi-grid">
+    <div class="testi-card reveal">
+      <div class="testi-stars"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+      <p class="testi-quote">"I have been using Admincog's virtual assistant services for several months now and I couldn't be happier. Their team is professional, reliable, and always goes above and beyond to ensure my business runs smoothly."</p>
+      <div class="testi-author">
+        <div class="testi-avatar"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <div>
+          <div class="testi-name">Small Business Owner</div>
+          <div class="testi-role">India</div>
         </div>
+      </div>
     </div>
+    <div class="testi-card reveal reveal-delay-1">
+      <div class="testi-stars"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+      <p class="testi-quote">"Admincog's virtual assistant services have been a game changer for our business. Their team is knowledgeable, proactive, and always delivers high-quality work."</p>
+      <div class="testi-author">
+        <div class="testi-avatar"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <div>
+          <div class="testi-name">Business Owner</div>
+          <div class="testi-role">USA</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card reveal reveal-delay-2">
+      <div class="testi-stars"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+      <p class="testi-quote">"Working with Septinda and her team was great — very professional, able to quickly understand and deliver whatever is required. I'd gladly recommend Admincog for anyone looking for virtual assistants."</p>
+      <div class="testi-author">
+        <div class="testi-avatar"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <div>
+          <div class="testi-name">Senior Database Engineer</div>
+          <div class="testi-role">India</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card reveal reveal-delay-3">
+      <div class="testi-stars"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+      <p class="testi-quote">"I had the opportunity to work with Admincog for virtual assistant services. Septinda was professional, knowledgeable, and client-focused. I would enjoy the opportunity to work with her in the future."</p>
+      <div class="testi-author">
+        <div class="testi-avatar"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <div>
+          <div class="testi-name">ERP Program Manager / SAP Architect</div>
+          <div class="testi-role">USA</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card reveal reveal-delay-1">
+      <div class="testi-stars"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+      <p class="testi-quote">"At Admincog, we pride ourselves on providing exceptional virtual assistant services to our clients. Our team is built on professionalism, efficiency, and a genuine commitment to client success."</p>
+      <div class="testi-author">
+        <div class="testi-avatar"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <div>
+          <div class="testi-name">Management Team</div>
+          <div class="testi-role">Admincog Corporate Services</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card reveal reveal-delay-2">
+      <div class="testi-stars"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+      <p class="testi-quote">"Recognized in The Dream India Report for our innovative AI-powered virtual assistant solutions. We continue to set new standards for the industry."</p>
+      <div class="testi-author">
+        <div class="testi-avatar"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8M15 18h-5M10 6h8v4h-8z"/></svg></div>
+        <div>
+          <div class="testi-name">Admincog in the News</div>
+          <div class="testi-role">The Dream India · August 2025</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWS -->
+<section id="news">
+  <div class="news-wrap">
+    <div class="section-eyebrow reveal">Latest</div>
+    <h2 class="section-title reveal reveal-delay-1">In the news.</h2>
+    <br><br>
+    <div class="news-card reveal">
+      <div>
+        <div class="news-meta">August 12, 2025 · The Dream India | Daily Hunt</div>
+        <div class="news-title">Admincog Featured in Industry Spotlight</div>
+        <p class="news-excerpt">Admincog Corporate Services recognized for innovative AI-powered virtual assistant solutions in The Dream India Report, celebrating excellence in India's startup ecosystem.</p>
+      </div>
+      <a href="http://dhunt.in/11rSqn" target="_blank" class="news-link">Read Article →</a>
+    </div>
+  </div>
 </section>
 
 <!-- CONTACT -->
-<section class="contact" id="contact">
-    <div class="container">
-        <div class="contact-grid">
-            <div class="f-up">
-                <span class="sec-label">Reach Out</span>
-                <h2>Get in Touch</h2>
-                <div class="green-divider"></div>
-                <p>Ready to take the next step? Our team is here to help you find the right solution and get started.</p><br>
-                <div class="c-item">
-                    <div class="c-icon"><i class="fas fa-envelope"></i></div>
-                    <div class="c-item-text"><span>Email</span><strong>hello@admincog.com</strong></div>
-                </div>
-                <div class="c-item">
-                    <div class="c-icon"><i class="fas fa-phone"></i></div>
-                    <div class="c-item-text"><span>Phone</span><strong>+1 (555) 123-4567</strong></div>
-                </div>
-                <!-- Office image -->
-                <div style="margin-top:32px;border-radius:2px;overflow:hidden;height:200px;">
-                    <img src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=700&q=80&auto=format" alt="Office" style="width:100%;height:100%;object-fit:cover;display:block;">
-                </div>
-            </div>
-            <div class="c-form f-up" style="transition-delay:0.12s">
-                <form onsubmit="handleForm(event)">
-                    <div class="f-row">
-                        <div class="fg"><label>First Name</label><input type="text" required></div>
-                        <div class="fg"><label>Last Name</label><input type="text" required></div>
-                    </div>
-                    <div class="fg"><label>Email Address</label><input type="email" required></div>
-                    <div class="fg"><label>Message</label><textarea rows="5" required></textarea></div>
-                    <button type="submit" class="btn btn-green" style="width:100%;border:none;cursor:pointer">Send Message</button>
-                </form>
-            </div>
+<section id="contact">
+  <div class="contact-layout">
+    <div class="contact-info">
+      <div class="section-eyebrow reveal">Get in Touch</div>
+      <h2 class="section-title reveal reveal-delay-1">Let's start a<br><em>conversation.</em></h2>
+      <p class="contact-text reveal reveal-delay-2">Ready to offload your administrative burden and scale your business? Reach out for a free evaluation and discover how Admincog can support your growth.</p>
+      <div class="reveal reveal-delay-3">
+        <div class="contact-detail">
+          <div class="cd-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.76a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7a2 2 0 0 1 1.72 2.02z"/></svg></div>
+          <div class="cd-text">
+            <strong>Phone</strong>
+            <a href="tel:+919535409798">+91 95354 09798</a>
+          </div>
         </div>
+        <div class="contact-detail">
+          <div class="cd-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+          <div class="cd-text">
+            <strong>Email</strong>
+            <a href="mailto:support@admincogcorporateservices.com">support@admincogcorporateservices.com</a>
+          </div>
+        </div>
+        <div class="contact-detail">
+          <div class="cd-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+          <div class="cd-text">
+            <strong>Website</strong>
+            <a href="https://www.admincogcorporateservices.com" target="_blank">admincogcorporateservices.com</a>
+          </div>
+        </div>
+        <div class="contact-detail">
+          <div class="cd-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+          <div class="cd-text">
+            <strong>Response Time</strong>
+            Within 24 hours — often same day
+          </div>
+        </div>
+      </div>
     </div>
+    <div class="contact-form reveal reveal-delay-2">
+      <form id="contactForm">
+        <div class="form-row">
+          <div class="form-field">
+            <label>First Name *</label>
+            <input type="text" required placeholder="Jane">
+          </div>
+          <div class="form-field">
+            <label>Last Name *</label>
+            <input type="text" required placeholder="Smith">
+          </div>
+        </div>
+        <div class="form-field">
+          <label>Email Address *</label>
+          <input type="email" required placeholder="jane@company.com">
+        </div>
+        <div class="form-field">
+          <label>Message *</label>
+          <textarea required placeholder="Tell us about your business and what you need help with…"></textarea>
+        </div>
+        <button type="submit" class="form-submit">Send Message →</button>
+      </form>
+      <div class="form-success" id="formSuccess">
+        <h4>Message received!</h4>
+        <p>Thank you for reaching out. Our team will get back to you within 24 hours.</p>
+      </div>
+    </div>
+  </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-    <div class="container">
-        <div class="foot-grid">
-            <div class="foot-brand">
-                <a href="#" class="logo foot-logo">Admincog</a>
-                <div class="foot-green-bar"></div>
-                <p>Professional business solutions that help you focus on what matters most — growing your business.</p>
-                <div class="soc">
-                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                </div>
-            </div>
-            <div class="foot-col">
-                <h4>Company</h4>
-                <ul>
-                    <li><a href="#about">About Us</a></li>
-                    <li><a href="#why">Why Us</a></li>
-                    <li><a href="#pricing">Pricing</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </div>
-            <div class="foot-col">
-                <h4>Services</h4>
-                <ul>
-                    <li><a href="#services">Virtual Assistance</a></li>
-                    <li><a href="#services">Web Development</a></li>
-                    <li><a href="#services">Digital Marketing</a></li>
-                    <li><a href="#services">Pitch Decks</a></li>
-                </ul>
-            </div>
-            <div class="foot-col">
-                <h4>Contact</h4>
-                <ul>
-                    <li><a href="mailto:hello@admincog.com">hello@admincog.com</a></li>
-                    <li><a href="tel:+15551234567">+1 (555) 123-4567</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="foot-bottom">
-            <span>&copy; 2025 Admincog. All Rights Reserved.</span>
-            <span style="opacity:0.4">Corporate Services &amp; Business Solutions</span>
-        </div>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <span class="footer-logo">Admin<span>cog</span></span>
+      <p class="footer-tagline">AI-powered virtual assistant services for businesses worldwide. Efficient, scalable, and cost-effective solutions designed around you.</p>
+      <p style="font-size:0.78rem; color: rgba(250,250,248,0.3); display:flex; align-items:center; gap:0.4rem;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width:13px;height:13px;stroke:rgba(200,169,110,0.5);stroke-width:1.5;fill:none;flex-shrink:0;"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg> Certified by Startup India</p>
     </div>
+    <div class="footer-col">
+      <h5>Services</h5>
+      <ul>
+        <li><a href="#services">Virtual Assistance</a></li>
+        <li><a href="#services">Social Media Management</a></li>
+        <li><a href="#services">Data Entry</a></li>
+        <li><a href="#services">Bookkeeping</a></li>
+        <li><a href="#services">Research</a></li>
+        <li><a href="#services">Web Development</a></li>
+        <li><a href="#services">Digital Marketing</a></li>
+        <li><a href="#services">Pitch Decks</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Company</h5>
+      <ul>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#industries">Industries</a></li>
+        <li><a href="#why">Why Choose Us</a></li>
+        <li><a href="#pricing">Plans & Pricing</a></li>
+        <li><a href="#testimonials">Testimonials</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Contact</h5>
+      <ul>
+        <li><a href="tel:+919535409798">+91 95354 09798</a></li>
+        <li><a href="mailto:support@admincogcorporateservices.com">support@admincogcorporate<br>services.com</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy">© 2025 Admincog Corporate Services. All rights reserved.</p>
+    <div class="footer-legal">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms & Conditions</a>
+      <a href="#">Cancellation/Refund Policy</a>
+    </div>
+  </div>
 </footer>
 
-<!-- MODAL -->
-<div class="overlay" id="cal-overlay">
-    <div class="modal">
-        <button class="m-close" onclick="closeCal()"><i class="fas fa-times"></i></button>
-        <h2>Book Your Consultation</h2>
-        <iframe src="about:blank" id="cal-frame" class="cal-frame"></iframe>
-    </div>
-</div>
-
 <script>
-    // Nav scroll
-    const nav = document.getElementById('nav');
-    window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 50));
+  // ── Cursor
+  const dot = document.getElementById('cursorDot');
+  const ring = document.getElementById('cursorRing');
+  document.addEventListener('mousemove', e => {
+    dot.style.transform = `translate(${e.clientX - 4}px, ${e.clientY - 4}px)`;
+    ring.style.transform = `translate(${e.clientX - 18}px, ${e.clientY - 18}px)`;
+  });
 
-    // Hamburger menu
-    const mobBtn = document.getElementById('mob-btn');
-    const mobDrawer = document.getElementById('mob-drawer');
+  // ── Navbar scroll
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 60);
+  });
 
-    function closeDrwr() {
-        mobBtn.classList.remove('active');
-        mobDrawer.classList.remove('open');
-        document.body.style.overflow = '';
-    }
-
-    mobBtn.addEventListener('click', () => {
-        const isOpen = mobDrawer.classList.contains('open');
-        if (isOpen) {
-            closeDrwr();
-        } else {
-            mobBtn.classList.add('active');
-            mobDrawer.classList.add('open');
-            document.body.style.overflow = 'hidden';
-        }
+  // ── Reveal on scroll
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
     });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  reveals.forEach(r => observer.observe(r));
 
-    // Smooth scroll
-    document.querySelectorAll('a[href^="#"]').forEach(a => {
-        a.addEventListener('click', e => {
-            const t = document.querySelector(a.getAttribute('href'));
-            if (t) { e.preventDefault(); scrollTo({ top: t.offsetTop - 74, behavior: 'smooth' }); }
-        });
+  // ── Industries tabs
+  document.querySelectorAll('.ind-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.ind-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.ind-panel').forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('panel-' + tab.dataset.panel).classList.add('active');
     });
+  });
 
-    // Fade-up
-    const io = new IntersectionObserver(entries => {
-        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('vis'); io.unobserve(e.target); } });
-    }, { threshold: 0.1 });
-    document.querySelectorAll('.f-up').forEach(el => io.observe(el));
+  // ── Contact form
+  document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    this.style.display = 'none';
+    document.getElementById('formSuccess').style.display = 'block';
+  });
 
-    // Service toggle
-    function toggleSvc(el) {
-        const b = el.nextElementSibling;
-        b.classList.toggle('open');
-        const i = el.querySelector('i');
-        i.style.transform = b.classList.contains('open') ? 'rotate(90deg)' : '';
-        el.childNodes[0].textContent = b.classList.contains('open') ? 'Less ' : 'Details ';
-    }
+  // ── Mobile nav
+  document.getElementById('hamburger').addEventListener('click', () => {
+    document.getElementById('mobileNav').classList.add('open');
+  });
+  document.getElementById('mobileClose').addEventListener('click', closeMobileNav);
+  function closeMobileNav() {
+    document.getElementById('mobileNav').classList.remove('open');
+  }
 
-    // Pricing tabs
-    function switchPlan(id, btn) {
-        document.querySelectorAll('.p-tab').forEach(t => t.classList.remove('active'));
-        btn.classList.add('active');
-        document.querySelectorAll('.p-plans').forEach(p => p.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-    }
-
-    // Calendar modal
-    function openCal(e) {
-        e && e.preventDefault();
-        document.getElementById('cal-overlay').classList.add('open');
-        document.getElementById('cal-frame').src = 'https://cal.com/your-calendar-link';
-    }
-
-    function closeCal() {
-        document.getElementById('cal-overlay').classList.remove('open');
-        document.getElementById('cal-frame').src = 'about:blank';
-    }
-
-    document.getElementById('cal-overlay').addEventListener('click', function(e) {
-        if (e.target === this) closeCal();
+  // ── Smooth active nav link highlight
+  const sections = document.querySelectorAll('section[id], #hero');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let cur = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 120) cur = s.id;
     });
-
-    // Form submit
-    function handleForm(e) {
-        e.preventDefault();
-        alert("Thank you — we'll be in touch shortly.");
-        e.target.reset();
-    }
+    navLinks.forEach(a => {
+      a.style.color = '';
+      if (a.getAttribute('href') === '#' + cur) a.style.color = 'var(--accent)';
+    });
+  });
 </script>
 </body>
 </html>
