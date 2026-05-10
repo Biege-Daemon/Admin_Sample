@@ -3,1036 +3,710 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admincog Corporate Services — AI-Powered Virtual Assistants</title>
+<title>Admincog — Administrative & Executive Services</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=Space+Mono&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.383.0/umd/lucide.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  :root {
-    --ink: #0d0f14;
-    --ink-2: #1c1f28;
-    --ink-3: #2d3142;
-    --smoke: #f4f3ef;
-    --smoke-2: #eae9e3;
-    --mist: #c8c6bd;
-    --accent: #c8a96e;
-    --accent-2: #3a5a8c;
-    --white: #fafaf8;
-    --fs-hero: clamp(3rem, 7vw, 6.5rem);
-    --fs-h2: clamp(2rem, 4vw, 3.2rem);
-    --fs-h3: clamp(1.1rem, 2vw, 1.4rem);
-    --fs-body: 1rem;
-    --fs-sm: 0.85rem;
-    --radius: 2px;
-    --ease: cubic-bezier(0.16, 1, 0.3, 1);
-  }
+:root {
+  --navy:   #0b1f33;
+  --teal:   #2f6f73;
+  --taupe:  #b8afa3;
+  --ivory:  #faf9f6;
+  --gold:   #b89b5e;
+  --ink:    #2b2b2b;
+  --muted:  #5c5c5c;
+  --light:  #909090;
+  --rule:   #e4e0da;
+  --white:  #ffffff;
+  --teal-pale: #eef4f4;
+}
 
-  html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; }
 
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--smoke);
-    color: var(--ink);
-    overflow-x: hidden;
-    font-size: var(--fs-body);
-    line-height: 1.6;
-    font-weight: 400;
-  }
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--white);
+  color: var(--ink);
+  font-size: 1rem;
+  line-height: 1.65;
+  font-weight: 400;
+  overflow-x: hidden;
+}
 
-  /* ── SCROLLBAR ── */
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: var(--smoke); }
-  ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--ivory); }
+::-webkit-scrollbar-thumb { background: var(--gold); }
 
-  /* ── CURSOR DOT ── */
-  .cursor-dot {
-    width: 8px; height: 8px;
-    background: var(--accent);
-    border-radius: 50%;
-    position: fixed; top: 0; left: 0;
-    pointer-events: none;
-    z-index: 9999;
-    transition: transform 0.15s var(--ease), opacity 0.3s;
-    transform: translate(-50%, -50%);
-  }
-  .cursor-ring {
-    width: 36px; height: 36px;
-    border: 1px solid var(--accent);
-    border-radius: 50%;
-    position: fixed; top: 0; left: 0;
-    pointer-events: none;
-    z-index: 9998;
-    transition: transform 0.4s var(--ease), opacity 0.3s;
-    transform: translate(-50%, -50%);
-    opacity: 0.5;
-  }
+/* ─── NAV ─── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: var(--white);
+  border-bottom: 1px solid var(--rule);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 4rem;
+  height: 68px;
+  transition: box-shadow 0.3s;
+}
+nav.raised { box-shadow: 0 2px 20px rgba(11,31,51,0.08); }
 
-  /* ── NAV ── */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0;
-    z-index: 100;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 1.4rem 4rem;
-    transition: background 0.4s, backdrop-filter 0.4s, padding 0.3s;
-  }
-  nav.scrolled {
-    background: rgba(13, 15, 20, 0.92);
-    backdrop-filter: blur(18px);
-    padding: 1rem 4rem;
-  }
-  .nav-logo {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.35rem;
-    color: var(--white);
-    letter-spacing: -0.01em;
-    text-decoration: none;
-  }
-  .nav-logo span { color: var(--accent); }
-  .nav-links { display: flex; gap: 2.4rem; list-style: none; }
-  .nav-links a {
-    font-size: 0.82rem;
-    font-weight: 500;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: rgba(250,250,248,0.65);
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-  .nav-links a:hover { color: var(--accent); }
-  .nav-cta {
-    background: var(--accent);
-    color: var(--ink) !important;
-    padding: 0.5rem 1.4rem;
-    border-radius: var(--radius);
-    font-weight: 600 !important;
-    transition: background 0.2s, transform 0.2s !important;
-  }
-  .nav-cta:hover { background: #d4b87a !important; transform: translateY(-1px); }
+.logo-wrap {
+  display: flex; align-items: center; gap: 0.6rem;
+  text-decoration: none;
+}
+.logo-icon { flex-shrink: 0; }
+.logo-text-block { display: flex; flex-direction: column; line-height: 1; }
+.logo-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem; font-weight: 700;
+  color: var(--navy); letter-spacing: 0.01em;
+  line-height: 1.2;
+}
 
-  .nav-hamburger {
-    display: none;
-    flex-direction: column; gap: 5px; cursor: pointer;
-    background: none; border: none; padding: 4px;
-  }
-  .nav-hamburger span {
-    display: block; width: 24px; height: 1.5px;
-    background: var(--white); transition: 0.3s;
-  }
+.nav-links { display: flex; align-items: center; gap: 0.2rem; list-style: none; }
+.nav-links a {
+  font-size: 0.78rem; font-weight: 500; letter-spacing: 0.04em;
+  color: var(--muted); text-decoration: none; padding: 0.45rem 0.9rem;
+  border-radius: 3px; transition: color 0.2s, background 0.2s;
+}
+.nav-links a:hover { color: var(--navy); background: var(--ivory); }
+.nav-cta {
+  background: var(--gold) !important; color: var(--white) !important;
+  padding: 0.5rem 1.3rem !important; margin-left: 0.5rem;
+  font-weight: 600 !important;
+}
+.nav-cta:hover { background: #a68850 !important; }
 
-  /* ── HERO ── */
-  #hero {
-    min-height: 100vh;
-    background: var(--ink);
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: center;
-    position: relative;
-    overflow: hidden;
-    padding: 0 4rem;
-  }
-  .hero-bg-grid {
-    position: absolute; inset: 0;
-    background-image:
-      linear-gradient(rgba(200,169,110,0.06) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(200,169,110,0.06) 1px, transparent 1px);
-    background-size: 60px 60px;
-    pointer-events: none;
-  }
-  .hero-bg-circle {
-    position: absolute;
-    width: 600px; height: 600px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(58,90,140,0.18) 0%, transparent 70%);
-    right: -100px; top: 50%;
-    transform: translateY(-50%);
-    pointer-events: none;
-  }
-  .hero-content { position: relative; z-index: 2; padding-top: 6rem; }
-  .hero-eyebrow {
-    display: inline-flex; align-items: center; gap: 0.7rem;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.72rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 1.8rem;
-  }
-  .hero-eyebrow::before {
-    content: '';
-    display: block; width: 32px; height: 1px;
-    background: var(--accent);
-  }
-  .hero-h1 {
-    font-family: 'DM Serif Display', serif;
-    font-size: var(--fs-hero);
-    line-height: 1.05;
-    color: var(--white);
-    letter-spacing: -0.02em;
-    margin-bottom: 1.6rem;
-  }
-  .hero-h1 em {
-    font-style: italic;
-    color: var(--accent);
-  }
-  .hero-sub {
-    font-size: 1.1rem;
-    color: rgba(250,250,248,0.55);
-    line-height: 1.7;
-    max-width: 460px;
-    margin-bottom: 2.8rem;
-    font-weight: 300;
-  }
-  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
-  .btn-primary {
-    display: inline-flex; align-items: center; gap: 0.6rem;
-    background: var(--accent);
-    color: var(--ink);
-    font-weight: 600;
-    font-size: 0.88rem;
-    letter-spacing: 0.04em;
-    padding: 0.9rem 2rem;
-    border-radius: var(--radius);
-    text-decoration: none;
-    transition: transform 0.2s var(--ease), box-shadow 0.2s;
-  }
-  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(200,169,110,0.3); }
-  .btn-ghost {
-    display: inline-flex; align-items: center; gap: 0.6rem;
-    border: 1px solid rgba(250,250,248,0.2);
-    color: var(--white);
-    font-weight: 500;
-    font-size: 0.88rem;
-    letter-spacing: 0.04em;
-    padding: 0.9rem 2rem;
-    border-radius: var(--radius);
-    text-decoration: none;
-    transition: border-color 0.2s, background 0.2s;
-  }
-  .btn-ghost:hover { border-color: var(--accent); background: rgba(200,169,110,0.05); }
+.burger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
+.burger span { display: block; width: 20px; height: 1.5px; background: var(--navy); }
 
-  .hero-right {
-    position: relative; z-index: 2;
-    display: flex; justify-content: flex-end; align-items: center;
-    padding-top: 6rem;
-  }
-  .hero-stats-card {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 6px;
-    padding: 2.5rem;
-    width: 100%;
-    max-width: 380px;
-    backdrop-filter: blur(8px);
-  }
-  .stat-row {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 1.6rem; margin-bottom: 1.6rem;
-  }
-  .stat-item { }
-  .stat-number {
-    font-family: 'DM Serif Display', serif;
-    font-size: 2.6rem;
-    color: var(--white);
-    line-height: 1;
-    margin-bottom: 0.3rem;
-  }
-  .stat-number span { color: var(--accent); }
-  .stat-label {
-    font-size: 0.78rem;
-    color: rgba(250,250,248,0.45);
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-  }
-  .stat-divider {
-    height: 1px; background: rgba(255,255,255,0.07);
-    margin: 1.6rem 0;
-  }
-  .startup-badge {
-    display: flex; align-items: center; gap: 0.8rem;
-  }
-  .badge-icon {
-    width: 36px; height: 36px;
-    background: var(--accent);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1rem;
-    flex-shrink: 0;
-  }
-  .badge-text { font-size: 0.8rem; color: rgba(250,250,248,0.6); line-height: 1.4; }
-  .badge-text strong { color: var(--white); display: block; font-size: 0.82rem; }
+.mob-nav {
+  display: none; position: fixed; inset: 0; background: var(--white);
+  z-index: 200; flex-direction: column; padding: 5rem 2.5rem 3rem;
+  border-top: 3px solid var(--gold);
+}
+.mob-nav.open { display: flex; }
+.mob-nav a {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.7rem; color: var(--navy); text-decoration: none;
+  padding: 1rem 0; border-bottom: 1px solid var(--rule); font-weight: 400;
+}
+.mob-nav a:hover { color: var(--teal); }
+.mob-close { position: absolute; top: 1.5rem; right: 2rem; background: none; border: none; cursor: pointer; font-size: 1.2rem; color: var(--light); }
 
-  .hero-scroll-hint {
-    position: absolute;
-    bottom: 2.5rem; left: 50%;
-    transform: translateX(-50%);
-    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
-    color: rgba(250,250,248,0.3);
-    font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase;
-  }
-  .scroll-line {
-    width: 1px; height: 50px;
-    background: linear-gradient(to bottom, rgba(200,169,110,0.6), transparent);
-    animation: scrollPulse 2s ease-in-out infinite;
-  }
-  @keyframes scrollPulse {
-    0%, 100% { opacity: 1; transform: scaleY(1); }
-    50% { opacity: 0.3; transform: scaleY(0.6); }
-  }
+/* ─── HERO ─── */
+#hero {
+  margin-top: 68px;
+  background: var(--navy);
+  padding: 6rem 4rem 5rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  align-items: center;
+  min-height: calc(100vh - 68px);
+}
 
-  /* ── MARQUEE ── */
-  .marquee-wrap {
-    background: var(--ink-2);
-    border-top: 1px solid rgba(200,169,110,0.15);
-    border-bottom: 1px solid rgba(200,169,110,0.15);
-    padding: 1rem 0;
-    overflow: hidden;
-  }
-  .marquee-track {
-    display: flex; gap: 4rem;
-    animation: marquee 30s linear infinite;
-    white-space: nowrap;
-  }
-  .marquee-track:hover { animation-play-state: paused; }
-  .marquee-item {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.72rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: rgba(200,169,110,0.6);
-    display: flex; align-items: center; gap: 1.5rem;
-    flex-shrink: 0;
-  }
-  .marquee-item::after { content: '◆'; font-size: 0.5rem; color: var(--accent); }
-  @keyframes marquee {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
-  }
+.hero-label {
+  display: flex; align-items: center; gap: 0.6rem;
+  margin-bottom: 1.6rem;
+}
+.hero-label-line { width: 28px; height: 2px; background: var(--gold); }
+.hero-label span {
+  font-size: 0.7rem; font-weight: 600; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--gold);
+}
 
-  /* ── SECTIONS SHARED ── */
-  section { padding: 7rem 4rem; }
-  .section-eyebrow {
-    display: inline-flex; align-items: center; gap: 0.7rem;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.72rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 1.2rem;
-  }
-  .section-eyebrow::before {
-    content: '';
-    display: block; width: 24px; height: 1px;
-    background: var(--accent);
-  }
-  .section-title {
-    font-family: 'DM Serif Display', serif;
-    font-size: var(--fs-h2);
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-    color: var(--ink);
-  }
-  .section-title em { font-style: italic; color: var(--accent); }
+h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.6rem, 4.5vw, 4.2rem);
+  font-weight: 700; line-height: 1.12;
+  color: var(--white); letter-spacing: -0.02em;
+  margin-bottom: 1.4rem;
+}
+h1 em { font-style: italic; color: var(--gold); }
 
-  /* reveal animation */
-  .reveal {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
-  }
-  .reveal.visible { opacity: 1; transform: translateY(0); }
-  .reveal-delay-1 { transition-delay: 0.1s; }
-  .reveal-delay-2 { transition-delay: 0.2s; }
-  .reveal-delay-3 { transition-delay: 0.3s; }
-  .reveal-delay-4 { transition-delay: 0.4s; }
+.hero-body {
+  font-size: 1rem; color: rgba(250,249,246,0.72);
+  line-height: 1.8; max-width: 440px;
+  font-weight: 300; margin-bottom: 2.5rem;
+}
 
-  /* ── ABOUT ── */
-  #about { background: var(--smoke); }
-  .about-grid {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 6rem; align-items: center;
-    max-width: 1200px; margin: 0 auto;
-  }
-  .about-text-block { }
-  .about-text-block p {
-    color: #4a4e5c;
-    line-height: 1.8;
-    font-size: 1.05rem;
-    margin-bottom: 1.5rem;
-    font-weight: 300;
-  }
-  .about-text-block p:last-child { margin-bottom: 0; }
-  .about-visual {
-    position: relative;
-  }
-  .about-card {
-    background: var(--ink);
-    color: var(--white);
-    padding: 3rem;
-    border-radius: 4px;
-    position: relative;
-  }
-  .about-card::before {
-    content: '';
-    position: absolute;
-    top: -8px; left: -8px;
-    right: 8px; bottom: 8px;
-    border: 1px solid var(--accent);
-    border-radius: 4px;
-    z-index: -1;
-  }
-  .founder-name {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.7rem;
-    margin-bottom: 0.3rem;
-  }
-  .founder-title {
-    font-size: 0.8rem;
-    color: var(--accent);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 1.5rem;
-  }
-  .founder-bio {
-    font-size: 0.9rem;
-    color: rgba(250,250,248,0.65);
-    line-height: 1.7;
-    font-weight: 300;
-  }
-  .founder-tags {
-    display: flex; flex-wrap: wrap; gap: 0.5rem;
-    margin-top: 1.5rem;
-  }
-  .founder-tags span {
-    font-size: 0.72rem;
-    font-family: 'Space Mono', monospace;
-    letter-spacing: 0.05em;
-    border: 1px solid rgba(200,169,110,0.3);
-    color: var(--accent);
-    padding: 0.25rem 0.7rem;
-    border-radius: 2px;
-  }
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: var(--gold); color: var(--white);
+  font-size: 0.85rem; font-weight: 600; letter-spacing: 0.05em;
+  padding: 0.85rem 2rem; text-decoration: none;
+  transition: background 0.2s, transform 0.2s;
+}
+.btn-primary:hover { background: #a68850; transform: translateY(-1px); }
 
-  /* ── SERVICES ── */
-  #services { background: var(--ink); }
-  #services .section-title { color: var(--white); }
-  .services-intro {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 4rem; align-items: end;
-    margin-bottom: 4rem;
-    max-width: 1200px; margin: 0 auto 4rem;
-  }
-  .services-sub {
-    font-size: 1rem; color: rgba(250,250,248,0.5);
-    line-height: 1.7; font-weight: 300;
-    align-self: flex-end;
-  }
-  .services-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1px;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.06);
-    max-width: 1200px; margin: 0 auto;
-  }
-  .service-card {
-    background: var(--ink-2);
-    padding: 2.5rem;
-    transition: background 0.3s;
-    cursor: default;
-    position: relative;
-    overflow: hidden;
-  }
-  .service-card::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0;
-    width: 100%; height: 2px;
-    background: var(--accent);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.3s var(--ease);
-  }
-  .service-card:hover { background: var(--ink-3); }
-  .service-card:hover::after { transform: scaleX(1); }
-  .service-num {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.7rem;
-    color: rgba(200,169,110,0.4);
-    letter-spacing: 0.1em;
-    margin-bottom: 1.2rem;
-  }
-  .service-icon {
-    font-size: 1.8rem;
-    margin-bottom: 1rem;
-    display: block;
-  }
-  .service-name {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.25rem;
-    color: var(--white);
-    margin-bottom: 0.8rem;
-    line-height: 1.2;
-  }
-  .service-desc {
-    font-size: 0.88rem;
-    color: rgba(250,250,248,0.45);
-    line-height: 1.7;
-    font-weight: 300;
-  }
-  /* Wider services row */
-  .services-wide {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 1px;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.06);
-    border-top: none;
-    max-width: 1200px; margin: 0 auto;
-  }
+.btn-secondary {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  border: 1px solid rgba(250,249,246,0.2); color: rgba(250,249,246,0.7);
+  font-size: 0.85rem; font-weight: 500; letter-spacing: 0.04em;
+  padding: 0.85rem 2rem; text-decoration: none;
+  transition: border-color 0.2s, color 0.2s;
+}
+.btn-secondary:hover { border-color: rgba(250,249,246,0.5); color: var(--white); }
 
-  /* ── INDUSTRIES ── */
-  #industries { background: var(--smoke-2); }
-  .industries-layout {
-    display: grid; grid-template-columns: 320px 1fr;
-    gap: 5rem;
-    max-width: 1200px; margin: 0 auto;
-    align-items: start;
-  }
-  .industries-nav { position: sticky; top: 7rem; }
-  .ind-tab {
-    display: flex; align-items: center; gap: 1rem;
-    padding: 1rem 1.2rem;
-    cursor: pointer;
-    border-left: 2px solid transparent;
-    transition: all 0.2s;
-    font-size: 0.92rem;
-    color: #666;
-    background: none; border-right: none; border-top: none; border-bottom: none;
-    width: 100%; text-align: left;
-    font-family: 'DM Sans', sans-serif;
-  }
-  .ind-tab.active {
-    border-left-color: var(--accent);
-    color: var(--ink);
-    font-weight: 600;
-    background: rgba(200,169,110,0.05);
-  }
-  .ind-tab:hover:not(.active) {
-    border-left-color: var(--mist);
-    color: var(--ink);
-  }
-  .ind-tab-icon { font-size: 1.2rem; }
-  .industries-content { }
-  .ind-panel { display: none; }
-  .ind-panel.active { display: block; }
-  .ind-panel h3 {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.8rem;
-    margin-bottom: 1.5rem;
-    color: var(--ink);
-  }
-  .ind-list { list-style: none; }
-  .ind-list li {
-    display: flex; gap: 0.8rem;
-    padding: 0.8rem 0;
-    border-bottom: 1px solid rgba(0,0,0,0.06);
-    font-size: 0.92rem;
-    color: #4a4e5c;
-    line-height: 1.5;
-  }
-  .ind-list li::before {
-    content: '→';
-    color: var(--accent);
-    flex-shrink: 0;
-    margin-top: 0.05rem;
-  }
+.hero-btns { display: flex; gap: 0.9rem; flex-wrap: wrap; }
 
-  /* ── WHY US ── */
-  #why { background: var(--ink); overflow: hidden; }
-  #why .section-title { color: var(--white); }
-  .why-layout {
-    max-width: 1200px; margin: 0 auto;
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 5rem; align-items: start;
-  }
-  .why-sticky { position: sticky; top: 7rem; }
-  .why-sub {
-    color: rgba(250,250,248,0.5);
-    font-size: 1rem;
-    line-height: 1.7;
-    font-weight: 300;
-    margin-top: 1.5rem;
-    margin-bottom: 2.5rem;
-  }
-  .why-price-note {
-    background: rgba(200,169,110,0.08);
-    border: 1px solid rgba(200,169,110,0.2);
-    border-radius: 4px;
-    padding: 1.5rem;
-    display: flex; align-items: center; gap: 1rem;
-  }
-  .price-big {
-    font-family: 'DM Serif Display', serif;
-    font-size: 2.5rem;
-    color: var(--accent);
-    line-height: 1;
-  }
-  .price-context { font-size: 0.82rem; color: rgba(250,250,248,0.5); line-height: 1.5; }
-  .price-context strong { color: var(--white); font-size: 0.9rem; }
-  .why-reasons { }
-  .why-item {
-    padding: 2rem 0;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-    display: grid; grid-template-columns: 48px 1fr;
-    gap: 1.2rem; align-items: start;
-  }
-  .why-item:first-child { padding-top: 0; }
-  .why-num-box {
-    width: 40px; height: 40px;
-    border: 1px solid rgba(200,169,110,0.3);
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--accent);
-    border-radius: 2px;
-    flex-shrink: 0;
-  }
-  .why-item-title {
-    font-weight: 600;
-    color: var(--white);
-    margin-bottom: 0.4rem;
-    font-size: 1rem;
-  }
-  .why-item-desc {
-    font-size: 0.88rem;
-    color: rgba(250,250,248,0.45);
-    line-height: 1.65;
-    font-weight: 300;
-  }
+/* Hero right panel */
+.hero-right { display: flex; flex-direction: column; gap: 1px; }
 
-  /* ── PRICING ── */
-  #pricing { background: var(--smoke); }
-  .pricing-header { text-align: center; max-width: 600px; margin: 0 auto 4rem; }
-  .pricing-header .section-eyebrow { justify-content: center; }
-  .pricing-header .section-eyebrow::before { display: none; }
-  .pricing-header p {
-    color: #666; font-size: 1rem;
-    line-height: 1.7; font-weight: 300;
-    margin-top: 1rem;
-  }
-  .pricing-cards {
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-    max-width: 1050px; margin: 0 auto;
-  }
-  .pricing-card {
-    background: var(--white);
-    border: 1px solid rgba(0,0,0,0.08);
-    border-radius: 4px;
-    padding: 2.5rem;
-    transition: transform 0.3s var(--ease), box-shadow 0.3s;
-    position: relative;
-  }
-  .pricing-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 16px 40px rgba(0,0,0,0.08);
-  }
-  .pricing-card.featured {
-    background: var(--ink);
-    border-color: transparent;
-  }
-  .pricing-card.featured .pricing-rate,
-  .pricing-card.featured .pricing-name,
-  .pricing-card.featured .pricing-desc { color: var(--white) !important; }
-  .pricing-card.featured .pricing-feature { color: rgba(250,250,248,0.7) !important; border-color: rgba(255,255,255,0.08) !important; }
-  .pricing-card.featured .pricing-feature::before { color: var(--accent) !important; }
-  .featured-label {
-    position: absolute;
-    top: -1px; right: 1.5rem;
-    background: var(--accent);
-    color: var(--ink);
-    font-size: 0.68rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 0.3rem 0.8rem;
-    border-radius: 0 0 3px 3px;
-  }
-  .pricing-name {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.3rem;
-    color: var(--ink);
-    margin-bottom: 0.3rem;
-  }
-  .pricing-desc { font-size: 0.8rem; color: #888; margin-bottom: 1.5rem; }
-  .pricing-rate {
-    font-family: 'DM Serif Display', serif;
-    font-size: 3rem;
-    color: var(--ink);
-    line-height: 1;
-    margin-bottom: 0.3rem;
-  }
-  .pricing-rate sub {
-    font-size: 1rem; font-family: 'DM Sans', sans-serif;
-    vertical-align: baseline; color: #888;
-  }
-  .pricing-per { font-size: 0.78rem; color: #888; margin-bottom: 1.8rem; }
-  .pricing-divider { height: 1px; background: rgba(0,0,0,0.07); margin-bottom: 1.5rem; }
-  .pricing-features { list-style: none; margin-bottom: 2rem; }
-  .pricing-feature {
-    font-size: 0.87rem;
-    color: #4a4e5c;
-    padding: 0.5rem 0;
-    border-bottom: 1px solid rgba(0,0,0,0.05);
-    display: flex; gap: 0.6rem;
-  }
-  .pricing-feature { list-style: none; }
-  .pricing-feature::before { display: none; }
-  
-  .btn-pricing {
-    display: block; text-align: center;
-    padding: 0.85rem;
-    border-radius: var(--radius);
-    font-size: 0.88rem; font-weight: 600;
-    text-decoration: none;
-    transition: all 0.2s;
-  }
-  .btn-pricing-light {
-    border: 1.5px solid var(--ink);
-    color: var(--ink);
-  }
-  .btn-pricing-light:hover { background: var(--ink); color: var(--white); }
-  .btn-pricing-gold {
-    background: var(--accent);
-    color: var(--ink);
-  }
-  .btn-pricing-gold:hover { box-shadow: 0 4px 16px rgba(200,169,110,0.4); transform: translateY(-1px); }
-  .pricing-note {
-    text-align: center;
-    margin-top: 2rem;
-    font-size: 0.82rem;
-    color: #888;
-  }
+.hero-stat-row {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1px; background: rgba(255,255,255,0.06);
+}
+.hstat {
+  background: rgba(11,31,51,0.6);
+  padding: 2rem 1.8rem;
+}
+.hstat-n {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.6rem; font-weight: 700;
+  color: var(--gold); line-height: 1;
+}
+.hstat-l {
+  font-size: 0.67rem; font-weight: 500;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: rgba(250,249,246,0.55); margin-top: 0.4rem;
+}
 
-  /* ── TESTIMONIALS ── */
-  #testimonials { background: var(--smoke-2); }
-  .testi-header { max-width: 1200px; margin: 0 auto 3.5rem; }
-  .testi-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-    max-width: 1200px; margin: 0 auto;
-  }
-  .testi-card {
-    background: var(--white);
-    border: 1px solid rgba(0,0,0,0.06);
-    border-radius: 4px;
-    padding: 2rem;
-    transition: transform 0.3s var(--ease);
-  }
-  .testi-card:hover { transform: translateY(-3px); }
-  .testi-stars { display: flex; gap: 3px; margin-bottom: 1rem; }
-  .testi-stars svg { width: 14px; height: 14px; fill: var(--accent); stroke: var(--accent); stroke-width: 1; }
-  .testi-quote {
-    font-size: 0.92rem;
-    color: #4a4e5c;
-    line-height: 1.75;
-    font-weight: 300;
-    margin-bottom: 1.5rem;
-    font-style: italic;
-  }
-  .testi-author {
-    display: flex; align-items: center; gap: 0.8rem;
-  }
-  .testi-avatar {
-    width: 38px; height: 38px;
-    border-radius: 50%;
-    background: var(--ink);
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-  }
-  .testi-avatar svg { width: 18px; height: 18px; stroke: var(--accent); stroke-width: 1.5; fill: none; }
-  .testi-name { font-weight: 600; font-size: 0.85rem; }
-  .testi-role { font-size: 0.75rem; color: #888; margin-top: 0.1rem; }
+.hero-cert {
+  background: rgba(47,111,115,0.12);
+  border: 1px solid rgba(47,111,115,0.25);
+  padding: 1.2rem 1.5rem;
+  display: flex; align-items: center; gap: 1rem;
+  margin-top: 1px;
+}
+.cert-icon {
+  width: 32px; height: 32px; border-radius: 50%;
+  border: 1px solid rgba(47,111,115,0.4);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.cert-icon svg { width: 14px; height: 14px; stroke: #5da8ac; stroke-width: 1.5; fill: none; }
+.cert-text { font-size: 0.78rem; color: rgba(250,249,246,0.45); line-height: 1.5; }
+.cert-text strong { display: block; font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: #5da8ac; margin-bottom: 1px; font-weight: 500; }
 
-  /* ── NEWS ── */
-  #news { background: var(--ink); }
-  #news .section-title { color: var(--white); }
-  .news-wrap { max-width: 1200px; margin: 0 auto; }
-  .news-card {
-    display: grid; grid-template-columns: 1fr auto;
-    align-items: center;
-    gap: 2rem;
-    padding: 2rem 0;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-  }
-  .news-meta {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.68rem;
-    color: var(--accent);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    margin-bottom: 0.5rem;
-  }
-  .news-title {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.4rem;
-    color: var(--white);
-    line-height: 1.3;
-    margin-bottom: 0.5rem;
-  }
-  .news-excerpt { font-size: 0.88rem; color: rgba(250,250,248,0.45); font-weight: 300; line-height: 1.6; }
-  .news-link {
-    display: inline-flex; align-items: center; gap: 0.5rem;
-    font-size: 0.82rem; font-weight: 600;
-    color: var(--accent);
-    text-decoration: none;
-    white-space: nowrap;
-    transition: gap 0.2s;
-  }
-  .news-link:hover { gap: 0.9rem; }
+/* ─── TICKER ─── */
+.ticker-wrap { background: var(--teal); overflow: hidden; padding: 0.65rem 0; }
+.ticker-track { display: flex; gap: 0; animation: ticker 35s linear infinite; white-space: nowrap; }
+.ticker-track:hover { animation-play-state: paused; }
+.ticker-item {
+  font-size: 0.7rem; font-weight: 500; letter-spacing: 0.14em;
+  text-transform: uppercase; color: rgba(255,255,255,0.7);
+  flex-shrink: 0; padding: 0 2rem;
+  display: flex; align-items: center; gap: 2rem;
+}
+.ticker-item::after { content: '|'; opacity: 0.2; }
+@keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-  /* ── CONTACT ── */
-  #contact { background: var(--smoke); }
-  .contact-layout {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 6rem;
-    max-width: 1100px; margin: 0 auto;
-    align-items: start;
-  }
-  .contact-info .section-title { margin-bottom: 1rem; }
-  .contact-text {
-    color: #666; font-size: 1rem; line-height: 1.7;
-    font-weight: 300; margin-bottom: 2.5rem;
-  }
-  .contact-details { }
-  .contact-detail {
-    display: flex; gap: 1rem;
-    margin-bottom: 1.2rem; align-items: flex-start;
-  }
-  .cd-icon {
-    width: 36px; height: 36px;
-    background: var(--ink);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.9rem; flex-shrink: 0;
-  }
-  .cd-text { font-size: 0.9rem; color: #4a4e5c; line-height: 1.5; }
-  .cd-text strong { display: block; color: var(--ink); margin-bottom: 0.1rem; font-size: 0.8rem; letter-spacing: 0.05em; text-transform: uppercase; }
-  .cd-text a { color: #4a4e5c; text-decoration: none; }
-  .cd-text a:hover { color: var(--accent); }
+/* ─── STATS BAR ─── */
+.stats-bar {
+  background: var(--navy);
+  display: grid; grid-template-columns: repeat(4,1fr);
+}
+.stat-cell {
+  padding: 2.2rem 2rem; text-align: center;
+  border-right: 1px solid rgba(255,255,255,0.05);
+}
+.stat-cell:last-child { border-right: none; }
+.stat-n {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.4rem; font-weight: 700; color: var(--gold); line-height: 1;
+}
+.stat-l {
+  font-size: 0.67rem; font-weight: 500; letter-spacing: 0.1em;
+  text-transform: uppercase; color: rgba(250,249,246,0.55); margin-top: 0.4rem;
+}
 
-  .contact-form { }
-  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
-  .form-field { margin-bottom: 1rem; }
-  .form-field label {
-    display: block;
-    font-size: 0.72rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    font-weight: 600;
-    color: var(--ink);
-    margin-bottom: 0.5rem;
-  }
-  .form-field input,
-  .form-field textarea {
-    width: 100%;
-    padding: 0.85rem 1rem;
-    background: var(--white);
-    border: 1.5px solid rgba(0,0,0,0.1);
-    border-radius: var(--radius);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.92rem;
-    color: var(--ink);
-    transition: border-color 0.2s;
-    outline: none;
-    -webkit-appearance: none;
-  }
-  .form-field input:focus,
-  .form-field textarea:focus { border-color: var(--accent); }
-  .form-field textarea { resize: vertical; min-height: 120px; }
-  .form-submit {
-    width: 100%;
-    padding: 1rem;
-    background: var(--ink);
-    color: var(--white);
-    border: none;
-    border-radius: var(--radius);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    cursor: pointer;
-    transition: background 0.2s, transform 0.2s;
-  }
-  .form-submit:hover { background: var(--ink-3); transform: translateY(-1px); }
-  .form-success {
-    display: none;
-    text-align: center;
-    padding: 2rem;
-    background: rgba(200,169,110,0.08);
-    border: 1px solid rgba(200,169,110,0.2);
-    border-radius: 4px;
-    color: var(--ink);
-  }
-  .form-success h4 { font-family: 'DM Serif Display', serif; font-size: 1.4rem; margin-bottom: 0.5rem; }
-  .form-success p { font-size: 0.9rem; color: #666; }
+/* ─── SHARED SECTION STYLES ─── */
+section { padding: 6rem 4rem; }
 
-  /* ── FOOTER ── */
-  footer {
-    background: var(--ink-2);
-    padding: 3rem 4rem 2rem;
-    border-top: 1px solid rgba(255,255,255,0.05);
-  }
-  .footer-top {
-    display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr;
-    gap: 3rem;
-    margin-bottom: 3rem;
-  }
-  .footer-brand { }
-  .footer-logo {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.3rem;
-    color: var(--white);
-    margin-bottom: 1rem;
-    display: block;
-  }
-  .footer-logo span { color: var(--accent); }
-  .footer-tagline {
-    font-size: 0.85rem;
-    color: rgba(250,250,248,0.4);
-    line-height: 1.6;
-    font-weight: 300;
-    margin-bottom: 1.2rem;
-  }
-  .footer-col h5 {
-    font-size: 0.72rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: rgba(250,250,248,0.4);
-    margin-bottom: 1.2rem;
-    font-weight: 600;
-  }
-  .footer-col ul { list-style: none; }
-  .footer-col ul li { margin-bottom: 0.6rem; }
-  .footer-col ul li a {
-    font-size: 0.87rem;
-    color: rgba(250,250,248,0.55);
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-  .footer-col ul li a:hover { color: var(--accent); }
-  .footer-bottom {
-    display: flex; justify-content: space-between; align-items: center;
-    padding-top: 2rem;
-    border-top: 1px solid rgba(255,255,255,0.05);
-  }
-  .footer-copy { font-size: 0.8rem; color: rgba(250,250,248,0.3); }
-  .footer-legal { display: flex; gap: 1.5rem; }
-  .footer-legal a {
-    font-size: 0.78rem;
-    color: rgba(250,250,248,0.3);
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-  .footer-legal a:hover { color: var(--accent); }
+.section-label {
+  display: flex; align-items: center; gap: 0.55rem;
+  font-size: 0.65rem; font-weight: 600; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--teal); margin-bottom: 0.9rem;
+}
+.section-label::before { content: ''; display: block; width: 18px; height: 1.5px; background: var(--teal); }
 
-  /* ── ICONS ── */
-  .icon { display: inline-flex; align-items: center; justify-content: center; }
-  .icon svg { width: 1.1em; height: 1.1em; stroke-width: 1.5; }
-  .service-icon svg { width: 28px; height: 28px; stroke: var(--accent); stroke-width: 1.5; fill: none; }
-  .badge-icon svg { width: 18px; height: 18px; stroke: var(--ink); stroke-width: 2; fill: none; }
-  .cd-icon svg { width: 16px; height: 16px; stroke: var(--white); stroke-width: 2; fill: none; }
-  .ind-tab-icon svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 1.5; fill: none; }
-  .why-num-box svg { width: 16px; height: 16px; stroke: var(--accent); stroke-width: 1.5; fill: none; }
-  .nav-cta-icon svg { width: 14px; height: 14px; stroke: var(--ink); stroke-width: 2.5; fill: none; }
-  .hero-eyebrow svg { width: 14px; height: 14px; stroke: var(--accent); stroke-width: 2; fill: none; }
-  .section-eyebrow svg { width: 12px; height: 12px; stroke: var(--accent); stroke-width: 2; fill: none; }
-  .news-icon svg { width: 18px; height: 18px; stroke: var(--accent); stroke-width: 1.5; fill: none; }
-  .testi-avatar svg { width: 18px; height: 18px; stroke: var(--accent); stroke-width: 1.5; fill: none; }
-  .pricing-feature svg { width: 14px; height: 14px; stroke: var(--accent); stroke-width: 2.5; fill: none; flex-shrink: 0; margin-top: 2px; }
-  .pricing-card.featured .pricing-feature svg { stroke: var(--accent); }
-  .footer-social svg { width: 18px; height: 18px; stroke: rgba(250,250,248,0.5); stroke-width: 1.5; fill: none; transition: stroke 0.2s; }
-  .footer-social:hover svg { stroke: var(--accent); }
+h2.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  font-weight: 700; line-height: 1.1;
+  letter-spacing: -0.02em; color: var(--navy);
+}
+h2.section-title em { font-style: italic; color: var(--teal); }
+h2.section-title.light { color: var(--white); }
+h2.section-title.light em { color: var(--gold); }
 
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.55s ease, transform 0.55s ease; }
+.reveal.in { opacity: 1; transform: none; }
+.d1 { transition-delay: 0.08s; } .d2 { transition-delay: 0.16s; } .d3 { transition-delay: 0.24s; }
 
-  @media (max-width: 1024px) {
-    nav { padding: 1.2rem 2rem; }
-    nav.scrolled { padding: 0.9rem 2rem; }
-    .nav-links { display: none; }
-    .nav-hamburger { display: flex; }
-    section { padding: 5rem 2rem; }
-    #hero { grid-template-columns: 1fr; padding: 0 2rem; }
-    .hero-right { display: none; }
-    .hero-content { padding-top: 8rem; padding-bottom: 4rem; }
-    .about-grid { grid-template-columns: 1fr; gap: 3rem; }
-    .services-grid { grid-template-columns: 1fr 1fr; }
-    .services-wide { grid-template-columns: 1fr; }
-    .industries-layout { grid-template-columns: 1fr; gap: 2rem; }
-    .industries-nav { position: static; }
-    .why-layout { grid-template-columns: 1fr; gap: 3rem; }
-    .why-sticky { position: static; }
-    .pricing-cards { grid-template-columns: 1fr; max-width: 400px; }
-    .testi-grid { grid-template-columns: 1fr; }
-    .contact-layout { grid-template-columns: 1fr; gap: 3rem; }
-    .footer-top { grid-template-columns: 1fr 1fr; gap: 2rem; }
-    .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
-    .footer-legal { flex-wrap: wrap; justify-content: center; }
-    .cursor-dot, .cursor-ring { display: none; }
-  }
-  @media (max-width: 640px) {
-    .hero-h1 { font-size: 2.6rem; }
-    .services-grid { grid-template-columns: 1fr; }
-    .form-row { grid-template-columns: 1fr; }
-    .footer-top { grid-template-columns: 1fr; }
-  }
+/* ─── ABOUT ─── */
+#about { background: var(--navy); }
+.about-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 6rem; max-width: 1200px; margin: 0 auto; align-items: start;
+}
+.about-body p {
+  font-size: 0.96rem; color: rgba(250,249,246,0.62);
+  line-height: 1.88; margin-bottom: 1.3rem; font-weight: 300;
+}
+.about-body p strong { color: var(--white); font-weight: 600; }
 
-  /* Mobile nav overlay */
-  .mobile-nav {
-    position: fixed; inset: 0;
-    background: var(--ink);
-    z-index: 200;
-    display: none;
-    flex-direction: column;
-    align-items: center; justify-content: center;
-    gap: 2rem;
-  }
-  .mobile-nav.open { display: flex; }
-  .mobile-nav a {
-    font-family: 'DM Serif Display', serif;
-    font-size: 2rem;
-    color: var(--white);
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-  .mobile-nav a:hover { color: var(--accent); }
-  .mobile-nav-close {
-    position: absolute; top: 1.5rem; right: 2rem;
-    background: none; border: none; cursor: pointer;
-    font-size: 1.5rem; color: var(--white);
-  }
+.founder-panel {
+  margin-top: 2.5rem; padding: 2rem;
+  background: var(--navy);
+  border-left: 3px solid var(--gold);
+}
+.founder-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem; font-weight: 700; color: var(--white); margin-bottom: 2px;
+}
+.founder-role {
+  font-size: 0.67rem; font-weight: 600; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 1rem;
+}
+.founder-bio { font-size: 0.86rem; color: rgba(250,249,246,0.72); line-height: 1.78; font-weight: 300; }
+.founder-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1rem; }
+.ftag {
+  font-size: 0.62rem; letter-spacing: 0.06em;
+  border: 1px solid rgba(184,155,94,0.25); color: rgba(184,155,94,0.8);
+  padding: 0.2rem 0.65rem;
+}
+
+.about-visual { position: relative; }
+.about-img {
+  width: 100%; height: 320px; object-fit: cover;
+  display: block; filter: grayscale(8%);
+}
+.about-cert-img {
+  width: 100%; display: block;
+  margin-top: 1rem;
+  border: 1px solid var(--rule);
+  filter: grayscale(5%);
+}
+.about-float {
+  position: absolute; bottom: -1px; left: 0;
+  background: var(--navy); padding: 1.4rem 1.6rem;
+  border-top: 3px solid var(--gold);
+}
+.about-float-n {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.2rem; font-weight: 700; color: var(--gold); line-height: 1;
+}
+.about-float-l {
+  font-size: 0.65rem; font-weight: 500; letter-spacing: 0.1em;
+  text-transform: uppercase; color: rgba(250,249,246,0.35); margin-top: 2px;
+}
+
+/* ─── SERVICES ─── */
+#services { background: var(--white); }
+.services-inner { max-width: 1200px; margin: 0 auto; }
+.services-top {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 4rem; align-items: end; margin-bottom: 3.5rem;
+  padding-bottom: 2.5rem; border-bottom: 1px solid var(--rule);
+}
+.services-intro { font-size: 0.95rem; color: var(--muted); line-height: 1.78; font-weight: 300; }
+
+/* Accordion rows */
+.svc-item { border-bottom: 1px solid var(--rule); }
+.svc-item:first-child { border-top: 1px solid var(--rule); }
+.svc-header {
+  display: grid; grid-template-columns: 48px 1fr auto;
+  align-items: center; gap: 1.5rem;
+  padding: 1.4rem 1rem;
+  cursor: pointer; transition: background 0.15s;
+  user-select: none;
+}
+.svc-header:hover { background: var(--ivory); }
+.svc-header:hover .svc-name { color: var(--teal); }
+.svc-item.open .svc-header { background: var(--ivory); }
+.svc-item.open .svc-name { color: var(--teal); }
+.svc-num {
+  font-size: 0.65rem; font-weight: 600; letter-spacing: 0.1em;
+  color: var(--taupe);
+}
+.svc-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem; font-weight: 600; color: var(--navy);
+  transition: color 0.15s;
+}
+.svc-chevron {
+  width: 20px; height: 20px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--taupe); transition: transform 0.28s ease, color 0.15s;
+}
+.svc-chevron svg { width: 14px; height: 14px; stroke: currentColor; stroke-width: 2; fill: none; }
+.svc-item.open .svc-chevron { transform: rotate(180deg); color: var(--teal); }
+.svc-body {
+  max-height: 0; overflow: hidden;
+  transition: max-height 0.35s ease, padding 0.28s ease;
+  padding: 0 1rem 0 calc(48px + 1rem + 1.5rem);
+}
+.svc-item.open .svc-body { max-height: 400px; padding: 0 1rem 1.4rem calc(48px + 1rem + 1.5rem); }
+.svc-body-content {
+  padding: 1rem 1.2rem;
+  background: var(--teal-pale);
+  border-left: 3px solid var(--teal);
+}
+.svc-body-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.75; font-weight: 300; margin-bottom: 1rem; }
+.svc-body-list { list-style: none; }
+.svc-body-list li {
+  font-size: 0.84rem; color: var(--muted); padding: 0.35rem 0;
+  display: flex; gap: 0.65rem; font-weight: 300;
+}
+.svc-body-list li::before { content: '—'; color: var(--teal); flex-shrink: 0; font-size: 0.8rem; }
+
+/* ─── INDUSTRIES ─── */
+#industries { background: var(--ivory); }
+.ind-inner { max-width: 1200px; margin: 0 auto; }
+.ind-layout { display: grid; grid-template-columns: 220px 1fr; gap: 4rem; margin-top: 3rem; align-items: start; }
+.ind-nav { position: sticky; top: 88px; }
+.ind-tab {
+  display: block; width: 100%;
+  text-align: left; background: none;
+  border: none; border-left: 2px solid transparent;
+  padding: 0.75rem 1rem; cursor: pointer;
+  font-family: 'Inter', sans-serif; font-size: 0.86rem;
+  color: var(--light); transition: all 0.18s;
+}
+.ind-tab.active { border-left-color: var(--teal); color: var(--navy); font-weight: 600; background: var(--teal-pale); }
+.ind-tab:hover:not(.active) { color: var(--ink); border-left-color: var(--taupe); }
+.ind-panel { display: none; }
+.ind-panel.active { display: block; animation: fadeIn 0.35s ease both; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.ind-img { width: 100%; height: 200px; object-fit: cover; filter: grayscale(15%); margin-bottom: 1.8rem; }
+.ind-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.7rem; font-weight: 700; color: var(--navy);
+  margin-bottom: 1.2rem;
+}
+.ind-list { list-style: none; }
+.ind-list li {
+  display: flex; gap: 0.8rem; font-size: 0.88rem;
+  color: var(--muted); padding: 0.65rem 0;
+  border-bottom: 1px solid var(--rule); line-height: 1.55; font-weight: 300;
+}
+.ind-list li::before { content: '—'; color: var(--teal); flex-shrink: 0; font-size: 0.8rem; }
+
+/* ─── WHY ─── */
+#why { background: var(--navy); }
+.why-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; }
+.why-left { }
+.why-body { font-size: 0.95rem; color: rgba(250,249,246,0.68); line-height: 1.8; font-weight: 300; margin-top: 1.4rem; margin-bottom: 2.5rem; }
+.why-price-box {
+  border: 1px solid rgba(47,111,115,0.25);
+  background: rgba(47,111,115,0.07);
+  padding: 1.8rem;
+}
+.price-headline { font-family: 'Playfair Display', serif; font-size: 3.2rem; font-weight: 700; color: var(--gold); line-height: 1; }
+.price-sub { font-size: 0.8rem; color: rgba(250,249,246,0.6); margin-top: 0.3rem; }
+.price-note { font-size: 0.82rem; color: rgba(250,249,246,0.65); line-height: 1.6; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.07); }
+
+.why-items { }
+.why-item {
+  display: flex; gap: 1.2rem; padding: 1.6rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.why-item:first-child { padding-top: 0; border-top: 1px solid rgba(255,255,255,0.05); }
+.why-n {
+  width: 30px; height: 30px; flex-shrink: 0;
+  border: 1px solid rgba(184,155,94,0.2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.62rem; font-weight: 600; color: var(--gold); letter-spacing: 0.04em;
+}
+.why-title { font-size: 0.92rem; font-weight: 600; color: var(--white); margin-bottom: 0.25rem; }
+.why-desc { font-size: 0.83rem; color: rgba(250,249,246,0.62); line-height: 1.65; font-weight: 300; }
+
+/* ─── PRICING ─── */
+#pricing { background: var(--ivory); }
+.pricing-head { max-width: 520px; margin: 0 auto 4rem; text-align: center; }
+.pricing-head .section-label { justify-content: center; }
+.pricing-head .section-label::before { display: none; }
+.pricing-head p { font-size: 0.95rem; color: var(--muted); font-weight: 300; margin-top: 0.8rem; line-height: 1.7; }
+
+/* Calculator layout */
+.calc-wrap {
+  display: grid; grid-template-columns: 1fr 380px;
+  gap: 2rem; max-width: 1050px; margin: 0 auto; align-items: start;
+}
+.calc-left {
+  background: var(--white); border: 1px solid var(--rule); padding: 2.2rem;
+}
+.calc-section { margin-bottom: 2rem; }
+.calc-section:last-child { margin-bottom: 0; }
+.calc-section-label {
+  font-size: 0.68rem; font-weight: 600; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--navy); margin-bottom: 1rem;
+}
+
+/* Type buttons */
+.type-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+.type-btn {
+  padding: 0.85rem 1rem; background: var(--white);
+  border: 1.5px solid var(--rule); cursor: pointer;
+  font-family: 'Inter', sans-serif; font-size: 0.83rem;
+  font-weight: 500; color: var(--muted); transition: all 0.18s;
+  text-align: center;
+}
+.type-btn:hover { border-color: var(--teal); color: var(--teal); }
+.type-btn.active { border-color: var(--teal); background: var(--teal-pale); color: var(--teal); font-weight: 600; }
+
+/* Slider */
+.slider-wrap { padding: 1.2rem; border: 1px solid var(--rule); background: var(--ivory); }
+.slider-display { text-align: center; margin-bottom: 1rem; }
+.slider-val { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: var(--teal); }
+.slider-unit { font-size: 0.8rem; color: var(--light); margin-left: 4px; }
+input[type="range"] {
+  width: 100%; accent-color: var(--teal);
+  height: 4px; cursor: pointer;
+}
+.slider-labels { display: flex; justify-content: space-between; margin-top: 0.5rem; font-size: 0.68rem; color: var(--light); }
+
+/* Timezone */
+.tz-option {
+  display: flex; align-items: center; gap: 0.75rem;
+  padding: 0.75rem 1rem; border: 1.5px solid var(--rule);
+  margin-bottom: 0.5rem; cursor: pointer; transition: all 0.18s;
+}
+.tz-option:hover { border-color: var(--teal); }
+.tz-option.active { border-color: var(--teal); background: var(--teal-pale); }
+.tz-option input[type="radio"] { accent-color: var(--teal); width: 14px; height: 14px; }
+.tz-option label { font-size: 0.85rem; color: var(--ink); cursor: pointer; font-weight: 400; }
+.tz-option.active label { color: var(--teal); font-weight: 500; }
+
+/* Add-ons */
+.addon-option {
+  display: flex; align-items: center; gap: 0.75rem;
+  padding: 0.75rem 1rem; border: 1.5px solid var(--rule);
+  margin-bottom: 0.5rem; cursor: pointer; transition: all 0.18s;
+}
+.addon-option:hover { border-color: var(--teal); }
+.addon-option.active { border-color: var(--teal); background: var(--teal-pale); }
+.addon-option input[type="checkbox"] { accent-color: var(--teal); width: 14px; height: 14px; }
+.addon-option label { font-size: 0.85rem; color: var(--ink); cursor: pointer; font-weight: 400; }
+.addon-option.active label { color: var(--teal); font-weight: 500; }
+
+/* Results panel */
+.calc-right {
+  background: var(--navy);
+  padding: 2.2rem;
+  position: sticky; top: 88px;
+}
+.calc-plan-name {
+  font-size: 0.65rem; font-weight: 600; letter-spacing: 0.16em;
+  text-transform: uppercase; color: rgba(250,249,246,0.5);
+  margin-bottom: 0.3rem;
+}
+.calc-price {
+  font-family: 'Playfair Display', serif;
+  font-size: 3.5rem; font-weight: 700; color: var(--gold); line-height: 1;
+  margin-bottom: 0.3rem;
+}
+.calc-rate { font-size: 0.85rem; color: rgba(250,249,246,0.65); margin-bottom: 0.15rem; font-weight: 400; }
+.calc-hours { font-size: 0.82rem; color: rgba(250,249,246,0.45); margin-bottom: 2rem; font-weight: 300; }
+.calc-divider { height: 1px; background: rgba(255,255,255,0.08); margin-bottom: 1.5rem; }
+
+.calc-breakdown { margin-bottom: 1.8rem; }
+.calc-line {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+  font-size: 0.82rem;
+}
+.calc-line:last-child { border-bottom: none; }
+.calc-line-label { color: rgba(250,249,246,0.55); font-weight: 300; }
+.calc-line-val { color: rgba(250,249,246,0.85); font-weight: 500; }
+.calc-line.total .calc-line-label { color: rgba(250,249,246,0.75); font-weight: 600; font-size: 0.85rem; }
+.calc-line.total .calc-line-val { color: var(--gold); font-weight: 700; font-size: 0.95rem; }
+
+.calc-saving {
+  background: rgba(47,111,115,0.15);
+  border: 1px solid rgba(47,111,115,0.3);
+  padding: 0.9rem 1rem; margin-bottom: 1.5rem;
+  font-size: 0.82rem; color: rgba(250,249,246,0.7); line-height: 1.5;
+}
+.calc-saving strong { color: #6ec6c9; display: block; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 2px; }
+
+.btn-calc {
+  display: block; width: 100%; text-align: center;
+  background: var(--gold); color: var(--white);
+  padding: 1rem; font-family: 'Inter', sans-serif;
+  font-size: 0.86rem; font-weight: 600; letter-spacing: 0.05em;
+  text-decoration: none; transition: background 0.2s; cursor: pointer;
+  border: none;
+}
+.btn-calc:hover { background: #a68850; }
+.pricing-note { text-align: center; margin-top: 1.8rem; font-size: 0.77rem; color: var(--light); }
+
+/* ─── TESTIMONIALS ─── */
+#testimonials { background: var(--white); }
+.testi-inner { max-width: 1200px; margin: 0 auto; }
+.testi-header { margin-bottom: 3rem; }
+.testi-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
+.testi-card {
+  background: var(--ivory); padding: 1.8rem;
+  border: 1px solid var(--rule); position: relative;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.testi-card:hover { border-color: var(--taupe); box-shadow: 0 4px 18px rgba(11,31,51,0.06); }
+.testi-stars { display: flex; gap: 2px; margin-bottom: 1rem; }
+.testi-stars svg { width: 11px; height: 11px; fill: var(--gold); }
+.testi-body { font-size: 0.87rem; color: var(--muted); line-height: 1.8; font-style: italic; font-weight: 300; margin-bottom: 1.4rem; }
+.testi-name { font-size: 0.82rem; font-weight: 600; color: var(--navy); }
+.testi-role { font-size: 0.7rem; color: var(--light); margin-top: 1px; }
+
+/* ─── NEWS ─── */
+#news { background: var(--ivory); border-top: 1px solid var(--rule); }
+.news-inner { max-width: 1200px; margin: 0 auto; }
+.news-card {
+  display: grid; grid-template-columns: 1fr auto;
+  align-items: center; gap: 3rem; padding: 2.5rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+.news-card:first-of-type { border-top: 1px solid var(--rule); }
+.news-meta { font-size: 0.63rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal); margin-bottom: 0.4rem; }
+.news-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem; font-weight: 700; color: var(--navy);
+  line-height: 1.25; margin-bottom: 0.4rem; letter-spacing: -0.01em;
+}
+.news-body { font-size: 0.85rem; color: var(--muted); font-weight: 300; line-height: 1.65; }
+.news-link {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-size: 0.78rem; font-weight: 600; color: var(--teal);
+  text-decoration: none; white-space: nowrap;
+  letter-spacing: 0.05em; text-transform: uppercase; transition: gap 0.2s;
+}
+.news-link:hover { gap: 0.85rem; }
+
+/* ─── CONTACT ─── */
+#contact { background: var(--white); }
+.contact-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; max-width: 1100px; margin: 0 auto; align-items: start; }
+.contact-copy { font-size: 0.96rem; color: var(--muted); line-height: 1.8; font-weight: 300; margin-bottom: 2.5rem; }
+.c-detail { display: flex; gap: 0.9rem; margin-bottom: 1.1rem; align-items: flex-start; }
+.c-icon { width: 30px; height: 30px; background: var(--teal-pale); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.c-icon svg { width: 13px; height: 13px; stroke: var(--teal); stroke-width: 2; fill: none; }
+.c-text { font-size: 0.86rem; color: var(--muted); line-height: 1.5; }
+.c-text strong { display: block; font-size: 0.64rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--navy); margin-bottom: 1px; }
+.c-text a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+.c-text a:hover { color: var(--teal); }
+
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; margin-bottom: 0.9rem; }
+.ff { margin-bottom: 0.9rem; }
+.ff label { display: block; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--navy); margin-bottom: 0.4rem; }
+.ff input, .ff textarea {
+  width: 100%; padding: 0.8rem 0.95rem;
+  background: var(--ivory); border: 1.5px solid var(--rule);
+  font-family: 'Inter', sans-serif; font-size: 0.9rem;
+  color: var(--ink); outline: none; transition: border-color 0.2s;
+  -webkit-appearance: none; border-radius: 0;
+}
+.ff input:focus, .ff textarea:focus { border-color: var(--teal); background: var(--white); }
+.ff textarea { resize: vertical; min-height: 110px; }
+.form-submit {
+  width: 100%; padding: 0.9rem;
+  background: var(--navy); color: var(--white);
+  border: none; font-family: 'Inter', sans-serif;
+  font-size: 0.84rem; font-weight: 600; letter-spacing: 0.06em;
+  cursor: pointer; transition: background 0.2s;
+}
+.form-submit:hover { background: var(--teal); }
+.form-success { display: none; text-align: center; padding: 2rem; background: var(--teal-pale); border: 1px solid rgba(47,111,115,0.2); }
+.form-success h4 { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--navy); margin-bottom: 0.4rem; }
+.form-success p { font-size: 0.88rem; color: var(--muted); }
+
+/* ─── FOOTER ─── */
+footer {
+  background: var(--navy);
+  padding: 4rem 4rem 2rem;
+  border-top: 3px solid var(--gold);
+}
+.footer-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 3rem; margin-bottom: 3rem; padding-bottom: 3rem; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.footer-brand-tag { font-size: 0.8rem; color: rgba(250,249,246,0.5); line-height: 1.7; font-weight: 300; margin-top: 0.8rem; margin-bottom: 1rem; }
+.footer-cert-note { font-size: 0.63rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(184,155,94,0.65); }
+.fcol h5 { font-size: 0.6rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(250,249,246,0.4); margin-bottom: 1.2rem; }
+.fcol ul { list-style: none; }
+.fcol li { margin-bottom: 0.5rem; }
+.fcol a { font-size: 0.83rem; color: rgba(250,249,246,0.6); text-decoration: none; transition: color 0.2s; font-weight: 300; }
+.fcol a:hover { color: var(--gold); }
+.footer-bottom { display: flex; justify-content: space-between; align-items: center; }
+.f-copy { font-size: 0.72rem; color: rgba(250,249,246,0.35); }
+.f-legal { display: flex; gap: 1.5rem; }
+.f-legal a { font-size: 0.7rem; color: rgba(250,249,246,0.35); text-decoration: none; transition: color 0.2s; }
+.f-legal a:hover { color: var(--gold); }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 1024px) {
+  nav { padding: 0 1.5rem; }
+  .nav-links { display: none; }
+  .burger { display: flex; }
+  section { padding: 4.5rem 1.5rem; }
+  #hero { grid-template-columns: 1fr; padding: 4rem 1.5rem 3.5rem; min-height: auto; gap: 3rem; }
+  .stats-bar { grid-template-columns: 1fr 1fr; }
+  .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+  .services-top { grid-template-columns: 1fr; gap: 1.5rem; }
+  .svc-header { padding: 1.2rem 0.75rem; gap: 1rem; }
+  .svc-body { padding: 0 0.75rem 0 calc(40px + 0.75rem + 1rem); }
+  .svc-item.open .svc-body { padding: 0 0.75rem 1.2rem calc(40px + 0.75rem + 1rem); }
+  .calc-wrap { grid-template-columns: 1fr; }
+  .calc-right { position: static; }
+  .ind-layout { grid-template-columns: 1fr; gap: 2rem; }
+  .ind-nav { position: static; display: flex; flex-wrap: wrap; gap: 0.3rem; margin-bottom: 1rem; }
+  .ind-tab { border-left: none; border-bottom: 2px solid transparent; width: auto; padding: 0.5rem 0.9rem; }
+  .ind-tab.active { border-left: none; border-bottom-color: var(--teal); background: var(--teal-pale); }
+  .why-inner { grid-template-columns: 1fr; gap: 3rem; }
+  .testi-grid { grid-template-columns: 1fr; }
+  .contact-inner { grid-template-columns: 1fr; gap: 3rem; }
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .footer-bottom { flex-direction: column; gap: 0.8rem; text-align: center; }
+  .f-legal { flex-wrap: wrap; justify-content: center; }
+  .news-card { grid-template-columns: 1fr; gap: 1.2rem; }
+  footer { padding: 3rem 1.5rem 2rem; }
+}
+@media (max-width: 640px) {
+  h1 { font-size: 2.4rem; }
+  .hero-stat-row { grid-template-columns: 1fr 1fr; }
+  .svc-header { grid-template-columns: 1fr auto; gap: 0.75rem; padding: 1rem 0.5rem; }
+  .svc-num { display: none; }
+  .svc-body { padding: 0 0.5rem 0 0.75rem; }
+  .svc-item.open .svc-body { padding: 0 0.5rem 1rem 0.75rem; }
+  .type-grid { grid-template-columns: 1fr; }
+  .form-row { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
 
-<!-- Custom cursor -->
-<div class="cursor-dot" id="cursorDot"></div>
-<div class="cursor-ring" id="cursorRing"></div>
-
-<!-- Mobile nav overlay -->
-<div class="mobile-nav" id="mobileNav">
-  <button class="mobile-nav-close" id="mobileClose">✕</button>
-  <a href="#hero" onclick="closeMobileNav()">Home</a>
-  <a href="#about" onclick="closeMobileNav()">About</a>
-  <a href="#services" onclick="closeMobileNav()">Services</a>
-  <a href="#industries" onclick="closeMobileNav()">Industries</a>
-  <a href="#pricing" onclick="closeMobileNav()">Pricing</a>
-  <a href="#contact" onclick="closeMobileNav()">Contact</a>
+<!-- MOBILE NAV -->
+<div class="mob-nav" id="mobNav">
+  <button class="mob-close" id="mobClose">✕</button>
+  <a href="#about" onclick="closeMob()">About</a>
+  <a href="#services" onclick="closeMob()">Services</a>
+  <a href="#industries" onclick="closeMob()">Industries</a>
+  <a href="#why" onclick="closeMob()">Why Us</a>
+  <a href="#pricing" onclick="closeMob()">Pricing</a>
+  <a href="#contact" onclick="closeMob()">Contact</a>
 </div>
 
 <!-- NAV -->
-<nav id="navbar">
-  <a href="#hero" class="nav-logo">Admin<span>cog</span></a>
+<nav id="mainNav">
+  <a href="#" class="logo-wrap">
+    <svg class="logo-icon" width="34" height="34" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M18 2.5l2.2 1.25.3 2.5 2.2 1.25 2.4-.75 1.65 1.65-.75 2.4 1.25 2.2 2.5.3L30.5 15.8l-1.25 2.2.75 2.4-1.65 1.65-2.4-.75-2.2 1.25-.3 2.5L21.2 26.3 19 25.05l-2.4.75-1.65-1.65.75-2.4-1.25-2.2-2.5-.3L10.7 17.6l1.25-2.2-.75-2.4 1.65-1.65 2.4.75 2.2-1.25.3-2.5z" fill="#b89b5e"/>
+      <circle cx="18" cy="17.5" r="7.5" fill="#faf9f6"/>
+      <text x="18" y="22.5" text-anchor="middle" font-family="Playfair Display,serif" font-size="12" font-weight="700" fill="#0b1f33">A</text>
+    </svg>
+    <div class="logo-text-block">
+      <span class="logo-name">Admincog Corporate Services</span>
+    </div>
+  </a>
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
     <li><a href="#services">Services</a></li>
@@ -1041,461 +715,333 @@
     <li><a href="#pricing">Pricing</a></li>
     <li><a href="#contact" class="nav-cta">Get Started</a></li>
   </ul>
-  <button class="nav-hamburger" id="hamburger" aria-label="Open menu">
-    <span></span><span></span><span></span>
-  </button>
+  <button class="burger" id="burger"><span></span><span></span><span></span></button>
 </nav>
 
 <!-- HERO -->
 <section id="hero">
-  <div class="hero-bg-grid"></div>
-  <div class="hero-bg-circle"></div>
-  <div class="hero-content">
-    <div class="hero-eyebrow"><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span> Certified by Startup India</div>
-    <h1 class="hero-h1">Your business,<br><em>expertly</em><br>supported.</h1>
-    <p class="hero-sub">AI-powered virtual assistant services for businesses worldwide. From admin support to digital marketing — one trusted partner for it all.</p>
-    <div class="hero-actions">
+  <div>
+    <h1>Your business,<br><em>expertly</em> supported.</h1>
+    <p class="hero-body">AI-powered virtual assistant services for businesses worldwide. From administrative support to digital marketing — one trusted partner for it all.</p>
+    <div class="hero-btns">
       <a href="#contact" class="btn-primary">Get Free Evaluation →</a>
-      <a href="#services" class="btn-ghost">Explore Services</a>
+      <a href="#services" class="btn-secondary">Our Services</a>
     </div>
   </div>
+
   <div class="hero-right">
-    <div class="hero-stats-card">
-      <div class="stat-row">
-        <div class="stat-item">
-          <div class="stat-number">20<span>+</span></div>
-          <div class="stat-label">Years Experience</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-number">5<span>+</span></div>
-          <div class="stat-label">Industries Served</div>
-        </div>
+    <div class="hero-stat-row">
+      <div class="hstat"><div class="hstat-n">20+</div><div class="hstat-l">Years Experience</div></div>
+      <div class="hstat"><div class="hstat-n">$10</div><div class="hstat-l">Per Hour</div></div>
+      <div class="hstat"><div class="hstat-n">5+</div><div class="hstat-l">Industries</div></div>
+      <div class="hstat"><div class="hstat-n">3×</div><div class="hstat-l">Cost Saving</div></div>
+    </div>
+    <div class="hero-cert">
+      <div class="cert-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
       </div>
-      <div class="stat-row">
-        <div class="stat-item">
-          <div class="stat-number">$10</div>
-          <div class="stat-label">per hour</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-number">3<span>x</span></div>
-          <div class="stat-label">Cheaper than US VAs</div>
-        </div>
-      </div>
-      <div class="stat-divider"></div>
-      <div class="startup-badge">
-        <div class="badge-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-width="2" stroke-linejoin="round"/></svg></div>
-        <div class="badge-text">
-          <strong>Startup India Certified</strong>
-          Government-recognized for quality & innovation in business services.
-        </div>
+      <div class="cert-text">
+        <strong>Startup India Certified</strong>
+        Recognized for innovative AI-powered virtual assistant solutions.
       </div>
     </div>
-  </div>
-  <div class="hero-scroll-hint">
-    <div class="scroll-line"></div>
-    <span>Scroll</span>
   </div>
 </section>
 
-<!-- MARQUEE -->
-<div class="marquee-wrap">
-  <div class="marquee-track">
-    <span class="marquee-item">Virtual Assistance</span>
-    <span class="marquee-item">Social Media Management</span>
-    <span class="marquee-item">Data Entry</span>
-    <span class="marquee-item">Bookkeeping</span>
-    <span class="marquee-item">Research</span>
-    <span class="marquee-item">Web Development</span>
-    <span class="marquee-item">Digital Marketing</span>
-    <span class="marquee-item">Customer Service</span>
-    <span class="marquee-item">Pitch Decks</span>
-    <span class="marquee-item">App Development</span>
-    <span class="marquee-item">Virtual Assistance</span>
-    <span class="marquee-item">Social Media Management</span>
-    <span class="marquee-item">Data Entry</span>
-    <span class="marquee-item">Bookkeeping</span>
-    <span class="marquee-item">Research</span>
-    <span class="marquee-item">Web Development</span>
-    <span class="marquee-item">Digital Marketing</span>
-    <span class="marquee-item">Customer Service</span>
-    <span class="marquee-item">Pitch Decks</span>
-    <span class="marquee-item">App Development</span>
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-track">
+    <span class="ticker-item">Virtual Assistance</span><span class="ticker-item">Social Media Management</span><span class="ticker-item">Data Entry &amp; Analysis</span><span class="ticker-item">Bookkeeping</span><span class="ticker-item">Research</span><span class="ticker-item">Web Development</span><span class="ticker-item">Digital Marketing</span><span class="ticker-item">Customer Service</span><span class="ticker-item">Pitch Decks</span><span class="ticker-item">App Development</span>
+    <span class="ticker-item">Virtual Assistance</span><span class="ticker-item">Social Media Management</span><span class="ticker-item">Data Entry &amp; Analysis</span><span class="ticker-item">Bookkeeping</span><span class="ticker-item">Research</span><span class="ticker-item">Web Development</span><span class="ticker-item">Digital Marketing</span><span class="ticker-item">Customer Service</span><span class="ticker-item">Pitch Decks</span><span class="ticker-item">App Development</span>
   </div>
+</div>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat-cell reveal"><div class="stat-n">20+</div><div class="stat-l">Years Experience</div></div>
+  <div class="stat-cell reveal d1"><div class="stat-n">5+</div><div class="stat-l">Industries Served</div></div>
+  <div class="stat-cell reveal d2"><div class="stat-n">$10</div><div class="stat-l">Per Hour Rate</div></div>
+  <div class="stat-cell reveal d3"><div class="stat-n">3×</div><div class="stat-l">Cheaper Than US VAs</div></div>
 </div>
 
 <!-- ABOUT -->
 <section id="about">
   <div class="about-grid">
-    <div class="about-text-block">
-      <div class="section-eyebrow reveal">About Us</div>
-      <h2 class="section-title reveal reveal-delay-1">Your trusted partner in<br><em>virtual admin</em> support.</h2>
+    <div class="about-body">
+      <div class="section-label reveal">About Us</div>
+      <h2 class="section-title light reveal d1">Your trusted partner<br>in <em>virtual admin</em> support.</h2>
       <br>
-      <p class="reveal reveal-delay-2">At Admincog Corporate Services, we expertly support your business operations through comprehensive virtual administrative assistance. Our passionate team of professionals is committed to delivering high-quality, tailored services designed around your unique needs.</p>
-      <p class="reveal reveal-delay-3">We recognize the challenges businesses face in managing daily administrative tasks while pursuing strategic objectives. That's why we provide reliable, efficient, and scalable virtual admin solutions — so you can focus on what matters most: growing your business.</p>
-      <p class="reveal reveal-delay-4">Our mission is to revolutionize how businesses handle administrative tasks — optimizing productivity, reducing overhead costs, and promoting sustainable growth for companies of every size.</p>
-    </div>
-    <div class="about-visual reveal reveal-delay-2">
-      <div class="about-card">
+      <p class="reveal d2">At <strong>Admincog Corporate Services</strong>, we expertly support your business operations through comprehensive virtual administrative assistance. Our passionate team delivers high-quality, tailored services designed around your unique needs.</p>
+      <p class="reveal d2">We recognize the challenges businesses face managing daily administrative tasks while pursuing strategic objectives. That's why we provide reliable, efficient, and scalable virtual admin solutions — so you can focus on what matters most: growing your business.</p>
+      <p class="reveal d3">Our mission is to revolutionize how businesses handle administrative tasks — optimizing productivity, reducing overhead costs, and promoting sustainable growth for companies of every size.</p>
+      <div class="founder-panel reveal d3">
         <div class="founder-name">Septinda Jeevaa</div>
-        <div class="founder-title">Founder & CEO, Admincog</div>
-        <p class="founder-bio">With over 20 years of cross-industry experience and a decade specializing in administrative support, Septinda founded Admincog with a clear vision — to empower businesses through efficient, scalable, and impactful virtual solutions. Her leadership has earned Admincog recognition and certification by Startup India.</p>
+        <div class="founder-role">Founder &amp; CEO, Admincog</div>
+        <p class="founder-bio">With over 20 years of cross-industry experience and a decade specializing in administrative support, Septinda founded Admincog to empower businesses through efficient, scalable, and impactful virtual solutions. Admincog is recognized and certified by Startup India.</p>
         <div class="founder-tags">
-          <span>20+ Yrs Experience</span>
-          <span>Startup India Certified</span>
-          <span>Cross-Industry Expert</span>
+          <span class="ftag">20+ Yrs Experience</span>
+          <span class="ftag">Startup India Certified</span>
+          <span class="ftag">Cross-Industry Expert</span>
         </div>
       </div>
+    </div>
+    <div class="about-visual reveal d2">
+      <img class="about-img" src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=700&q=80&auto=format&fit=crop" alt="Septinda Jeevaa — Founder & CEO Admincog">
+      <img class="about-cert-img" src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=700&q=80&auto=format&fit=crop" alt="Startup India Government Recognition Certificate">
     </div>
   </div>
 </section>
 
 <!-- SERVICES -->
 <section id="services">
-  <div class="services-intro">
-    <div>
-      <div class="section-eyebrow reveal">What We Do</div>
-      <h2 class="section-title reveal reveal-delay-1">A full suite of<br><em>business services.</em></h2>
+  <div class="services-inner">
+    <div class="services-top">
+      <div>
+        <div class="section-label reveal">What We Do</div>
+        <h2 class="section-title reveal d1">A full suite of<br><em>business services.</em></h2>
+      </div>
+      <p class="services-intro reveal d2">One partner for virtual assistance, web development, and digital marketing. Consolidate your operations and scale with confidence.</p>
     </div>
-    <p class="services-sub reveal reveal-delay-2">One partner for virtual assistance, web development, and digital marketing. Consolidate your operations, eliminate coordination overhead, and scale with confidence.</p>
-  </div>
-  <div class="services-grid reveal">
-    <div class="service-card">
-      <div class="service-num">01</div>
-      <span class="service-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span>
-      <div class="service-name">Administrative Support</div>
-      <p class="service-desc">Scheduling, email management, calendar coordination, document handling, and customer inquiry management — handled with precision.</p>
-    </div>
-    <div class="service-card">
-      <div class="service-num">02</div>
-      <span class="service-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg></span>
-      <div class="service-name">Social Media Management</div>
-      <p class="service-desc">Content creation, scheduling, audience engagement, and analytics across all platforms to grow your digital presence.</p>
-    </div>
-    <div class="service-card">
-      <div class="service-num">03</div>
-      <span class="service-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 3h18v18H3z" rx="2"/><path d="M3 9h18M9 21V9"/></svg></span>
-      <div class="service-name">Data Entry & Analysis</div>
-      <p class="service-desc">Accurate data entry, cleansing, and analysis that transforms raw information into actionable business intelligence.</p>
-    </div>
-  </div>
-  <div class="services-wide reveal reveal-delay-1">
-    <div class="service-card">
-      <div class="service-num">04</div>
-      <span class="service-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M2 17l10 5 10-5M2 12l10 5 10-5M12 2L2 7l10 5 10-5-10-5z"/></svg></span>
-      <div class="service-name">Bookkeeping</div>
-      <p class="service-desc">Invoice management, account reconciliation, expense tracking, and financial reporting to keep your books clean and current.</p>
-    </div>
-    <div class="service-card">
-      <div class="service-num">05</div>
-      <span class="service-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></span>
-      <div class="service-name">Research</div>
-      <p class="service-desc">Market research, competitor analysis, product research, and industry insights to support informed decision-making at every level.</p>
-    </div>
-  </div>
-  <div class="services-grid reveal reveal-delay-2" style="border-top:none;">
-    <div class="service-card">
-      <div class="service-num">06</div>
-      <span class="service-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
-      <div class="service-name">Customer Service</div>
-      <p class="service-desc">Inquiry management, order fulfillment support, and returns handling to keep your customers satisfied and coming back.</p>
-    </div>
-    <div class="service-card">
-      <div class="service-num">07</div>
-      <span class="service-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></span>
-      <div class="service-name">Web Development</div>
-      <p class="service-desc">Visually compelling, functionally robust websites and mobile applications that reflect your brand and drive conversions.</p>
-    </div>
-    <div class="service-card">
-      <div class="service-num">08</div>
-      <span class="service-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span>
-      <div class="service-name">Digital Marketing</div>
-      <p class="service-desc">SEO, content strategy, paid campaigns, and performance analytics crafted to increase visibility and drive measurable growth.</p>
+    <div class="reveal d1">
+      <div class="svc-item">
+        <div class="svc-header"><div class="svc-num">01</div><div class="svc-name">Administrative Support</div><div class="svc-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div></div>
+        <div class="svc-body"><div class="svc-body-content"><p class="svc-body-desc">Comprehensive day-to-day administrative support so you can focus on strategic priorities.</p><ul class="svc-body-list"><li>Email management, drafting, filtering and organisation</li><li>Calendar scheduling, appointments and meeting coordination</li><li>Document preparation, formatting and filing</li><li>Customer inquiry handling and follow-up</li><li>Travel arrangements and itinerary planning</li></ul></div></div>
+      </div>
+      <div class="svc-item">
+        <div class="svc-header"><div class="svc-num">02</div><div class="svc-name">Social Media Management</div><div class="svc-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div></div>
+        <div class="svc-body"><div class="svc-body-content"><p class="svc-body-desc">End-to-end social media presence management to grow your brand and audience.</p><ul class="svc-body-list"><li>Content creation, copywriting and graphic sourcing</li><li>Post scheduling across LinkedIn, Instagram, Facebook and X</li><li>Community engagement, comments and DM management</li><li>Monthly performance analytics and reporting</li><li>Hashtag research and competitor monitoring</li></ul></div></div>
+      </div>
+      <div class="svc-item">
+        <div class="svc-header"><div class="svc-num">03</div><div class="svc-name">Data Entry &amp; Analysis</div><div class="svc-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div></div>
+        <div class="svc-body"><div class="svc-body-content"><p class="svc-body-desc">Accurate, fast data management that turns raw information into useful business intelligence.</p><ul class="svc-body-list"><li>Data entry into CRM, ERP and spreadsheet systems</li><li>Data cleansing, deduplication and validation</li><li>Database maintenance and record updates</li><li>Basic reporting, pivot tables and trend summaries</li><li>Document digitisation and transcription</li></ul></div></div>
+      </div>
+      <div class="svc-item">
+        <div class="svc-header"><div class="svc-num">04</div><div class="svc-name">Bookkeeping</div><div class="svc-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div></div>
+        <div class="svc-body"><div class="svc-body-content"><p class="svc-body-desc">Reliable bookkeeping support to keep your financials accurate and audit-ready at all times.</p><ul class="svc-body-list"><li>Invoice creation, sending and tracking</li><li>Accounts payable and receivable management</li><li>Bank and credit card reconciliation</li><li>Expense tracking and categorisation</li><li>Monthly financial summaries and reports</li></ul></div></div>
+      </div>
+      <div class="svc-item">
+        <div class="svc-header"><div class="svc-num">05</div><div class="svc-name">Research</div><div class="svc-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div></div>
+        <div class="svc-body"><div class="svc-body-content"><p class="svc-body-desc">Thorough, structured research to support strategic decisions, proposals and business development.</p><ul class="svc-body-list"><li>Market research and landscape mapping</li><li>Competitor analysis and benchmarking</li><li>Product and supplier research</li><li>Industry trend reports and white paper summaries</li><li>Lead research and prospect list building</li></ul></div></div>
+      </div>
+      <div class="svc-item">
+        <div class="svc-header"><div class="svc-num">06</div><div class="svc-name">Customer Service</div><div class="svc-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div></div>
+        <div class="svc-body"><div class="svc-body-content"><p class="svc-body-desc">Professional customer-facing support that protects your reputation and increases retention.</p><ul class="svc-body-list"><li>Email and chat support ticket management</li><li>Order status updates and fulfilment coordination</li><li>Returns, refunds and complaints handling</li><li>FAQ documentation and knowledge base upkeep</li><li>Customer satisfaction follow-up and surveys</li></ul></div></div>
+      </div>
+      <div class="svc-item">
+        <div class="svc-header"><div class="svc-num">07</div><div class="svc-name">Web Development</div><div class="svc-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div></div>
+        <div class="svc-body"><div class="svc-body-content"><p class="svc-body-desc">Functional, well-designed websites and applications built to represent your brand and convert visitors.</p><ul class="svc-body-list"><li>WordPress, Wix, Squarespace and custom HTML/CSS sites</li><li>Landing page design and development</li><li>Website maintenance, updates and plugin management</li><li>E-commerce store setup and product page management</li><li>Mobile-responsive design and speed optimisation</li></ul></div></div>
+      </div>
+      <div class="svc-item">
+        <div class="svc-header"><div class="svc-num">08</div><div class="svc-name">Digital Marketing</div><div class="svc-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div></div>
+        <div class="svc-body"><div class="svc-body-content"><p class="svc-body-desc">Data-driven digital marketing to increase your visibility, leads and measurable business growth.</p><ul class="svc-body-list"><li>SEO — on-page optimisation, keyword research and link tracking</li><li>Google and Meta paid campaign setup and management</li><li>Email marketing campaigns and drip sequences</li><li>Content calendar planning and blog writing</li><li>Monthly performance reports and ROI analysis</li></ul></div></div>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- INDUSTRIES -->
 <section id="industries">
-  <div class="industries-layout">
-    <div class="industries-nav">
-      <div class="section-eyebrow reveal">Industries</div>
-      <h2 class="section-title reveal reveal-delay-1" style="font-size:2rem;">Tailored for<br><em>your sector.</em></h2>
-      <br>
-      <button class="ind-tab active" data-panel="healthcare">
-        <span class="ind-tab-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span> Healthcare
-      </button>
-      <button class="ind-tab" data-panel="finance">
-        <span class="ind-tab-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></span> Banking & Financial
-      </button>
-      <button class="ind-tab" data-panel="realestate">
-        <span class="ind-tab-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span> Real Estate
-      </button>
-      <button class="ind-tab" data-panel="ecommerce">
-        <span class="ind-tab-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></span> e-Commerce
-      </button>
-      <button class="ind-tab" data-panel="smb">
-        <span class="ind-tab-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></span> Small & Medium Business
-      </button>
-    </div>
-    <div class="industries-content reveal reveal-delay-2">
-      <div class="ind-panel active" id="panel-healthcare">
-        <h3>Healthcare</h3>
-        <ul class="ind-list">
-          <li>Schedule appointments and manage calendars for healthcare professionals.</li>
-          <li>Handle patient inquiries, appointment reminders, and follow-ups.</li>
-          <li>Assist with medical billing, coding, and insurance claims processing.</li>
-          <li>Maintain electronic health records (EHR) and ensure compliance with healthcare regulations.</li>
-        </ul>
+  <div class="ind-inner">
+    <div class="section-label reveal">Industries</div>
+    <h2 class="section-title reveal d1">Tailored for <em>your sector.</em></h2>
+    <div class="ind-layout reveal d2">
+      <div class="ind-nav">
+        <button class="ind-tab active" data-panel="healthcare">Healthcare</button>
+        <button class="ind-tab" data-panel="finance">Banking &amp; Financial</button>
+        <button class="ind-tab" data-panel="realestate">Real Estate</button>
+        <button class="ind-tab" data-panel="ecommerce">e-Commerce</button>
+        <button class="ind-tab" data-panel="smb">Small &amp; Medium Business</button>
       </div>
-      <div class="ind-panel" id="panel-finance">
-        <h3>Banking & Financial Services</h3>
-        <ul class="ind-list">
-          <li>Assist with bookkeeping, invoicing, and expense tracking.</li>
-          <li>Manage accounts payable and receivable.</li>
-          <li>Conduct market research and competitive analysis.</li>
-          <li>Prepare financial reports and presentations for clients and stakeholders.</li>
-        </ul>
-      </div>
-      <div class="ind-panel" id="panel-realestate">
-        <h3>Real Estate</h3>
-        <ul class="ind-list">
-          <li>Manage property listings, schedule showings, and coordinate open houses.</li>
-          <li>Assist with lead generation and follow-up with potential buyers or renters.</li>
-          <li>Handle administrative tasks related to property management and rental agreements.</li>
-          <li>Conduct market research and compile property data for analysis.</li>
-        </ul>
-      </div>
-      <div class="ind-panel" id="panel-ecommerce">
-        <h3>e-Commerce</h3>
-        <ul class="ind-list">
-          <li>Manage online store operations, product listings, inventory, and order processing.</li>
-          <li>Provide customer support via email, live chat, and social media.</li>
-          <li>Assist with website maintenance, content updates, and SEO optimization.</li>
-          <li>Monitor sales performance, analyze data, and identify growth opportunities.</li>
-        </ul>
-      </div>
-      <div class="ind-panel" id="panel-smb">
-        <h3>Small & Medium Businesses</h3>
-        <ul class="ind-list">
-          <li>Provide general administrative support including email, calendar, and document preparation.</li>
-          <li>Assist with customer service inquiries, order processing, and invoicing.</li>
-          <li>Manage social media, update website content, and create marketing materials.</li>
-          <li>Conduct research, data entry, and other operational tasks to support your business.</li>
-        </ul>
+      <div>
+        <div class="ind-panel active" id="panel-healthcare">
+          <img class="ind-img" src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80&auto=format&fit=crop" alt="Healthcare">
+          <div class="ind-title">Healthcare</div>
+          <ul class="ind-list">
+            <li>Schedule appointments and manage calendars for healthcare professionals.</li>
+            <li>Handle patient inquiries, appointment reminders, and follow-ups.</li>
+            <li>Assist with medical billing, coding, and insurance claims processing.</li>
+            <li>Maintain electronic health records and ensure regulatory compliance.</li>
+          </ul>
+        </div>
+        <div class="ind-panel" id="panel-finance">
+          <img class="ind-img" src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=80&auto=format&fit=crop" alt="Finance">
+          <div class="ind-title">Banking &amp; Financial Services</div>
+          <ul class="ind-list">
+            <li>Assist with bookkeeping, invoicing, and expense tracking.</li>
+            <li>Manage accounts payable and receivable.</li>
+            <li>Conduct market research and competitive analysis.</li>
+            <li>Prepare financial reports and presentations for stakeholders.</li>
+          </ul>
+        </div>
+        <div class="ind-panel" id="panel-realestate">
+          <img class="ind-img" src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&q=80&auto=format&fit=crop" alt="Real Estate">
+          <div class="ind-title">Real Estate</div>
+          <ul class="ind-list">
+            <li>Manage property listings, schedule showings, and coordinate open houses.</li>
+            <li>Assist with lead generation and follow-up with potential buyers or renters.</li>
+            <li>Handle administrative tasks related to property management.</li>
+            <li>Conduct market research and compile property data for analysis.</li>
+          </ul>
+        </div>
+        <div class="ind-panel" id="panel-ecommerce">
+          <img class="ind-img" src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=800&q=80&auto=format&fit=crop" alt="eCommerce">
+          <div class="ind-title">e-Commerce</div>
+          <ul class="ind-list">
+            <li>Manage online store operations, product listings, inventory, and order processing.</li>
+            <li>Provide customer support via email, live chat, and social media.</li>
+            <li>Assist with website maintenance, content updates, and SEO optimization.</li>
+            <li>Monitor sales performance and identify growth opportunities.</li>
+          </ul>
+        </div>
+        <div class="ind-panel" id="panel-smb">
+          <img class="ind-img" src="https://images.unsplash.com/photo-1556761175-b413da4baf72?w=800&q=80&auto=format&fit=crop" alt="Small Business">
+          <div class="ind-title">Small &amp; Medium Businesses</div>
+          <ul class="ind-list">
+            <li>Provide general administrative support including email, calendar, and document preparation.</li>
+            <li>Assist with customer service inquiries, order processing, and invoicing.</li>
+            <li>Manage social media, update website content, and create marketing materials.</li>
+            <li>Conduct research, data entry, and other operational tasks.</li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- WHY US -->
+<!-- WHY -->
 <section id="why">
-  <div class="why-layout">
-    <div class="why-sticky">
-      <div class="section-eyebrow reveal">Why Admincog</div>
-      <h2 class="section-title reveal reveal-delay-1">One shop.<br><em>Everything</em><br>you need.</h2>
-      <p class="why-sub reveal reveal-delay-2">Say goodbye to coordinating multiple service providers. Access VA services, web development, and digital marketing under one roof — with a team that understands your business holistically.</p>
-      <div class="why-price-note reveal reveal-delay-3">
-        <div class="price-big">$10</div>
-        <div class="price-context">
-          <strong>Per hour vs. competitors' $16–$35/hr</strong>
-          Exceptional quality at a fraction of the market rate. Plus a 7-day results guarantee.
-        </div>
+  <div class="why-inner">
+    <div class="why-left">
+      <div class="section-label reveal" style="color:rgba(47,111,115,0.6);">Why Admincog</div>
+      <h2 class="section-title light reveal d1">One shop.<br><em>Everything</em> you need.</h2>
+      <p class="why-body reveal d2">Say goodbye to coordinating multiple service providers. Access VA services, web development, and digital marketing under one roof — with a team that understands your business holistically.</p>
+      <div class="why-price-box reveal d3">
+        <div class="price-headline">$10<span style="font-size:1.5rem;font-weight:400;color:rgba(184,155,94,0.6);">/hr</span></div>
+        <div class="price-sub">Starting rate — a fraction of the US market average</div>
+        <div class="price-note">Competitors charge $16–$35/hr for the same quality. We deliver more for less, backed by a 7-day results guarantee.</div>
       </div>
     </div>
-    <div class="why-reasons">
-      <div class="why-item reveal">
-        <div class="why-num-box">01</div>
-        <div>
-          <div class="why-item-title">Efficiency & Convenience</div>
-          <p class="why-item-desc">Access a full range of business services from one trusted partner, streamlining your operations and saving valuable time and coordination effort.</p>
-        </div>
-      </div>
-      <div class="why-item reveal reveal-delay-1">
-        <div class="why-num-box">02</div>
-        <div>
-          <div class="why-item-title">Expertise Across Domains</div>
-          <p class="why-item-desc">Our team brings deep expertise in virtual assistance, web development, and digital marketing — delivering exceptional results across every engagement.</p>
-        </div>
-      </div>
-      <div class="why-item reveal reveal-delay-2">
-        <div class="why-num-box">03</div>
-        <div>
-          <div class="why-item-title">Tailored Solutions</div>
-          <p class="why-item-desc">Every business is unique. We take a personalized approach to align our services with your specific goals, budget, and timeline — startup or enterprise.</p>
-        </div>
-      </div>
-      <div class="why-item reveal reveal-delay-3">
-        <div class="why-num-box">04</div>
-        <div>
-          <div class="why-item-title">Seamless Integration</div>
-          <p class="why-item-desc">Our integrated teams collaborate cohesively, ensuring synergy between your online presence, brand marketing, and back-office operations.</p>
-        </div>
-      </div>
-      <div class="why-item reveal">
-        <div class="why-num-box">05</div>
-        <div>
-          <div class="why-item-title">Consistent Quality</div>
-          <p class="why-item-desc">We uphold the highest standards of professionalism and reliability in every task — from the smallest data entry job to complex multi-month projects.</p>
-        </div>
-      </div>
-      <div class="why-item reveal reveal-delay-1">
-        <div class="why-num-box">06</div>
-        <div>
-          <div class="why-item-title">Cost-Effective at Scale</div>
-          <p class="why-item-desc">Competitive pricing and flexible packages deliver maximum value for your investment. Consolidate vendors, reduce overhead, and reinvest in growth.</p>
-        </div>
-      </div>
+    <div class="why-items">
+      <div class="why-item reveal"><div class="why-n">01</div><div><div class="why-title">Efficiency &amp; Convenience</div><p class="why-desc">One trusted partner for all your business services — streamlining operations and saving coordination time.</p></div></div>
+      <div class="why-item reveal d1"><div class="why-n">02</div><div><div class="why-title">Expertise Across Domains</div><p class="why-desc">Deep expertise in virtual assistance, web development, and digital marketing across every engagement.</p></div></div>
+      <div class="why-item reveal d2"><div class="why-n">03</div><div><div class="why-title">Tailored Solutions</div><p class="why-desc">A personalized approach aligned to your goals, budget, and timeline — whether startup or enterprise.</p></div></div>
+      <div class="why-item reveal"><div class="why-n">04</div><div><div class="why-title">Seamless Integration</div><p class="why-desc">Integrated teams ensuring synergy between your online presence, marketing, and back-office operations.</p></div></div>
+      <div class="why-item reveal d1"><div class="why-n">05</div><div><div class="why-title">Consistent Quality</div><p class="why-desc">The highest standards of professionalism in every task — from small data entry to complex projects.</p></div></div>
+      <div class="why-item reveal d2"><div class="why-n">06</div><div><div class="why-title">Cost-Effective at Scale</div><p class="why-desc">Flexible packages that consolidate vendors, reduce overhead, and let you reinvest in growth.</p></div></div>
     </div>
   </div>
 </section>
 
 <!-- PRICING -->
 <section id="pricing">
-  <div class="pricing-header">
-    <div class="section-eyebrow">Plans & Pricing</div>
-    <h2 class="section-title">Transparent,<br><em>flexible</em> pricing.</h2>
-    <p>All plans include AI co-pilot integration and a 7-day results guarantee. Scale up or down as your business needs evolve.</p>
+  <div class="pricing-head">
+    <div class="section-label">Plans &amp; Pricing</div>
+    <h2 class="section-title">Build your <em>custom plan.</em></h2>
+    <p>Configure hours, timezone coverage and add-ons to see your exact monthly cost. All plans include a 7-day results guarantee.</p>
   </div>
-  <div class="pricing-cards">
-    <div class="pricing-card reveal">
-      <div class="pricing-name">Starter</div>
-      <div class="pricing-desc">Ideal for solopreneurs & small teams</div>
-      <div class="pricing-rate">$440<sub>/mo</sub></div>
-      <div class="pricing-per">40 hours · $11/hour</div>
-      <div class="pricing-divider"></div>
-      <ul class="pricing-features">
-        <li class="pricing-feature"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>40 hours per month</li>
-        <li class="pricing-feature"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>India core hours coverage</li>
-        <li class="pricing-feature"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Admin & email support</li>
-        <li class="pricing-feature"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Monthly progress report</li>
-        <li class="pricing-feature"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Email & chat support</li>
-      </ul>
-      <a href="#contact" class="btn-pricing btn-pricing-light">Get Started</a>
+  <div class="calc-wrap reveal">
+    <!-- LEFT: Controls -->
+    <div class="calc-left">
+      <div class="calc-section">
+        <div class="calc-section-label">Assistant Type</div>
+        <div class="type-grid">
+          <button class="type-btn active" data-type="executive" onclick="setType(this)">Executive Assistant</button>
+          <button class="type-btn" data-type="research" onclick="setType(this)">Research Assistant</button>
+          <button class="type-btn" data-type="operations" onclick="setType(this)">Operations Assistant</button>
+          <button class="type-btn" data-type="marketing" onclick="setType(this)">Marketing Assistant</button>
+        </div>
+      </div>
+
+      <div class="calc-section">
+        <div class="calc-section-label">Hours per Month</div>
+        <div class="slider-wrap">
+          <div class="slider-display">
+            <span class="slider-val" id="hoursDisplay">80</span><span class="slider-unit">hours</span>
+          </div>
+          <input type="range" id="hoursSlider" min="20" max="160" step="10" value="80" oninput="updateCalc()">
+          <div class="slider-labels"><span>20 hrs</span><span>160 hrs</span></div>
+        </div>
+      </div>
+
+      <div class="calc-section">
+        <div class="calc-section-label">Timezone Coverage</div>
+        <div class="tz-option active" onclick="setTZ(this, 0)" data-mult="0">
+          <input type="radio" name="tz" checked> <label>India Core Hours (default)</label>
+        </div>
+        <div class="tz-option" onclick="setTZ(this, 0.20)" data-mult="0.20">
+          <input type="radio" name="tz"> <label>India + US Overlap (+20%)</label>
+        </div>
+        <div class="tz-option" onclick="setTZ(this, 0.20)" data-mult="0.20">
+          <input type="radio" name="tz"> <label>India + EU Overlap (+20%)</label>
+        </div>
+      </div>
+
+      <div class="calc-section">
+        <div class="calc-section-label">Premium Add-ons</div>
+        <div class="addon-option" onclick="toggleAddon(this)" data-pct="0.15">
+          <input type="checkbox"> <label>Research Pod SLA (24h turnaround) +15%</label>
+        </div>
+        <div class="addon-option" onclick="toggleAddon(this)" data-pct="0.10">
+          <input type="checkbox"> <label>Backup Pod / Never Dark Coverage +10%</label>
+        </div>
+        <div class="addon-option" onclick="toggleAddon(this)" data-pct="0.12">
+          <input type="checkbox"> <label>AI Co-Pilot Integration +12%</label>
+        </div>
+      </div>
     </div>
-    <div class="pricing-card featured reveal reveal-delay-1">
-      <div class="featured-label">Most Popular</div>
-      <div class="pricing-name">Growth</div>
-      <div class="pricing-desc">For growing businesses needing consistent support</div>
-      <div class="pricing-rate">$880<sub>/mo</sub></div>
-      <div class="pricing-per">80 hours · $11/hour</div>
-      <div class="pricing-divider"></div>
-      <ul class="pricing-features">
-        <li class="pricing-feature"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>80 hours per month</li>
-        <li class="pricing-feature"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>India core hours coverage</li>
-        <li class="pricing-feature"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>All Starter features</li>
-        <li class="pricing-feature"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Dedicated VA pod</li>
-        <li class="pricing-feature"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>7-day results guarantee</li>
-        <li class="pricing-feature"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Priority response SLA</li>
-      </ul>
-      <a href="#contact" class="btn-pricing btn-pricing-gold">Get Started</a>
-    </div>
-    <div class="pricing-card reveal reveal-delay-2">
-      <div class="pricing-name">Enterprise</div>
-      <div class="pricing-desc">For teams requiring full-time dedicated support</div>
-      <div class="pricing-rate">$1,760<sub>/mo</sub></div>
-      <div class="pricing-per">160 hours · $11/hour</div>
-      <div class="pricing-divider"></div>
-      <ul class="pricing-features">
-        <li class="pricing-feature"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>160 hours per month</li>
-        <li class="pricing-feature"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>US/EU timezone overlap</li>
-        <li class="pricing-feature"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>All Growth features</li>
-        <li class="pricing-feature"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Backup pod coverage</li>
-        <li class="pricing-feature"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>AI co-pilot integration</li>
-        <li class="pricing-feature"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Dedicated account manager</li>
-      </ul>
-      <a href="#contact" class="btn-pricing btn-pricing-light">Get Started</a>
+
+    <!-- RIGHT: Results -->
+    <div class="calc-right">
+      <div class="calc-plan-name" id="calcPlanName">Growth Plan</div>
+      <div class="calc-price" id="calcPrice">$880</div>
+      <div class="calc-rate" id="calcRate">Effective Rate: $11.00/hour</div>
+      <div class="calc-hours" id="calcHours">80 hours per month</div>
+      <div class="calc-divider"></div>
+      <div class="calc-breakdown">
+        <div class="calc-line"><span class="calc-line-label">Base cost</span><span class="calc-line-val" id="lineBase">$880</span></div>
+        <div class="calc-line" id="lineTzRow" style="display:none"><span class="calc-line-label" id="lineTzLabel">Timezone add-on</span><span class="calc-line-val" id="lineTzVal">$0</span></div>
+        <div class="calc-line" id="lineAddonRow" style="display:none"><span class="calc-line-label">Add-ons</span><span class="calc-line-val" id="lineAddonVal">$0</span></div>
+        <div class="calc-line total"><span class="calc-line-label">Monthly total</span><span class="calc-line-val" id="lineTotal">$880</span></div>
+      </div>
+      <div class="calc-saving">
+        <strong>Your Saving vs. US Market</strong>
+        <span id="calcSaving">At $11/hr vs $25/hr average, you save <b>$1,120/mo</b></span>
+      </div>
+      <a href="#contact" class="btn-calc">Get Started →</a>
     </div>
   </div>
-  <p class="pricing-note">Custom packages available for unique needs. Add-ons: Research SLA (+15%), Backup Pod (+10%), AI Co-Pilot (+12%).</p>
+  <p class="pricing-note">Custom enterprise packages available. Contact us for dedicated team or project-based pricing.</p>
 </section>
 
 <!-- TESTIMONIALS -->
 <section id="testimonials">
-  <div class="testi-header">
-    <div class="section-eyebrow reveal">Client Voices</div>
-    <h2 class="section-title reveal reveal-delay-1">Trusted by businesses<br><em>worldwide.</em></h2>
-  </div>
-  <div class="testi-grid">
-    <div class="testi-card reveal">
-      <div class="testi-stars"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
-      <p class="testi-quote">"I have been using Admincog's virtual assistant services for several months now and I couldn't be happier. Their team is professional, reliable, and always goes above and beyond to ensure my business runs smoothly."</p>
-      <div class="testi-author">
-        <div class="testi-avatar"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
-        <div>
-          <div class="testi-name">Small Business Owner</div>
-          <div class="testi-role">India</div>
-        </div>
-      </div>
+  <div class="testi-inner">
+    <div class="testi-header">
+      <div class="section-label reveal">Client Voices</div>
+      <h2 class="section-title reveal d1">Trusted by businesses <em>worldwide.</em></h2>
     </div>
-    <div class="testi-card reveal reveal-delay-1">
-      <div class="testi-stars"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
-      <p class="testi-quote">"Admincog's virtual assistant services have been a game changer for our business. Their team is knowledgeable, proactive, and always delivers high-quality work."</p>
-      <div class="testi-author">
-        <div class="testi-avatar"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
-        <div>
-          <div class="testi-name">Business Owner</div>
-          <div class="testi-role">USA</div>
-        </div>
-      </div>
-    </div>
-    <div class="testi-card reveal reveal-delay-2">
-      <div class="testi-stars"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
-      <p class="testi-quote">"Working with Septinda and her team was great — very professional, able to quickly understand and deliver whatever is required. I'd gladly recommend Admincog for anyone looking for virtual assistants."</p>
-      <div class="testi-author">
-        <div class="testi-avatar"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
-        <div>
-          <div class="testi-name">Senior Database Engineer</div>
-          <div class="testi-role">India</div>
-        </div>
-      </div>
-    </div>
-    <div class="testi-card reveal reveal-delay-3">
-      <div class="testi-stars"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
-      <p class="testi-quote">"I had the opportunity to work with Admincog for virtual assistant services. Septinda was professional, knowledgeable, and client-focused. I would enjoy the opportunity to work with her in the future."</p>
-      <div class="testi-author">
-        <div class="testi-avatar"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
-        <div>
-          <div class="testi-name">ERP Program Manager / SAP Architect</div>
-          <div class="testi-role">USA</div>
-        </div>
-      </div>
-    </div>
-    <div class="testi-card reveal reveal-delay-1">
-      <div class="testi-stars"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
-      <p class="testi-quote">"At Admincog, we pride ourselves on providing exceptional virtual assistant services to our clients. Our team is built on professionalism, efficiency, and a genuine commitment to client success."</p>
-      <div class="testi-author">
-        <div class="testi-avatar"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
-        <div>
-          <div class="testi-name">Management Team</div>
-          <div class="testi-role">Admincog Corporate Services</div>
-        </div>
-      </div>
-    </div>
-    <div class="testi-card reveal reveal-delay-2">
-      <div class="testi-stars"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
-      <p class="testi-quote">"Recognized in The Dream India Report for our innovative AI-powered virtual assistant solutions. We continue to set new standards for the industry."</p>
-      <div class="testi-author">
-        <div class="testi-avatar"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8M15 18h-5M10 6h8v4h-8z"/></svg></div>
-        <div>
-          <div class="testi-name">Admincog in the News</div>
-          <div class="testi-role">The Dream India · August 2025</div>
-        </div>
-      </div>
+    <div class="testi-grid">
+      <div class="testi-card reveal"><div class="testi-stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><p class="testi-body">"I have been using Admincog's virtual assistant services for several months now and I couldn't be happier. Their team is professional, reliable, and always goes above and beyond."</p><div class="testi-name">Small Business Owner</div><div class="testi-role">India</div></div>
+      <div class="testi-card reveal d1"><div class="testi-stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><p class="testi-body">"Admincog's services have been a game changer for our business. Their team is knowledgeable, proactive, and always delivers high-quality work on time."</p><div class="testi-name">Business Owner</div><div class="testi-role">USA</div></div>
+      <div class="testi-card reveal d2"><div class="testi-stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><p class="testi-body">"Working with Septinda and her team was great — very professional, able to quickly understand and deliver whatever is required. Gladly recommend Admincog."</p><div class="testi-name">Senior Database Engineer</div><div class="testi-role">India</div></div>
+      <div class="testi-card reveal"><div class="testi-stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><p class="testi-body">"Septinda was professional, knowledgeable, and client-focused. I had the pleasure of working with Admincog and would enjoy the opportunity again in the future."</p><div class="testi-name">ERP Program Manager / SAP Architect</div><div class="testi-role">USA</div></div>
+      <div class="testi-card reveal d1"><div class="testi-stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><p class="testi-body">"Our team is built on professionalism, efficiency, and a genuine commitment to client success. We pride ourselves on delivering exceptional virtual assistant services."</p><div class="testi-name">Management Team</div><div class="testi-role">Admincog Corporate Services</div></div>
+      <div class="testi-card reveal d2"><div class="testi-stars"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><p class="testi-body">"Recognized in The Dream India Report for innovative AI-powered virtual assistant solutions — setting new standards for India's startup ecosystem."</p><div class="testi-name">Admincog in the News</div><div class="testi-role">The Dream India · August 2025</div></div>
     </div>
   </div>
 </section>
 
 <!-- NEWS -->
 <section id="news">
-  <div class="news-wrap">
-    <div class="section-eyebrow reveal">Latest</div>
-    <h2 class="section-title reveal reveal-delay-1">In the news.</h2>
-    <br><br>
-    <div class="news-card reveal">
+  <div class="news-inner">
+    <div class="section-label reveal">Latest</div>
+    <h2 class="section-title reveal d1">In the <em>news.</em></h2>
+    <br>
+    <div class="news-card reveal d2">
       <div>
         <div class="news-meta">August 12, 2025 · The Dream India | Daily Hunt</div>
         <div class="news-title">Admincog Featured in Industry Spotlight</div>
-        <p class="news-excerpt">Admincog Corporate Services recognized for innovative AI-powered virtual assistant solutions in The Dream India Report, celebrating excellence in India's startup ecosystem.</p>
+        <p class="news-body">Admincog Corporate Services recognized for innovative AI-powered virtual assistant solutions in The Dream India Report, celebrating excellence in India's startup ecosystem.</p>
       </div>
       <a href="http://dhunt.in/11rSqn" target="_blank" class="news-link">Read Article →</a>
     </div>
@@ -1504,185 +1050,183 @@
 
 <!-- CONTACT -->
 <section id="contact">
-  <div class="contact-layout">
-    <div class="contact-info">
-      <div class="section-eyebrow reveal">Get in Touch</div>
-      <h2 class="section-title reveal reveal-delay-1">Let's start a<br><em>conversation.</em></h2>
-      <p class="contact-text reveal reveal-delay-2">Ready to offload your administrative burden and scale your business? Reach out for a free evaluation and discover how Admincog can support your growth.</p>
-      <div class="reveal reveal-delay-3">
-        <div class="contact-detail">
-          <div class="cd-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.76a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7a2 2 0 0 1 1.72 2.02z"/></svg></div>
-          <div class="cd-text">
-            <strong>Phone</strong>
-            <a href="tel:+919535409798">+91 95354 09798</a>
-          </div>
-        </div>
-        <div class="contact-detail">
-          <div class="cd-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
-          <div class="cd-text">
-            <strong>Email</strong>
-            <a href="mailto:support@admincogcorporateservices.com">support@admincogcorporateservices.com</a>
-          </div>
-        </div>
-        <div class="contact-detail">
-          <div class="cd-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
-          <div class="cd-text">
-            <strong>Website</strong>
-            <a href="https://www.admincogcorporateservices.com" target="_blank">admincogcorporateservices.com</a>
-          </div>
-        </div>
-        <div class="contact-detail">
-          <div class="cd-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
-          <div class="cd-text">
-            <strong>Response Time</strong>
-            Within 24 hours — often same day
-          </div>
-        </div>
+  <div style="max-width:1100px;margin:0 auto 3rem;">
+    <div class="section-label reveal">Get in Touch</div>
+    <h2 class="section-title reveal d1">Let's start a <em>conversation.</em></h2>
+  </div>
+  <div class="contact-inner">
+    <div>
+      <p class="contact-copy reveal">Ready to offload your administrative burden and scale your business? Reach out for a free evaluation and discover how Admincog can support your growth.</p>
+      <div class="reveal d1">
+        <div class="c-detail"><div class="c-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.76a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7a2 2 0 0 1 1.72 2.02z"/></svg></div><div class="c-text"><strong>Phone</strong><a href="tel:+919535409798">+91 95354 09798</a></div></div>
+        <div class="c-detail"><div class="c-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div><div class="c-text"><strong>Email</strong><a href="mailto:support@admincogcorporateservices.com">support@admincogcorporateservices.com</a></div></div>
+        <div class="c-detail"><div class="c-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div><div class="c-text"><strong>Website</strong><a href="https://www.admincogcorporateservices.com" target="_blank">admincogcorporateservices.com</a></div></div>
+        <div class="c-detail"><div class="c-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="c-text"><strong>Response Time</strong>Within 24 hours — often same day</div></div>
       </div>
     </div>
-    <div class="contact-form reveal reveal-delay-2">
+    <div class="reveal d2">
       <form id="contactForm">
-        <div class="form-row">
-          <div class="form-field">
-            <label>First Name *</label>
-            <input type="text" required placeholder="Jane">
-          </div>
-          <div class="form-field">
-            <label>Last Name *</label>
-            <input type="text" required placeholder="Smith">
-          </div>
-        </div>
-        <div class="form-field">
-          <label>Email Address *</label>
-          <input type="email" required placeholder="jane@company.com">
-        </div>
-        <div class="form-field">
-          <label>Message *</label>
-          <textarea required placeholder="Tell us about your business and what you need help with…"></textarea>
-        </div>
+        <div class="form-row"><div class="ff"><label>First Name *</label><input type="text" required placeholder="Jane"></div><div class="ff"><label>Last Name *</label><input type="text" required placeholder="Smith"></div></div>
+        <div class="ff"><label>Email Address *</label><input type="email" required placeholder="jane@company.com"></div>
+        <div class="ff"><label>Message *</label><textarea required placeholder="Tell us about your business and what you need help with…"></textarea></div>
         <button type="submit" class="form-submit">Send Message →</button>
       </form>
-      <div class="form-success" id="formSuccess">
-        <h4>Message received!</h4>
-        <p>Thank you for reaching out. Our team will get back to you within 24 hours.</p>
-      </div>
+      <div class="form-success" id="formSuccess"><h4>Message received!</h4><p>Thank you for reaching out. Our team will be in touch within 24 hours.</p></div>
     </div>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-top">
-    <div class="footer-brand">
-      <span class="footer-logo">Admin<span>cog</span></span>
-      <p class="footer-tagline">AI-powered virtual assistant services for businesses worldwide. Efficient, scalable, and cost-effective solutions designed around you.</p>
-      <p style="font-size:0.78rem; color: rgba(250,250,248,0.3); display:flex; align-items:center; gap:0.4rem;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width:13px;height:13px;stroke:rgba(200,169,110,0.5);stroke-width:1.5;fill:none;flex-shrink:0;"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg> Certified by Startup India</p>
+  <div class="footer-grid">
+    <div>
+      <a href="#" class="logo-wrap" style="margin-bottom:0.8rem;display:inline-flex;">
+        <svg width="30" height="30" viewBox="0 0 36 36" fill="none"><path d="M18 2.5l2.2 1.25.3 2.5 2.2 1.25 2.4-.75 1.65 1.65-.75 2.4 1.25 2.2 2.5.3L30.5 15.8l-1.25 2.2.75 2.4-1.65 1.65-2.4-.75-2.2 1.25-.3 2.5L21.2 26.3 19 25.05l-2.4.75-1.65-1.65.75-2.4-1.25-2.2-2.5-.3L10.7 17.6l1.25-2.2-.75-2.4 1.65-1.65 2.4.75 2.2-1.25.3-2.5z" fill="#b89b5e"/><circle cx="18" cy="17.5" r="7.5" fill="rgba(250,249,246,0.05)"/><text x="18" y="22.5" text-anchor="middle" font-family="Playfair Display,serif" font-size="12" font-weight="700" fill="#faf9f6">A</text></svg>
+        <div class="logo-text-block">
+          <span class="logo-name" style="color:var(--white);">Admincog Corporate Services</span>
+        </div>
+      </a>
+      <p class="footer-brand-tag">AI-powered virtual assistant services for businesses worldwide. Efficient, scalable, and cost-effective solutions designed around you.</p>
+      <div class="footer-cert-note">✦ Certified by Startup India</div>
     </div>
-    <div class="footer-col">
-      <h5>Services</h5>
-      <ul>
-        <li><a href="#services">Virtual Assistance</a></li>
-        <li><a href="#services">Social Media Management</a></li>
-        <li><a href="#services">Data Entry</a></li>
-        <li><a href="#services">Bookkeeping</a></li>
-        <li><a href="#services">Research</a></li>
-        <li><a href="#services">Web Development</a></li>
-        <li><a href="#services">Digital Marketing</a></li>
-        <li><a href="#services">Pitch Decks</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h5>Company</h5>
-      <ul>
-        <li><a href="#about">About Us</a></li>
-        <li><a href="#industries">Industries</a></li>
-        <li><a href="#why">Why Choose Us</a></li>
-        <li><a href="#pricing">Plans & Pricing</a></li>
-        <li><a href="#testimonials">Testimonials</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h5>Contact</h5>
-      <ul>
-        <li><a href="tel:+919535409798">+91 95354 09798</a></li>
-        <li><a href="mailto:support@admincogcorporateservices.com">support@admincogcorporate<br>services.com</a></li>
-      </ul>
-    </div>
+    <div class="fcol"><h5>Services</h5><ul><li><a href="#services">Virtual Assistance</a></li><li><a href="#services">Social Media Management</a></li><li><a href="#services">Data Entry</a></li><li><a href="#services">Bookkeeping</a></li><li><a href="#services">Research</a></li><li><a href="#services">Web Development</a></li><li><a href="#services">Digital Marketing</a></li></ul></div>
+    <div class="fcol"><h5>Company</h5><ul><li><a href="#about">About Us</a></li><li><a href="#industries">Industries</a></li><li><a href="#why">Why Choose Us</a></li><li><a href="#pricing">Plans &amp; Pricing</a></li><li><a href="#testimonials">Testimonials</a></li><li><a href="#contact">Contact</a></li></ul></div>
+    <div class="fcol"><h5>Contact</h5><ul><li><a href="tel:+919535409798">+91 95354 09798</a></li><li><a href="mailto:support@admincogcorporateservices.com">support@admincogcorporateservices.com</a></li></ul></div>
   </div>
   <div class="footer-bottom">
-    <p class="footer-copy">© 2025 Admincog Corporate Services. All rights reserved.</p>
-    <div class="footer-legal">
-      <a href="#">Privacy Policy</a>
-      <a href="#">Terms & Conditions</a>
-      <a href="#">Cancellation/Refund Policy</a>
-    </div>
+    <p class="f-copy">© 2025 Admincog Corporate Services. All rights reserved.</p>
+    <div class="f-legal"><a href="#">Privacy Policy</a><a href="#">Terms &amp; Conditions</a><a href="#">Cancellation / Refund Policy</a></div>
   </div>
 </footer>
 
 <script>
-  // ── Cursor
-  const dot = document.getElementById('cursorDot');
-  const ring = document.getElementById('cursorRing');
-  document.addEventListener('mousemove', e => {
-    dot.style.transform = `translate(${e.clientX - 4}px, ${e.clientY - 4}px)`;
-    ring.style.transform = `translate(${e.clientX - 18}px, ${e.clientY - 18}px)`;
-  });
+// Nav scroll shadow
+const nav = document.getElementById('mainNav');
+window.addEventListener('scroll', () => nav.classList.toggle('raised', window.scrollY > 10), { passive: true });
 
-  // ── Navbar scroll
-  const navbar = document.getElementById('navbar');
-  window.addEventListener('scroll', () => {
-    navbar.classList.toggle('scrolled', window.scrollY > 60);
-  });
+// Reveal on scroll
+const obs = new IntersectionObserver(es => {
+  es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } });
+}, { threshold: 0.08, rootMargin: '0px 0px -24px 0px' });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
-  // ── Reveal on scroll
-  const reveals = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
-    });
-  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-  reveals.forEach(r => observer.observe(r));
-
-  // ── Industries tabs
-  document.querySelectorAll('.ind-tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-      document.querySelectorAll('.ind-tab').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.ind-panel').forEach(p => p.classList.remove('active'));
-      tab.classList.add('active');
-      document.getElementById('panel-' + tab.dataset.panel).classList.add('active');
-    });
+// Industry tabs
+document.querySelectorAll('.ind-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.ind-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.ind-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('panel-' + tab.dataset.panel).classList.add('active');
   });
+});
 
-  // ── Contact form
-  document.getElementById('contactForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    this.style.display = 'none';
-    document.getElementById('formSuccess').style.display = 'block';
+// Services accordion
+document.querySelectorAll('.svc-header').forEach(header => {
+  header.addEventListener('click', () => {
+    const item = header.parentElement;
+    const isOpen = item.classList.contains('open');
+    // Close all
+    document.querySelectorAll('.svc-item.open').forEach(i => i.classList.remove('open'));
+    // Open this one unless it was already open
+    if (!isOpen) item.classList.add('open');
   });
+});
 
-  // ── Mobile nav
-  document.getElementById('hamburger').addEventListener('click', () => {
-    document.getElementById('mobileNav').classList.add('open');
+// Mobile nav
+document.getElementById('burger').addEventListener('click', () => document.getElementById('mobNav').classList.add('open'));
+document.getElementById('mobClose').addEventListener('click', closeMob);
+function closeMob() { document.getElementById('mobNav').classList.remove('open'); }
+
+// Contact form
+document.getElementById('contactForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  this.style.display = 'none';
+  document.getElementById('formSuccess').style.display = 'block';
+});
+
+// Active nav
+const secs = document.querySelectorAll('section[id], #hero');
+const nls = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll', () => {
+  let cur = '';
+  secs.forEach(s => { if (window.scrollY >= s.offsetTop - 120) cur = s.id; });
+  nls.forEach(a => {
+    a.style.color = '';
+    if (a.getAttribute('href') === '#' + cur && !a.classList.contains('nav-cta')) a.style.color = 'var(--teal)';
   });
-  document.getElementById('mobileClose').addEventListener('click', closeMobileNav);
-  function closeMobileNav() {
-    document.getElementById('mobileNav').classList.remove('open');
+}, { passive: true });
+
+// ── PRICING CALCULATOR ──
+const BASE_RATE = 11;
+const US_AVG = 25;
+let currentTZMult = 0;
+let currentAddonPct = 0;
+let currentHours = 80;
+
+const planNames = { 20:'Starter Plan', 30:'Starter Plan', 40:'Starter Plan', 50:'Growth Plan', 60:'Growth Plan', 70:'Growth Plan', 80:'Growth Plan', 90:'Growth Plan', 100:'Growth Plan', 110:'Professional Plan', 120:'Professional Plan', 130:'Professional Plan', 140:'Enterprise Plan', 150:'Enterprise Plan', 160:'Enterprise Plan' };
+
+function setType(btn) {
+  document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  updateCalc();
+}
+
+function setTZ(el, mult) {
+  document.querySelectorAll('.tz-option').forEach(o => { o.classList.remove('active'); o.querySelector('input').checked = false; });
+  el.classList.add('active');
+  el.querySelector('input').checked = true;
+  currentTZMult = mult;
+  updateCalc();
+}
+
+function toggleAddon(el) {
+  el.classList.toggle('active');
+  el.querySelector('input').checked = el.classList.contains('active');
+  let total = 0;
+  document.querySelectorAll('.addon-option.active').forEach(a => { total += parseFloat(a.dataset.pct); });
+  currentAddonPct = total;
+  updateCalc();
+}
+
+function updateCalc() {
+  const hours = parseInt(document.getElementById('hoursSlider').value);
+  currentHours = hours;
+  document.getElementById('hoursDisplay').textContent = hours;
+
+  const base = hours * BASE_RATE;
+  const tzAdd = base * currentTZMult;
+  const addonAdd = base * currentAddonPct;
+  const total = Math.round(base + tzAdd + addonAdd);
+  const effectiveRate = (total / hours).toFixed(2);
+  const usSaving = Math.round((US_AVG - total / hours) * hours);
+
+  const planName = planNames[hours] || (hours <= 40 ? 'Starter Plan' : hours <= 100 ? 'Growth Plan' : 'Enterprise Plan');
+
+  document.getElementById('calcPlanName').textContent = planName;
+  document.getElementById('calcPrice').textContent = '$' + total.toLocaleString();
+  document.getElementById('calcRate').textContent = 'Effective Rate: $' + effectiveRate + '/hour';
+  document.getElementById('calcHours').textContent = hours + ' hours per month';
+  document.getElementById('lineBase').textContent = '$' + base.toLocaleString();
+
+  if (currentTZMult > 0) {
+    document.getElementById('lineTzRow').style.display = '';
+    const tzLabel = document.querySelector('.tz-option.active label').textContent.split('(')[0].trim();
+    document.getElementById('lineTzLabel').textContent = tzLabel;
+    document.getElementById('lineTzVal').textContent = '+$' + Math.round(tzAdd).toLocaleString();
+  } else {
+    document.getElementById('lineTzRow').style.display = 'none';
   }
 
-  // ── Smooth active nav link highlight
-  const sections = document.querySelectorAll('section[id], #hero');
-  const navLinks = document.querySelectorAll('.nav-links a');
-  window.addEventListener('scroll', () => {
-    let cur = '';
-    sections.forEach(s => {
-      if (window.scrollY >= s.offsetTop - 120) cur = s.id;
-    });
-    navLinks.forEach(a => {
-      a.style.color = '';
-      if (a.getAttribute('href') === '#' + cur) a.style.color = 'var(--accent)';
-    });
-  });
+  if (currentAddonPct > 0) {
+    document.getElementById('lineAddonRow').style.display = '';
+    document.getElementById('lineAddonVal').textContent = '+$' + Math.round(addonAdd).toLocaleString();
+  } else {
+    document.getElementById('lineAddonRow').style.display = 'none';
+  }
+
+  document.getElementById('lineTotal').textContent = '$' + total.toLocaleString();
+  document.getElementById('calcSaving').innerHTML = 'At $' + effectiveRate + '/hr vs $' + US_AVG + '/hr average, you save <b>$' + usSaving.toLocaleString() + '/mo</b>';
+}
 </script>
 </body>
 </html>
